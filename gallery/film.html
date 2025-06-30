@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZSLN384XNE"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-ZSLN384XNE');
+</script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hugo Begg Photography</title>
+
+    <link rel="stylesheet" href="https://use.typekit.net/fru4qyz.css">
+
+    <link rel="stylesheet" href="/style.css">
+    <script src="/jquery-3.6.4.min.js"></script>
+
+</head>
+
+<body style="background-color: white;">
+    <div id="gallery-lightboxes" class="gallery-lightboxes">
+
+    </div>
+
+
+    <header class="header">
+        <div class="header__column header__column--1">
+            <h1><a href="../index" style="text-decoration: none; color: black;">HUGO BEGG</a></h1>
+        </div>
+        <div class="header__column header__column--2">
+            <div class="menu">
+                <nav>
+
+                    <div class="menu-btn" >
+                        <div class="menu-btn-burger" style="background-color: grey;"></div>
+                    </div>
+
+                    <ol style="color: black;">
+                        <li style=" list-style-type: none; border-bottom: none;"><a href="../portfolio">Portfolio</a></li>
+                        <li style=" list-style-type: none; border-bottom: none;"><a href="index">Gallery</a></li>
+                        <li style=" list-style-type: none; border-bottom: none;"><a href="../about">About</a></li>
+                        <li style=" list-style-type: none; border-bottom: none;"><a href="../contact">Contact</a></li>
+                        <li style=" list-style-type: none; border-bottom: none;"><a
+                                href="https://www.instagram.com/hugobegg/" target="_blank"><img style="width: 28px;"
+                                    src="/images/symbols/instagram.webp" alt=""></a></li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </header>
+    <main class="main__gallery">
+        <h2 style="text-align: center;"">Film</h2>
+        <div class="return" style="text-align: center;"><small> 
+            <a href="portraits">Portraits</a> |
+            <a href="street">Street</a> |
+            <a href="landscapes">Landscapes & Nature</a> |
+            <a href="architecture">Architecture</a></small>
+        </div>
+        <ol class="gallery__thumbnails"></ol>
+
+
+    </main>
+    <footer class="footer__gallery" style="color: white;">
+        <p><small>© 2023 Hugo Begg</small></p>
+    </footer>
+    <script>
+        const olContainer = document.querySelector(".gallery__thumbnails"); // Select the ol container
+    
+        // Function to get image dimensions
+        function getImageDimensions(imageSrc, callback) {
+            const img = new Image();
+            img.onload = function() {
+                callback(img.width, img.height);
+            };
+            img.src = imageSrc;
+        }
+    
+        // Function to extract image number from filename
+        function getImageNumberFromFileName(fileName) {
+            const match = fileName.match(/film_(\d+)/);
+            return match ? match[1] : null;
+        }
+    
+        // Shuffle array helper function
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+            
+        }
+    
+        // Fetch file names using AJAX for thumbnails
+        $.ajax({
+            url: '/gallery/images/film_fullsize/filelist.txt', // Adjust the path to your text document
+            dataType: 'text',
+            success: function(data) {
+                var fileNames = data.split('\n');
+    
+                // Shuffle the fileNames array
+                fileNames = shuffleArray(fileNames);
+                var imagesPerRow = 4; // Adjust as needed
+    
+                // Iterate to create rows and place images accordingly
+                for (let i = 0; i < fileNames.length; i += imagesPerRow) {
+    // Create a new list item for each row
+    const row = document.createElement("div");
+    row.className = "thumbnail__row";
+
+    // Generate the individual image blocks within the row
+    for (let j = 0; j < imagesPerRow; j++) {
+        const index = i + j;
+        if (index < fileNames.length) {
+            const fileName = fileNames[index].trim();
+            const imageNumber = getImageNumberFromFileName(fileName);
+
+            if (fileName !== '' && imageNumber !== null) {
+                // Create a new list item for each image
+                const div = document.createElement("div");
+                const isThumbnailA = j < 2 ? "thumbnail__A" : "thumbnail__B";
+                const imageSrc = `/gallery/images/film_thumbnails/${fileName}`;
+
+                div.className = `thumbnail__item ${isThumbnailA}`;
+
+                // Get image dimensions dynamically
+                getImageDimensions(imageSrc, function (x, y) {
+                    div.style.setProperty("--ratio", `${x}/${y}`);
+
+                    const anchor = document.createElement("a");
+                    anchor.className = "thumbnail__link__overlay";
+                    anchor.href = `#film_${imageNumber}`;
+
+                    const img = document.createElement("img");
+                    img.className = "thumbnail__item--img lazyload";
+                    img.setAttribute("data-src", imageSrc);
+                    img.alt = "";
+
+                    anchor.appendChild(img);
+                    div.appendChild(anchor);
+
+                    // Append thumbnail to the row
+                    row.appendChild(div);
+                });
+            }
+         
+        }
+
+        
+    }
+
+    // Append the row to the container
+    olContainer.appendChild(row);
+}
+
+    
+                // Fetch file names using AJAX for lightbox
+                $.ajax({
+                    url: '/gallery/images/film_fullsize/filelist.txt', // Adjust the path to your text document
+                    dataType: 'text',
+                    success: function(data) {
+                        var fullSizeFileNames = data.split('\n');
+                        var htmlTemplate = '<div id="film_{number}" class="gallery-lightbox"><a href="#!"><div class="close-button-container "><div class="close-button-icon "></div></div></a><img class="gallery-lightbox-image lazyload" style="pointer-events: none;" data-src="/gallery/images/film_fullsize/{filename}" alt=""></div>';
+    
+                        fullSizeFileNames.forEach(function(fullSizeFileName, index) {
+                            fullSizeFileName = fullSizeFileName.trim();
+                            const fullSizeImageNumber = getImageNumberFromFileName(fullSizeFileName);
+    
+                            if (fullSizeFileName !== '' && fullSizeImageNumber !== null) {
+                                var lineHtml = htmlTemplate.replace(/{number}/g, fullSizeImageNumber).replace(/{filename}/g, fullSizeFileName);
+                                $('#gallery-lightboxes').append(lineHtml);
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    </script>
+    
+        
+    <script>
+        
+        var x = window.matchMedia("(max-width: 800px)");
+myFunction(x); // Call listener function at run time
+x.addListener(myFunction); // Attach listener function on state changes
+
+function myFunction(x) {
+    if (x.matches) { // If media query matches
+        $('.thumbnail__row').each(function () {
+            var $row = $(this);
+            var groups = {};
+            $row.find('.thumbnail__item').each(function () {
+                var className = this.className.match(/thumbnail__(?:A|B)\b/);
+                if (className) {
+                    className = className[0];
+                    var $group = groups[className];
+                    if (!$group) {
+                        $group = $('<div />', {
+                            'class': 'group'
+                        }).insertAfter(this);
+                        groups[className] = $group;
+                    }
+                    $group.append(this);
+                }
+            });
+        });
+    } else {
+        $(".group > .thumbnail__item").unwrap();
+    }
+}
+
+    </script>
+    <script src="/mobileButton.js "></script>
+
+</body>
+<div class="footer">
+    <div class="footer__content footer__content--1">
+        <ol class="site__map">
+            <li class=""><a href="../index">Home</a></li>
+            <li class=""><a href="../about ">About</a></li>
+            <li class=""><a href="../contact">Contact</a></li>
+            <li class=""><a href="/gallery/index">Gallery</a></li>
+            <li class=""><a href="../portfolio/index ">Portfolio</a></li>
+        </ol>
+    </div>
+    <div class="footer__content footer__content--2">  <ol class="site__map site__map--gallery">
+        Gallery links:
+        <a href="film "><b>Film</b></a> |
+        <a href="portraits"><b>Portraits</b></a> |
+        <a href="street"><b>Street</b></a> |
+        <a href="landscapes"><b>Landscapes & Nature</b></a> |
+        <a href="architecture"><b>Architecture</b></a>
+        <br><br><br>All photographic content &copy; 2023 Hugo Begg Photography<br>Website design by <strong>Hugo Begg</strong>
+    
+    </ol>
+    </div>
+    <div class="footer__content footer__content--3">
+        <a href="https://www.instagram.com/hugobegg/ "><img style="filter: invert(100); width: 30px;"src="/images/instagram.png " alt=" "></a>
+        <a href="#top " class="return-to-top " style="padding-top: 10%; "><u>Return to top</u> ↑</a>
+    </div>
+</div>
+<script type="text/javascript " src="lazyload.js " id="lazyloadjs "></script>
+
+</html>

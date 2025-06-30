@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZSLN384XNE"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-ZSLN384XNE');
+</script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hugo Begg Photography</title>
+    <meta name="description" content="An award-winning Melbourne Photographer whose work expresses a curiosity for people, place, and movement through a diverse range of photographic styles">
+
+    <link rel="stylesheet" href="https://use.typekit.net/fru4qyz.css">
+
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body class="lazy-bg-container">
+    <header class="header">
+        <div class="header__column header__column--1">
+            <h1>HUGO BEGG</h1>
+        </div>
+        <div class="header__column header__column--2">
+            <div class="menu">
+            <nav>
+            
+                    <div style="filter:invert(1);"class="menu-btn ">
+                    <div  class="menu-btn-burger "></div>
+                    </div>
+
+                 <ol >
+                    <li style=" list-style-type: none; border-bottom: none; "><a style="color: white;" href="portfolio">Portfolio</a></li>
+                       <li style=" list-style-type: none; border-bottom: none;"><a style="color: white;" href="gallery">Gallery</a></li>
+                       <li style=" list-style-type: none; border-bottom: none;"><a style="color: white;" href="about">About</a></li>
+                       <li style=" list-style-type: none; border-bottom: none;"><a style="color: white;" href="contact">Contact</a></li>
+                        <li style=" list-style-type: none; border-bottom: none;"><a href="https://www.instagram.com/hugobegg/" target="_blank"><img style="width: 32px;"
+                                src="/images/symbols/instagram.webp" alt=""></a></li>
+                 </ol>
+             </nav>
+            </div>
+        </div>
+    </header>
+    <main class="main main--index">
+        <div class="homecover">
+            <div class="homecover__imgcontainer"><img src="/images/SignatureWhite.png" alt="" class = "homecover__img"> <br>PHOTOGRAPHY </div>
+            <div class="homecover__subtitle"></div>
+        </div>
+    </main>
+    <footer class="footer__index">
+        <p><small>© 2023 Hugo Begg</small></p>
+    </footer>
+    <script src="mobileButton.js "></script>
+    <script>
+        function updateBackgroundImage() {
+          var lazyContainer = document.querySelector(".lazy-bg-container");
+          if (window.innerWidth >= 1000) {
+            lazyContainer.style.backgroundImage = "url('/images/desktop_bg.jpg')";
+          } else {
+            lazyContainer.style.backgroundImage = "url('/images/mobile_bg_sml.jpg')";
+          }
+        }
+      
+        window.addEventListener("load", updateBackgroundImage);
+        window.addEventListener("resize", updateBackgroundImage);
+      </script>
+</body>
+
+</html>
+
