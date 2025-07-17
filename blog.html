@@ -11,7 +11,7 @@
   <div id="blog-posts"></div>
 
   <script>
-    fetch('/posts.json')
+    fetch('/public/posts.json')
       .then(response => response.json())
       .then(posts => {
         const container = document.getElementById('blog-posts');
