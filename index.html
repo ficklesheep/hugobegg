@@ -21,29 +21,7 @@
     <link rel="stylesheet" href="https://use.typekit.net/fru4qyz.css">
 
     <link rel="stylesheet" href="/style.css">
-    <script src="https://unpkg.com/netlify-identity-widget@1.9.1/build/netlify-identity-widget.min.js"></script>
-<script>
-  netlifyIdentity.init()
-
-  // Extract invite token from URL hash
-  const params = new URLSearchParams(window.location.hash.substring(1))
-  const inviteToken = params.get('invite_token')
-
-  if (inviteToken) {
-    netlifyIdentity.acceptInvite(inviteToken).then(user => {
-      console.log('Invite accepted:', user)
-      // Optionally redirect after successful acceptance:
-      window.location.href = '/'
-    }).catch(err => {
-      console.error('Failed to accept invite:', err)
-    })
-  }
-
-  netlifyIdentity.on('login', user => {
-    console.log('User logged in:', user)
-  })
-</script>
-
+    
 </head>
 
 <body class ="main-body">
@@ -190,6 +168,31 @@
     index = (index + 1) % backgroundImages.length;
     intervalId = setInterval(changeBackground, 5000);
   });
+</script>
+<script src="https://unpkg.com/netlify-identity-widget@1.9.1/build/netlify-identity-widget.min.js"></script>
+<script>
+  netlifyIdentity.init()
+
+  const params = new URLSearchParams(window.location.hash.substring(1))
+  const inviteToken = params.get('invite_token')
+
+  if (inviteToken) {
+    netlifyIdentity.acceptInvite(inviteToken)
+      .then(user => {
+        console.log('Invite accepted:', user)
+        alert('Invite accepted! Welcome, ' + user.user_metadata.full_name)
+        // Redirect away from invite token to clean URL
+        window.location.href = window.location.origin
+      })
+      .catch(err => {
+        console.error('Invite acceptance failed', err)
+        alert('Failed to accept invite: ' + err.message)
+      })
+  }
+
+  netlifyIdentity.on('login', user => {
+    console.log('User logged in', user)
+  })
 </script>
 
 
