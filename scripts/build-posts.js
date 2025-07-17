@@ -1,29 +1,41 @@
-// scripts/build-posts.js
 const fs = require('fs');
 const path = require('path');
 const matter = require('gray-matter');
 const { marked } = require('marked');
 
+const postsDir = path.join(__dirname, '..', 'content', 'blog');
+const outputPath = path.join(__dirname, '..', 'public', 'posts.json');
 
-const postsDir = path.join(__dirname, '..', 'posts');
-const outputFile = path.join(__dirname, '..', 'posts.json');
+function getAllMarkdownFiles(dir) {
+  let files = [];
+  const items = fs.readdirSync(dir, { withFileTypes: true });
 
-const files = fs.readdirSync(postsDir);
+  items.forEach(item => {
+    const fullPath = path.join(dir, item.name);
+    if (item.isDirectory()) {
+      files = files.concat(getAllMarkdownFiles(fullPath));
+    } else if (item.isFile() && fullPath.endsWith('.md')) {
+      files.push(fullPath);
+    }
+  });
 
-const posts = files.map(filename => {
-  const filePath = path.join(postsDir, filename);
-  const file = fs.readFileSync(filePath, 'utf-8');
-  const { data, content } = matter(file);
+  return files;
+}
+
+const files = getAllMarkdownFiles(postsDir);
+
+const posts = files.map(filePath => {
+  const fileContents = fs.readFileSync(filePath, 'utf8');
+  const { data, content } = matter(fileContents);
 
   return {
-    title: data.title,
-    date: data.date,
-    slug: filename.replace(/\.md$/, ''),
-    content: marked(content)
+    title: data.title || 'Untitled',
+    date: data.date || null,
+    content: marked(content),
+    slug: path.relative(postsDir, filePath).replace(/\\/g, '/').replace(/\.md$/, ''),
   };
 });
 
-posts.sort((a, b) => new Date(b.date) - new Date(a.date));
+fs.writeFileSync(outputPath, JSON.stringify(posts, null, 2));
 
-fs.writeFileSync(outputFile, JSON.stringify(posts, null, 2));
-console.log(`✅ Built ${posts.length} posts to posts.json`);
+console.log(`Built ${posts.length} posts to ${outputPath}`);
