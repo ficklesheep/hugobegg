@@ -21,6 +21,29 @@
     <link rel="stylesheet" href="https://use.typekit.net/fru4qyz.css">
 
     <link rel="stylesheet" href="/style.css">
+    <script src="https://unpkg.com/netlify-identity-widget@1.9.1/build/netlify-identity-widget.min.js"></script>
+<script>
+  netlifyIdentity.init()
+
+  // Extract invite token from URL hash
+  const params = new URLSearchParams(window.location.hash.substring(1))
+  const inviteToken = params.get('invite_token')
+
+  if (inviteToken) {
+    netlifyIdentity.acceptInvite(inviteToken).then(user => {
+      console.log('Invite accepted:', user)
+      // Optionally redirect after successful acceptance:
+      window.location.href = '/'
+    }).catch(err => {
+      console.error('Failed to accept invite:', err)
+    })
+  }
+
+  netlifyIdentity.on('login', user => {
+    console.log('User logged in:', user)
+  })
+</script>
+
 </head>
 
 <body class ="main-body">
@@ -87,22 +110,7 @@
         <p><small>© 2025 Hugo Begg</small></p>
     </footer>
     <script src="mobileButton.js "></script>
-    <script src="https://unpkg.com/netlify-identity-widget@1.9.1/build/netlify-identity-widget.min.js"></script>
-<script>
-  netlifyIdentity.init()
-
-  netlifyIdentity.on('init', user => {
-    if (!user) {
-      // user not logged in, but may have invite token
-      // netlify-identity-widget automatically detects invite_token in URL hash and handles it
-    }
-  })
-
-  netlifyIdentity.on('login', user => {
-    console.log("User logged in", user)
-  })
-</script>
-
+    
 <script>
   const backgroundImages = [
     '/images/desktop_bg.jpg',
