@@ -4,7 +4,13 @@ const matter = require('gray-matter');
 const { marked } = require('marked');
 
 const postsDir = path.join(__dirname, '..', 'content', 'blog');
-const outputPath = path.join(__dirname, '..', 'public', 'posts.json');
+const outputDir = path.join(__dirname, '..', 'public');
+const outputPath = path.join(outputDir, 'posts.json');
+
+// Ensure the output directory exists
+if (!fs.existsSync(outputDir)) {
+  fs.mkdirSync(outputDir, { recursive: true });
+}
 
 function getAllMarkdownFiles(dir) {
   let files = [];
