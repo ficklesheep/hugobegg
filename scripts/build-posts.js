@@ -2,7 +2,8 @@
 const fs = require('fs');
 const path = require('path');
 const matter = require('gray-matter');
-const marked = require('marked');
+const { marked } = require('marked');
+
 
 const postsDir = path.join(__dirname, '..', 'posts');
 const outputFile = path.join(__dirname, '..', 'posts.json');
