@@ -169,32 +169,35 @@
     intervalId = setInterval(changeBackground, 5000);
   });
 </script>
-<script src="https://unpkg.com/netlify-identity-widget@1.9.1/build/netlify-identity-widget.min.js"></script>
+<!-- Netlify Identity Widget -->
+<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 <script>
-  netlifyIdentity.init()
-
-  // Parse URL hash for invite_token
-  const params = new URLSearchParams(window.location.hash.substring(1))
-  const inviteToken = params.get('invite_token')
-
-  if (inviteToken) {
-    netlifyIdentity.acceptInvite(inviteToken)
-      .then(user => {
-        alert('Invite accepted! Welcome ' + (user.user_metadata.full_name || 'user') )
-        // Remove invite_token from URL and redirect to clean homepage
-        window.location.href = window.location.origin
-      })
-      .catch(err => {
-        alert('Failed to accept invite: ' + err.message)
-        console.error(err)
-      })
-  }
-
-  netlifyIdentity.on('login', user => {
-    console.log('User logged in:', user)
-  })
+  document.addEventListener('DOMContentLoaded', () => {
+    if (window.netlifyIdentity) {
+      window.netlifyIdentity.on('init', user => {
+        if (!user) {
+          const urlParams = new URLSearchParams(window.location.search);
+          const inviteToken = urlParams.get('invite_token');
+          if (inviteToken) {
+            // Open the login modal if invite token is present
+            window.netlifyIdentity.open('login');
+          }
+        }
+      });
+      window.netlifyIdentity.init();
+    }
+  });
 </script>
 
+<button id="login-btn">Log In / Sign Up</button>
+
+<script>
+  document.getElementById('login-btn').addEventListener('click', () => {
+    if (window.netlifyIdentity) {
+      window.netlifyIdentity.open();
+    }
+  });
+</script>
 
 
 </body>
