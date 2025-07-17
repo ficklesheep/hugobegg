@@ -1,5 +1,5 @@
 backend:
-  name: github                  # Backend set to GitHub
+  name: git-gateway                  # Backend set to GitHub
   repo: ficklesheep/hugobegg     # Your GitHub repository name
   branch: master                   # The branch to deploy (usually 'main' or 'master')
 
