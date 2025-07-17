@@ -1,51 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZSLN384XNE"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hugo Begg Blog</title>
 
-  gtag('config', 'G-ZSLN384XNE');
-</script>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hugo Begg Photography</title>
-
-    <link rel="stylesheet" href="https://use.typekit.net/fru4qyz.css">
-
-    <link rel="stylesheet" href="/style.css">
-    <link href="/fcf-assets/css/fcf.default-custom.css" rel="stylesheet">
-    <link href="/fcf-assets/css/fcf.default.css" rel="stylesheet">
-
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZSLN384XNE"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-ZSLN384XNE');
+  </script>
 </head>
 
-<body style ="background-image: url(/images/covers/contact_cover.jpg);">
+<body>
   <h1>Blog</h1>
-<div id="posts-container"></div>
+  <div id="blog-posts"></div>
 
-<script>
-  fetch('/posts.json')
-    .then(res => res.json())
-    .then(posts => {
-      const container = document.getElementById('posts-container');
-      posts.forEach(post => {
-        const postEl = document.createElement('article');
-        postEl.innerHTML = `
-          <h2>${post.title}</h2>
-          <small>${new Date(post.date).toLocaleDateString()}</small>
-          <div>${post.content}</div>
-          <hr/>
-        `;
-        container.appendChild(postEl);
+  <script>
+    fetch('/posts.json')
+      .then(response => response.json())
+      .then(posts => {
+        const container = document.getElementById('blog-posts');
+        posts.forEach(post => {
+          const article = document.createElement('div');
+          article.innerHTML = `
+            <h2>${post.title}</h2>
+            <p>${new Date(post.date).toLocaleDateString()}</p>
+            <div>${post.content}</div>
+            <hr />
+          `;
+          container.appendChild(article);
+        });
       });
-    });
-</script>
-
-  
+  </script>
 </body>
 </html>
