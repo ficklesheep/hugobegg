@@ -173,25 +173,25 @@
 <script>
   netlifyIdentity.init()
 
+  // Parse URL hash for invite_token
   const params = new URLSearchParams(window.location.hash.substring(1))
   const inviteToken = params.get('invite_token')
 
   if (inviteToken) {
     netlifyIdentity.acceptInvite(inviteToken)
       .then(user => {
-        console.log('Invite accepted:', user)
-        alert('Invite accepted! Welcome, ' + user.user_metadata.full_name)
-        // Redirect away from invite token to clean URL
+        alert('Invite accepted! Welcome ' + (user.user_metadata.full_name || 'user') )
+        // Remove invite_token from URL and redirect to clean homepage
         window.location.href = window.location.origin
       })
       .catch(err => {
-        console.error('Invite acceptance failed', err)
         alert('Failed to accept invite: ' + err.message)
+        console.error(err)
       })
   }
 
   netlifyIdentity.on('login', user => {
-    console.log('User logged in', user)
+    console.log('User logged in:', user)
   })
 </script>
 
