@@ -3,11 +3,13 @@ const path = require('path');
 const matter = require('gray-matter');
 const { marked } = require('marked');
 
+// Define the path to the blog content directory
 const postsDir = path.join(__dirname, '..', 'content', 'blog');
+
+// Define the output path for the generated JSON file
 const outputPath = path.join(__dirname, '..', 'public', 'posts.json');
 
-console.log(`Scanning markdown files in directory: ${postsDir}`);
-
+// Function to recursively get all Markdown files in the specified directory
 function getAllMarkdownFiles(dir) {
   let files = [];
   const items = fs.readdirSync(dir, { withFileTypes: true });
@@ -15,45 +17,37 @@ function getAllMarkdownFiles(dir) {
   items.forEach(item => {
     const fullPath = path.join(dir, item.name);
     if (item.isDirectory()) {
-      console.log(`Descending into folder: ${fullPath}`);
-      files = files.concat(getAllMarkdownFiles(fullPath));
-    } else if (item.isFile() && fullPath.toLowerCase().endsWith('.md')) {
-      console.log(`Found markdown file: ${fullPath}`);
-      files.push(fullPath);
+      files = files.concat(getAllMarkdownFiles(fullPath)); // Recursively add files from subdirectories
+    } else if (item.isFile() && fullPath.endsWith('.md')) {
+      files.push(fullPath); // Add Markdown files to the list
     }
   });
 
   return files;
 }
 
-try {
-  const files = getAllMarkdownFiles(postsDir);
+// Get all Markdown files from the blog content directory
+const files = getAllMarkdownFiles(postsDir);
 
-  if (files.length === 0) {
-    console.warn('No markdown files found. Check your folder structure and paths.');
-  }
+// Process each Markdown file to extract metadata and content
+const posts = files.map(filePath => {
+  const fileContents = fs.readFileSync(filePath, 'utf8');
+  const { data, content } = matter(fileContents);
 
-  const posts = files.map(filePath => {
-    const fileContents = fs.readFileSync(filePath, 'utf8');
-    const { data, content } = matter(fileContents);
+  return {
+    title: data.title || 'Untitled', // Use 'Untitled' if no title is provided
+    date: data.date || null, // Use null if no date is provided
+    content: marked(content), // Convert Markdown content to HTML
+    slug: path.relative(postsDir, filePath)
+      .replace(/\\/g, '/') // Normalize path separators
+      .replace(/\.md$/, ''), // Remove the '.md' extension
+  };
+});
 
-    return {
-      title: data.title || 'Untitled',
-      date: data.date || null,
-      content: marked(content, { mangle: false, headerIds: false }), // avoid deprecated warnings
-      slug: path.relative(postsDir, filePath).replace(/\\/g, '/').replace(/\.md$/, ''),
-    };
-  });
+// Ensure the 'public' directory exists before writing the JSON file
+fs.mkdirSync(path.dirname(outputPath), { recursive: true });
 
-  // Ensure output directory exists
-  const outputDir = path.dirname(outputPath);
-  if (!fs.existsSync(outputDir)) {
-    fs.mkdirSync(outputDir, { recursive: true });
-  }
+// Write the processed posts to the 'posts.json' file
+fs.writeFileSync(outputPath, JSON.stringify(posts, null, 2));
 
-  fs.writeFileSync(outputPath, JSON.stringify(posts, null, 2));
-  console.log(`Built ${posts.length} posts to ${outputPath}`);
-} catch (err) {
-  console.error('Error building posts:', err);
-  process.exit(1);
-}
+console.log(`Built ${posts.length} posts to ${outputPath}`);
