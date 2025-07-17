@@ -14,6 +14,10 @@ html {
   -webkit-overflow-scrolling: touch;
 }
   #login-btn {
+    position: absolute;
+    top: 200px;
+    left: 200px;
+    z-index: 500;
     display: block;           /* Makes the button behave like a block element */
     margin: 40px auto;        /* Centers it horizontally with vertical spacing */
     padding: 20px 60px;       /* Bigger clickable area */
