@@ -13,27 +13,6 @@ html {
   font-size: 11px;
   -webkit-overflow-scrolling: touch;
 }
-  #login-btn {
-    position: absolute;
-    top: 200px;
-    left: 200px;
-    z-index: 500;
-    display: block;           /* Makes the button behave like a block element */
-    margin: 40px auto;        /* Centers it horizontally with vertical spacing */
-    padding: 20px 60px;       /* Bigger clickable area */
-    font-size: 24px;          /* Bigger text */
-    background-color: #e74c3c; /* Bright red */
-    color: white;             /* White text */
-    border: none;             /* Remove default border */
-    border-radius: 8px;       /* Rounded corners */
-    cursor: pointer;          /* Pointer cursor on hover */
-    transition: background-color 0.3s ease;
-  }
-
-  #login-btn:hover {
-    background-color: #c0392b; /* Darker red on hover */
-  }
-
 
 header{
    position: absolute;
