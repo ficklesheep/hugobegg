@@ -169,6 +169,27 @@
   });
 </script>
 
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (window.netlifyIdentity) {
+      window.netlifyIdentity.on('init', function (user) {
+        const url = new URL(window.location.href);
+        const token = url.hash.match(/invite_token=([^&]+)/);
+
+        if (!user && token) {
+          window.netlifyIdentity.open('login');
+        }
+
+        // Optional: redirect after login
+        window.netlifyIdentity.on('login', () => {
+          document.location.href = '/admin/';
+        });
+      });
+
+      window.netlifyIdentity.init();
+    }
+  });
+</script>
 
 
 </body>
