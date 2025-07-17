@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="overflow: hidden;">
     
 <head>
     
@@ -22,55 +22,154 @@
     <link rel="stylesheet" href="/style.css">
 </head>
 
-<body class="lazy-bg-container">
+<body class ="main-body">
     <header class="header">
         <div class="header__column header__column--1">
-            <h1>HUGO BEGG</h1>
+
+           <div class="logo"><img src="/images/Logo.png" alt=""></div>
         </div>
         <div class="header__column header__column--2">
             <div class="menu">
             <nav>
             
-                    <div style="filter:invert(1);"class="menu-btn ">
+                    <div class="menu-btn ">
                     <div  class="menu-btn-burger "></div>
                     </div>
 
                  <ol >
-                    <li style=" list-style-type: none; border-bottom: none; "><a style="color: white;" href="portfolio">Portfolio</a></li>
-                       <li style=" list-style-type: none; border-bottom: none;"><a style="color: white;" href="gallery">Gallery</a></li>
-                       <li style=" list-style-type: none; border-bottom: none;"><a style="color: white;" href="about">About</a></li>
-                       <li style=" list-style-type: none; border-bottom: none;"><a style="color: white;" href="contact">Contact</a></li>
-                        <li style=" list-style-type: none; border-bottom: none;"><a href="https://www.instagram.com/hugobegg/" target="_blank"><img style="width: 32px;"
+                       <li style=" list-style-type: none; border-bottom: none; "><a href="/gallery/blog.html">NOTES</a></li>
+                       <li style=" list-style-type: none; border-bottom: none; "><a href="/gallery/street.html">STREET</a></li>
+                       <li style=" list-style-type: none; border-bottom: none;"><a href="/gallery/landscapes.html">LANDSCAPE</a></li>
+                       <li style=" list-style-type: none; border-bottom: none;"><a href="/gallery/travel.html">TRAVEL</a></li>
+                       <li style=" list-style-type: none; border-bottom: none; "><a href="/gallery/film.html">FILM</a></li>
+                       <li style=" list-style-type: none; border-bottom: none;"><a href="about.html">ABOUT</a></li>
+                       <li style=" list-style-type: none; border-bottom: none;"><a href="https://www.instagram.com/hugobegg/" target="_blank"><img style="width: 20px;"
                                 src="/images/symbols/instagram.webp" alt=""></a></li>
+
+                        
                  </ol>
              </nav>
             </div>
         </div>
     </header>
     <main class="main main--index">
-        <div class="homecover">
-            <div class="homecover__imgcontainer"><img src="/images/SignatureWhite.png" alt="" class = "homecover__img"> <br>PHOTOGRAPHY </div>
-            <div class="homecover__subtitle"></div>
-        </div>
+    <div class="title_left">
+      <div class="title_left-container">
+               <h1>HUGO BEGG</h1>
+
+      <div class="blurb">PHOTOGRAPHER</div>
+     </div>
+    </div>
+    <div class="title_right">
+      
+  <div class="cover-container">
+  <div class="cover-text" id="cover-text"></div>
+  <div class="nav-buttons">
+    <button id="prev-btn">‹</button>
+    <button id="next-btn">›</button>
+  </div>
+  
+</div>
+
+
+      
+    </div>
+    
+    <div class="profile-container">
+     <a href="https://www.instagram.com/hugobegg/" target="_blank">
+       <div class="profile"><img src="/images/profile.jpg" alt=""></div>
+        <span class="profile-link">@HUGOBEGG</span></a>
+     </div>
+      
     </main>
     <footer class="footer__index">
-        <p><small>© 2023 Hugo Begg</small></p>
+        <p><small>© 2025 Hugo Begg</small></p>
     </footer>
     <script src="mobileButton.js "></script>
-    <script>
-        function updateBackgroundImage() {
-          var lazyContainer = document.querySelector(".lazy-bg-container");
-          if (window.innerWidth >= 1000) {
-            lazyContainer.style.backgroundImage = "url('/images/desktop_bg.jpg')";
-          } else {
-            lazyContainer.style.backgroundImage = "url('/images/mobile_bg_sml.jpg')";
-          }
-        }
-      
-        window.addEventListener("load", updateBackgroundImage);
-        window.addEventListener("resize", updateBackgroundImage);
-      </script>
+    
+<script>
+  const backgroundImages = [
+    '/images/desktop_bg.jpg',
+    '/gallery/images/landscapes_fullsize/landscapes_0427.jpg',
+    '/gallery/images/landscapes_fullsize/landscapes_0164.jpg',
+    '/gallery/images/landscapes_fullsize/landscapes_0171.jpg',
+    '/gallery/images/landscapes_fullsize/landscapes_0184.jpg',
+    '/gallery/images/landscapes_fullsize/landscapes_0227.jpg'
+  ];
+
+  const imageDescriptions = [
+    "MELBOURNE, 2024",
+    "MEXICO, 2025",
+    "MEXICO, 2025",
+    "MEXICO, 2025",
+    "MEXICO, 2025",
+    "MEXICO, 2025"
+    ];
+
+  let index = 0;
+  const cover = document.querySelector('.cover-container');
+  const textElement = document.getElementById('cover-text');
+  const prevBtn = document.getElementById('prev-btn');
+  const nextBtn = document.getElementById('next-btn');
+  let intervalId;
+
+  function preloadImages(images, callback) {
+    let loaded = 0;
+    images.forEach((src) => {
+      const img = new Image();
+      img.onload = () => {
+        loaded++;
+        if (loaded === images.length) callback();
+      };
+      img.src = src;
+    });
+  }
+
+  function showImage(i) {
+    cover.style.backgroundImage = `url('${backgroundImages[i]}')`;
+    textElement.style.opacity = 0;
+
+    setTimeout(() => {
+      textElement.textContent = imageDescriptions[i];
+      textElement.style.opacity = 1;
+    }, 300);
+  }
+
+  function changeBackground() {
+    showImage(index);
+    index = (index + 1) % backgroundImages.length;
+  }
+
+  function prevImage() {
+    index = (index - 2 + backgroundImages.length) % backgroundImages.length;
+    changeBackground();
+    resetInterval();
+  }
+
+  function nextImage() {
+    changeBackground();
+    resetInterval();
+  }
+
+  function resetInterval() {
+    clearInterval(intervalId);
+    intervalId = setInterval(changeBackground, 5000);
+  }
+
+  // Set up buttons
+  prevBtn.addEventListener('click', prevImage);
+  nextBtn.addEventListener('click', nextImage);
+
+  // Start
+  preloadImages(backgroundImages, () => {
+    showImage(index);
+    index = (index + 1) % backgroundImages.length;
+    intervalId = setInterval(changeBackground, 5000);
+  });
+</script>
+
+
+
 </body>
 
 </html>
-

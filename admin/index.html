@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>CMS</title>
+  </head>
+  <body>
+    <div id="nc-root"></div>
+    <script src="https://unpkg.com/netlify-cms@^2.0.0/dist/netlify-cms.js"></script>
+    <script>
+      window.addEventListener('load', () => {
+        console.log('CMS:', window.CMS);
+
+        // Initialize CMS with the correct config.yml path
+        CMS.init({
+          config: '/admin/config.yml',  // config.yml is in the same directory as this HTML file
+        });
+      });
+    </script>
+  </body>
+</html>

@@ -28,40 +28,41 @@
 
     </div>
 
-
     <header class="header">
         <div class="header__column header__column--1">
-            <h1><a href="../index" style="text-decoration: none; color: black;">HUGO BEGG</a></h1>
+
+        <a href="/">
+         <div class="logo">
+         <img src="/images/Logo.png" alt="Logo">
+         </div>
+        </a>
         </div>
         <div class="header__column header__column--2">
             <div class="menu">
-                <nav>
-
-                    <div class="menu-btn" >
-                        <div class="menu-btn-burger" style="background-color: grey;"></div>
+            <nav>
+            
+                    <div class="menu-btn ">
+                    <div  class="menu-btn-burger "></div>
                     </div>
 
-                    <ol style="color: black;">
-                        <li style=" list-style-type: none; border-bottom: none;"><a href="../portfolio">Portfolio</a></li>
-                        <li style=" list-style-type: none; border-bottom: none;"><a href="index">Gallery</a></li>
-                        <li style=" list-style-type: none; border-bottom: none;"><a href="../about">About</a></li>
-                        <li style=" list-style-type: none; border-bottom: none;"><a href="../contact">Contact</a></li>
-                        <li style=" list-style-type: none; border-bottom: none;"><a
-                                href="https://www.instagram.com/hugobegg/" target="_blank"><img style="width: 28px;"
-                                    src="/images/symbols/instagram.webp" alt=""></a></li>
-                    </ol>
-                </nav>
+                 <ol >
+                      <li style=" list-style-type: none; border-bottom: none; "><a href="/gallery/street.html">STREET</a></li>
+                       <li style=" list-style-type: none; border-bottom: none;"><a href="/gallery/landscapes.html">LANDSCAPE</a></li>
+                       <li style=" list-style-type: none; border-bottom: none;"><a href="/gallery/travel.html">TRAVEL</a></li>
+                       <li style=" list-style-type: none; border-bottom: none; "><a href="/gallery/film.html">FILM</a></li>
+                       <li style=" list-style-type: none; border-bottom: none;"><a href="about.html">ABOUT</a></li>
+                       <li style=" list-style-type: none; border-bottom: none;"><a href="https://www.instagram.com/hugobegg/" target="_blank"><img style="width: 20px;"
+                                src="/images/symbols/instagram.webp" alt=""></a></li>
+
+                        
+                 </ol>
+             </nav>
             </div>
         </div>
     </header>
+    
     <main class="main__gallery">
-        <h2 style="text-align: center;"">Film</h2>
-        <div class="return" style="text-align: center;"><small> 
-            <a href="portraits">Portraits</a> |
-            <a href="street">Street</a> |
-            <a href="landscapes">Landscapes & Nature</a> |
-            <a href="architecture">Architecture</a></small>
-        </div>
+       
         <ol class="gallery__thumbnails"></ol>
 
 
@@ -184,38 +185,52 @@
     </script>
     
         
-    <script>
+  <script>
+      $(document).ready(function() {
+    // Function to handle the layout logic based on screen size
+    function adjustThumbnailLayout() {
+        var screenWidth = $(window).width();
         
-        var x = window.matchMedia("(max-width: 800px)");
-myFunction(x); // Call listener function at run time
-x.addListener(myFunction); // Attach listener function on state changes
-
-function myFunction(x) {
-    if (x.matches) { // If media query matches
-        $('.thumbnail__row').each(function () {
-            var $row = $(this);
-            var groups = {};
-            $row.find('.thumbnail__item').each(function () {
-                var className = this.className.match(/thumbnail__(?:A|B)\b/);
-                if (className) {
-                    className = className[0];
-                    var $group = groups[className];
-                    if (!$group) {
-                        $group = $('<div />', {
-                            'class': 'group'
-                        }).insertAfter(this);
-                        groups[className] = $group;
+        // If the screen width is less than or equal to 800px, group images into 2 per row
+        if (screenWidth <= 800) {
+            $('.thumbnail__row').each(function () {
+                var $row = $(this);
+                var groups = {};
+                
+                // Group thumbnails into separate divs (two per row)
+                $row.find('.thumbnail__item').each(function () {
+                    var className = this.className.match(/thumbnail__(?:A|B)\b/);
+                    if (className) {
+                        className = className[0];
+                        var $group = groups[className];
+                        if (!$group) {
+                            $group = $('<div />', { 'class': 'group' }).insertAfter(this);
+                            groups[className] = $group;
+                        }
+                        $group.append(this); // Append item to group
                     }
-                    $group.append(this);
-                }
+                });
             });
-        });
-    } else {
-        $(".group > .thumbnail__item").unwrap();
+        } else {
+            // If screen is wider than 800px, remove groups and return to normal layout
+            $(".group > .thumbnail__item").unwrap();
+        }
     }
-}
 
-    </script>
+    // Initial call to handle grouping/unwrapping when page loads
+    adjustThumbnailLayout();
+    
+    // Run layout adjustments on window resize
+    $(window).resize(function() {
+        adjustThumbnailLayout();
+    });
+
+    // Optionally, trigger the layout change after images load (especially if lazyloading is active)
+    $(window).on('load', function() {
+        adjustThumbnailLayout();
+    });
+});
+</script>
     <script src="/mobileButton.js "></script>
 
 </body>
