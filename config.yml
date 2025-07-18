@@ -1,16 +1,16 @@
 backend:
-  name: git-gateway                  # Backend set to GitHub
-  repo: ficklesheep/hugobegg     # Your GitHub repository name
-  branch: dev                   # The branch to deploy (usually 'main' or 'master')
+  name: git-gateway
+  repo: ficklesheep/hugobegg
+  branch: dev
 
-media_folder: "static/bloguploads"   # Folder where media files will be uploaded
-public_folder: "/bloguploads"        # Public URL to access uploaded media files
+media_folder: "static/bloguploads"
+public_folder: "/bloguploads"
 
 media_library:
-  name: local                    # Using the local media library
+  name: local
   config:
-    media_folder: "static/bloguploads"  # Same folder for media files
-    public_folder: "/bloguploads"      # Public URL path for accessing medipa files
+    media_folder: "static/bloguploads"
+    public_folder: "/bloguploads"
 
 collections:
   - name: "blog"
@@ -18,9 +18,13 @@ collections:
     folder: "content/blog"
     create: true
     nested:
-      depth: 2                  # 👈 Tells Netlify CMS to look in subfolders (e.g., 2025/07/)
+      depth: 2
     slug: "{{year}}/{{month}}/{{day}}-{{slug}}"
+    extension: "md"           # Ensure CMS only reads .md files
+    format: "frontmatter"     # Use frontmatter format
+    filter:                  # Ensure only posts with date are shown (optional)
+      pattern: "*.md"
     fields:
       - { label: "Title", name: "title", widget: "string" }
-      - { label: "Body", name: "body", widget: "text" }
-
+      - { label: "Date", name: "date", widget: "datetime" }
+      - { label: "Body", name: "body", widget: "markdown" }
