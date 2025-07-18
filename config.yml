@@ -13,7 +13,7 @@ collections:
     create: true
     format: frontmatter
     extension: md
-    slug: "{{year}}/{{month}}/{{day}}-{{slug}}"
+    slug: "{{slug}}"  # Simplified slug for testing
     fields:
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Date", name: "date", widget: "datetime" }
