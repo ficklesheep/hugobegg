@@ -1,28 +1,20 @@
-backend:
-  name: git-gateway
-  repo: ficklesheep/hugobegg
-  branch: dev
-
-media_folder: "static/bloguploads"
-public_folder: "/bloguploads"
-
-media_library:
-  name: local
-  config:
-    media_folder: "static/bloguploads"
-    public_folder: "/bloguploads"
-
 collections:
-  - name: "blog"
-    label: "Blog Posts"
-    folder: "content/blog"
+  - name: blog
+    label: Blog Posts
+    folder: content/blog
     create: true
-    format: "frontmatter"
-    extension: "md"
+    format: frontmatter
+    extension: md
     nested:
-      depth: 2 # because you're using /YYYY/MM/ folders
+      depth: 2         # To scan YYYY and MM folders
+      summary: "{{title}}"  # Optional: how front-end shows folder labels
+    meta:
+      path:
+        widget: string
+        label: "Slug/Path"
+        index_file: index
     slug: "{{year}}/{{month}}/{{day}}-{{slug}}"
     fields:
-      - { label: "Title", name: "title", widget: "string" }
-      - { label: "Date", name: "date", widget: "datetime" }
-      - { label: "Body", name: "body", widget: "markdown" }
+      - { label: Title, name: title, widget: string }
+      - { label: Date, name: date, widget: datetime }
+      - { label: Body, name: body, widget: markdown }
