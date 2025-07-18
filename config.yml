@@ -1,20 +1,13 @@
 collections:
   - name: blog
     label: Blog Posts
-    folder: /content/blog
+    folder: content/blog           # No leading slash; relative path to your blog posts folder
     create: true
     format: frontmatter
     extension: md
-    nested:
-      depth: 2         # To scan YYYY and MM folders
-      summary: "{{title}}"  # Optional: how front-end shows folder labels
-    meta:
-      path:
-        widget: string
-        label: "Slug/Path"
-        index_file: index
-    slug: "{{year}}/{{month}}/{{day}}-{{slug}}"
+    slug: "{{year}}/{{month}}/{{day}}-{{slug}}"   # Matches your filename structure: 2025/07/17-post-title.md
     fields:
-      - { label: Title, name: title, widget: string }
-      - { label: Date, name: date, widget: datetime }
-      - { label: Body, name: body, widget: markdown }
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Date", name: "date", widget: "datetime" }
+      - { label: "Body", name: "body", widget: "markdown" }
+
