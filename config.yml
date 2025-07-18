@@ -13,11 +13,14 @@ media_library:
     public_folder: "/bloguploads"      # Public URL path for accessing medipa files
 
 collections:
-  - name: "blog"                 # The name of the collection (e.g., 'blog')
-    label: "Blog Posts"           # Label for the collection
-    folder: "content/blog"        # Folder where blog posts will be stored (relative to project root)
-    create: true                  # Allows users to create new blog posts
-    slug: "{{year}}/{{month}}/{{day}}-{{slug}}"  # URL format for blog posts
+  - name: "blog"
+    label: "Blog Posts"
+    folder: "content/blog"
+    create: true
+    nested:
+      depth: 2                  # 👈 Tells Netlify CMS to look in subfolders (e.g., 2025/07/)
+    slug: "{{year}}/{{month}}/{{day}}-{{slug}}"
     fields:
-      - { label: "Title", name: "title", widget: "string" }  # Field for blog title
-      - { label: "Body", name: "body", widget: "text" }      # Field for blog body
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Body", name: "body", widget: "text" }
+
