@@ -1,13 +1,20 @@
+backend:
+  name: git-gateway
+  branch: dev
+  repo: ficklesheep/hugobegg
+
+media_folder: "static/bloguploads"
+public_folder: "/bloguploads"
+
 collections:
   - name: blog
-    label: Blog Posts
-    folder: content/blog           # No leading slash; relative path to your blog posts folder
+    label: "Blog Posts"
+    folder: "content/blog"
     create: true
     format: frontmatter
     extension: md
-    slug: "{{year}}/{{month}}/{{day}}-{{slug}}"   # Matches your filename structure: 2025/07/17-post-title.md
+    slug: "{{year}}/{{month}}/{{day}}-{{slug}}"
     fields:
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Date", name: "date", widget: "datetime" }
       - { label: "Body", name: "body", widget: "markdown" }
-
