@@ -14,7 +14,7 @@
   </main>
 
   <script>
-    fetch('/posts.json')  // ✅ correct path
+    fetch('/public/posts.json')  // ✅ correct path
       .then(response => response.json())
       .then(posts => {
         const container = document.getElementById('blog-posts');
