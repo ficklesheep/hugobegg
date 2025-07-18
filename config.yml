@@ -1,7 +1,7 @@
 collections:
   - name: blog
     label: Blog Posts
-    folder: content/blog
+    folder: /content/blog
     create: true
     format: frontmatter
     extension: md
