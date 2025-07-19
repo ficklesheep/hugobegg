@@ -83,7 +83,10 @@
 
         const excerpt = document.createElement('div');
         excerpt.className = 'post-card-excerpt';
-        excerpt.textContent = post.excerpt || post.content.slice(0, 120) + '...';
+        excerpt.textContent = post.excerpt 
+  ? post.excerpt.replace(/<[^>]+>/g, '') 
+  : post.content.replace(/<[^>]+>/g, '').slice(0, 120) + '...';
+
 
         const btn = document.createElement('button');
         btn.className = 'read-more-btn';
