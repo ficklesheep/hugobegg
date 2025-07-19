@@ -42,18 +42,18 @@ html {
 }
 
 .post-title {
-  font-size: 1.8rem;
+  font-size: 14px;
   margin: 0 0 0.5rem;
 }
 
 .post-date {
-  font-size: 0.9rem;
+  font-size: 12px;
   color: #666;
   margin-bottom: 1rem;
 }
 
 .post-content {
-  font-size: 1rem;
+  font-size: 12px;
 }
 
 .post-divider {
