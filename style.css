@@ -13,6 +13,9 @@ html {
   font-size: 14px;
   -webkit-overflow-scrolling: touch;
 }
+.blog-container{
+  display: block;
+}
 .blog-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
