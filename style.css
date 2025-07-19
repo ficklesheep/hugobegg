@@ -16,7 +16,7 @@ html {
 .blog-container{
   display: block;
   margin-top: 120px;
-  margin-bottom: 220px;
+  margin-bottom: 120px;
 }
 .blog-grid {
   display: grid;
@@ -29,18 +29,12 @@ html {
 
 .post-card {
   background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 6px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
   transition: transform 0.2s ease;
 }
 
-.post-card:hover {
-  transform: translateY(-4px);
-}
 
 .post-card-image {
   width: 100%;
