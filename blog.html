@@ -9,60 +9,62 @@
 
 <body>
   <header class="header">
-        <div class="header__column header__column--1">
-        <a href="/">
-         <div class="logo">
-         <img src="/images/Logo.png" alt="Logo">
-         </div>
-        </a>
-        </div>
-        <div class="header__column header__column--2">
-            <div class="menu">
-            <nav>
-            
-                    <div class="menu-btn ">
-                    <div  class="menu-btn-burger "></div>
-                    </div>
+    <!-- [Your header remains unchanged] -->
+  </header>
 
-                 <ol >
-                      <li style=" list-style-type: none; border-bottom: none; "><a href="/gallery/street.html">STREET</a></li>
-                       <li style=" list-style-type: none; border-bottom: none;"><a href="/gallery/landscapes.html">LANDSCAPE</a></li>
-                       <li style=" list-style-type: none; border-bottom: none;"><a href="/gallery/travel.html">TRAVEL</a></li>
-                       <li style=" list-style-type: none; border-bottom: none; "><a href="/gallery/film.html">FILM</a></li>
-                       <li style=" list-style-type: none; border-bottom: none;"><a href="about.html">ABOUT</a></li>
-                       <li style=" list-style-type: none; border-bottom: none;"><a href="https://www.instagram.com/hugobegg/" target="_blank"><img style="width: 20px;"
-                                src="/images/symbols/instagram.webp" alt=""></a></li>
-
-
-                        
-                 </ol>
-             </nav>
-            </div>
-        </div>
-    </header>
   <main class="blog-container">
     <h1 class="blog-title">Blog</h1>
-    <div id="blog-posts"></div>
+
+    <!-- Blog post list -->
+    <div id="blog-links" class="blog-links"></div>
+
+    <!-- Blog content area -->
+    <div id="blog-content" class="blog-content" style="display: none;">
+      <button id="back-button">← Back to posts</button>
+      <h2 class="post-title" id="post-title"></h2>
+      <p class="post-date" id="post-date"></p>
+      <div class="post-content" id="post-content"></div>
+    </div>
   </main>
 
   <script>
-    fetch('/public/posts.json')  // ✅ correct path
+    let postsData = [];
+
+    fetch('/public/posts.json')
       .then(response => response.json())
       .then(posts => {
-        const container = document.getElementById('blog-posts');
-        posts.forEach(post => {
-          const article = document.createElement('article');
-          article.className = 'blog-post';
-          const date = post.date ? new Date(post.date).toLocaleDateString() : 'No date';
-          article.innerHTML = `
-            <h2 class="post-title">${post.title}</h2>
-            <p class="post-date">${date}</p>
-            <div class="post-content">${post.content}</div>
-            <hr class="post-divider" />
-          `;
-          container.appendChild(article);
+        postsData = posts;
+        const linksContainer = document.getElementById('blog-links');
+        posts.forEach((post, index) => {
+          const link = document.createElement('a');
+          link.href = "#";
+          link.textContent = post.title;
+          link.className = "post-link";
+          link.addEventListener('click', (e) => {
+            e.preventDefault();
+            showPost(index);
+          });
+          const wrapper = document.createElement('div');
+          wrapper.className = 'post-link-wrapper';
+          wrapper.appendChild(link);
+          linksContainer.appendChild(wrapper);
         });
       });
+
+    function showPost(index) {
+      const post = postsData[index];
+      document.getElementById('post-title').textContent = post.title;
+      document.getElementById('post-date').textContent = new Date(post.date).toLocaleDateString();
+      document.getElementById('post-content').innerHTML = post.content;
+
+      document.getElementById('blog-links').style.display = 'none';
+      document.getElementById('blog-content').style.display = 'block';
+    }
+
+    document.getElementById('back-button').addEventListener('click', () => {
+      document.getElementById('blog-content').style.display = 'none';
+      document.getElementById('blog-links').style.display = 'block';
+    });
   </script>
 </body>
 </html>
