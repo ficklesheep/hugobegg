@@ -16,7 +16,7 @@ html {
 .blog-container{
   display: block;
   margin-top: 120px;
-  margin-bottom: 120px;
+  margin-bottom: 220px;
 }
 .blog-grid {
   display: grid;
