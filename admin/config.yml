@@ -1,23 +1,24 @@
 backend:
-  name: git-gateway                  # Backend set to GitHub
-  repo: ficklesheep/hugobegg     # Your GitHub repository name
-  branch: dev                   # The branch to deploy (usually 'main' or 'master')
+  name: git-gateway
+  repo: ficklesheep/hugobegg
+  branch: dev
 
-media_folder: "static/bloguploads"   # Folder where media files will be uploaded
-public_folder: "/bloguploads"        # Public URL to access uploaded media files
+media_folder: "static/bloguploads"
+public_folder: "/bloguploads"
 
 media_library:
-  name: local                    # Using the local media library
+  name: local
   config:
-    media_folder: "static/bloguploads"  # Same folder for media files
-    public_folder: "/bloguploads"      # Public URL path for accessing medipa files
+    media_folder: "static/bloguploads"
+    public_folder: "/bloguploads"
 
 collections:
-  - name: "blog"                 # The name of the collection (e.g., 'blog')
-    label: "Blog Posts"           # Label for the collection
-    folder: "content/blog"        # Folder where blog posts will be stored (relative to project root)
-    create: true                  # Allows users to create new blog posts
-    slug: "{{slug}}"  # URL format for blog posts
+  - name: "blog"
+    label: "Blog Posts"
+    folder: "content/blog"
+    create: true
+    slug: "{{slug}}"  # Keep files flat in content/blog
     fields:
-      - { label: "Title", name: "title", widget: "string" }  # Field for blog title
-      - { label: "Body", name: "body", widget: "text" }      # Field for blog body
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Date", name: "date", widget: "datetime", default: "" }
+      - { label: "Body", name: "body", widget: "text" }
