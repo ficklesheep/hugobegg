@@ -279,9 +279,8 @@ body{
     font-size: 13px;
 }
 footer{
-    height: 40px;
+    height: 200px;
     color: whitesmoke;
-    filter: opacity(0.4);  
 }
 .footer__gallery{
     color: black;
