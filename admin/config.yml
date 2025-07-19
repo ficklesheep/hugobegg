@@ -21,4 +21,5 @@ collections:
     fields:
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Date", name: "date", widget: "datetime", default: "" }
+      - { label: "Image", name: "image", widget: "image" }  # ✅ New image field
       - { label: "Body", name: "body", widget: "text" }
