@@ -6,8 +6,8 @@
   <title>Hugo Begg Blog</title>
   <link rel="stylesheet" href="/style.css" />
 </head>
-
 <body>
+
   <header class="header">
     <div class="header__column header__column--1">
       <a href="/">
@@ -33,89 +33,19 @@
     </div>
   </header>
 
+  <main class="blog-container">
 
-<main class="blog-container">
+    <!-- Blog post grid -->
+    <div id="blog-grid" class="blog-grid"></div>
 
-  <!-- Blog post grid -->
-  <div id="blog-grid" class="blog-grid"></div>
-
-  <!-- Blog content area -->
-  <div id="blog-content" class="blog-content" style="display: none;">
-    <button id="back-button">← Back to posts</button>
-    <h2 class="post-title" id="post-title"></h2>
-    <p class="post-date" id="post-date"></p>
-    <div class="post-content" id="post-content"></div>
-  </div>
-</main>
-
-<script>
-  let postsData = [];
-
-  fetch('/public/posts.json')
-    .then(response => response.json())
-    .then(posts => {
-      postsData = posts;
-      const grid = document.getElementById('blog-grid');
-
-      posts.forEach((post, index) => {
-        const card = document.createElement('div');
-        card.className = 'post-card';
-
-        // Cover image if available
-        if (post.image) {
-          const img = document.createElement('img');
-          img.src = post.image;
-          img.alt = post.title + " cover image";
-          img.className = 'post-card-image';
-          card.appendChild(img);
-        }
-
-        const body = document.createElement('div');
-        body.className = 'post-card-body';
-
-        const title = document.createElement('div');
-        title.className = 'post-card-title';
-        title.textContent = post.title;
-
-        const date = new Date(post.date);
-        const dateEl = document.createElement('div');
-        dateEl.className = 'post-card-date';
-        dateEl.textContent = isNaN(date) ? '' : date.toLocaleDateString();
-
-        const btn = document.createElement('button');
-        btn.className = 'read-more-btn';
-        btn.textContent = 'Read more';
-        btn.addEventListener('click', () => showPost(index));
-
-        body.appendChild(title);
-        body.appendChild(dateEl);
-        body.appendChild(btn);
-
-        card.appendChild(body);
-        grid.appendChild(card);
-      });
-    });
-
-  function showPost(index) {
-    const post = postsData[index];
-    document.getElementById('post-title').textContent = post.title;
-
-    const date = new Date(post.date);
-    document.getElementById('post-date').textContent = isNaN(date) ? '' : date.toLocaleDateString();
-
-    document.getElementById('post-content').innerHTML = post.content;
-
-    document.getElementById('blog-grid').style.display = 'none';
-    document.getElementById('blog-content').style.display = 'block';
-  }
-
-  document.getElementById('back-button').addEventListener('click', () => {
-    document.getElementById('blog-content').style.display = 'none';
-    document.getElementById('blog-grid').style.display = 'grid';
-  });
-</script>
-
-</body>
+    <!-- Blog content area -->
+    <div id="blog-content" class="blog-content" style="display: none;">
+      <button id="back-button">← Back to posts</button>
+      <h2 class="post-title" id="post-title"></h2>
+      <p class="post-date" id="post-date"></p>
+      <div class="post-content" id="post-content"></div>
+    </div>
+  </main>
 
   <footer class="footer">
     <div class="footer__content footer__content--1">
@@ -143,4 +73,73 @@
       <a href="#top" class="return-to-top"><u>Return to top</u> ↑</a>
     </div>
   </footer>
+
+  <script>
+    let postsData = [];
+
+    fetch('/public/posts.json')
+      .then(response => response.json())
+      .then(posts => {
+        postsData = posts;
+        const grid = document.getElementById('blog-grid');
+
+        posts.forEach((post, index) => {
+          const card = document.createElement('div');
+          card.className = 'post-card';
+
+          // Cover image if available
+          if (post.image) {
+            const img = document.createElement('img');
+            img.src = post.image;
+            img.alt = post.title + " cover image";
+            img.className = 'post-card-image';
+            card.appendChild(img);
+          }
+
+          const body = document.createElement('div');
+          body.className = 'post-card-body';
+
+          const title = document.createElement('div');
+          title.className = 'post-card-title';
+          title.textContent = post.title;
+
+          const date = new Date(post.date);
+          const dateEl = document.createElement('div');
+          dateEl.className = 'post-card-date';
+          dateEl.textContent = isNaN(date) ? '' : date.toLocaleDateString();
+
+          const btn = document.createElement('button');
+          btn.className = 'read-more-btn';
+          btn.textContent = 'Read more';
+          btn.addEventListener('click', () => showPost(index));
+
+          body.appendChild(title);
+          body.appendChild(dateEl);
+          body.appendChild(btn);
+
+          card.appendChild(body);
+          grid.appendChild(card);
+        });
+      });
+
+    function showPost(index) {
+      const post = postsData[index];
+      document.getElementById('post-title').textContent = post.title;
+
+      const date = new Date(post.date);
+      document.getElementById('post-date').textContent = isNaN(date) ? '' : date.toLocaleDateString();
+
+      document.getElementById('post-content').innerHTML = post.content;
+
+      document.getElementById('blog-grid').style.display = 'none';
+      document.getElementById('blog-content').style.display = 'block';
+    }
+
+    document.getElementById('back-button').addEventListener('click', () => {
+      document.getElementById('blog-content').style.display = 'none';
+      document.getElementById('blog-grid').style.display = 'grid';
+    });
+  </script>
+
+</body>
 </html>
