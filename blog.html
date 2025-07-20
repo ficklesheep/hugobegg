@@ -86,43 +86,47 @@
         const grid = document.getElementById('blog-grid');
 
         posts.forEach((post, index) => {
-          const card = document.createElement('div');
-          card.className = 'post-card';
+  const card = document.createElement('div');
+  card.className = 'post-card';
 
-          // Cover image if available
-          if (post.image) {
-            const img = document.createElement('img');
-            img.src = post.image;
-           img.alt = post.title + " cover image";
-           img.className = 'post-card-image';
-           card.appendChild(img); 
-           }
+  // Cover image if available
+  if (post.image) {
+    const img = document.createElement('img');
+    if (!post.image.startsWith('http') && !post.image.startsWith('/')) {
+      img.src = '/static/bloguploads/' + post.image;
+    } else {
+      img.src = post.image;
+    }
+    img.alt = post.title + " cover image";
+    img.className = 'post-card-image';
+    card.appendChild(img);
+  }
 
+  const body = document.createElement('div');
+  body.className = 'post-card-body';
 
-          const body = document.createElement('div');
-          body.className = 'post-card-body';
+  const title = document.createElement('div');
+  title.className = 'post-card-title';
+  title.textContent = post.title;
 
-          const title = document.createElement('div');
-          title.className = 'post-card-title';
-          title.textContent = post.title;
+  const date = new Date(post.date);
+  const dateEl = document.createElement('div');
+  dateEl.className = 'post-card-date';
+  dateEl.textContent = isNaN(date) ? '' : date.toLocaleDateString();
 
-          const date = new Date(post.date);
-          const dateEl = document.createElement('div');
-          dateEl.className = 'post-card-date';
-          dateEl.textContent = isNaN(date) ? '' : date.toLocaleDateString();
+  const btn = document.createElement('button');
+  btn.className = 'read-more-btn';
+  btn.textContent = 'Read more';
+  btn.addEventListener('click', () => showPost(index));
 
-          const btn = document.createElement('button');
-          btn.className = 'read-more-btn';
-          btn.textContent = 'Read more';
-          btn.addEventListener('click', () => showPost(index));
+  body.appendChild(title);
+  body.appendChild(dateEl);
+  body.appendChild(btn);
 
-          body.appendChild(title);
-          body.appendChild(dateEl);
-          body.appendChild(btn);
+  card.appendChild(body);
+  grid.appendChild(card);
+});
 
-          card.appendChild(body);
-          grid.appendChild(card);
-        });
       });
 
     function showPost(index) {
