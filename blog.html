@@ -41,6 +41,7 @@
     <!-- Blog content area -->
     <div id="blog-content" class="blog-content" style="display: none;">
       <button id="back-button">← Back to posts</button>
+      <img id="post-image" class="post-image" />
       <h2 class="post-title" id="post-title"></h2>
       <p class="post-date" id="post-date"></p>
       <div class="post-content" id="post-content"></div>
@@ -124,7 +125,10 @@
 
     function showPost(index) {
       const post = postsData[index];
-      document.getElementById('post-title').textContent = post.image;
+      const imageEl = document.getElementById('post-image');
+imageEl.src = post.image;
+imageEl.alt = post.title + ' image';
+
       document.getElementById('post-title').textContent = post.title;
 
       const date = new Date(post.date);
