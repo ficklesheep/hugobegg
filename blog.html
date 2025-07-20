@@ -92,19 +92,10 @@
   // Cover image if available
   const img = document.createElement('img');
 img.className = 'post-card-image';
-
-if (post.image) {
-  if (!post.image.startsWith('http') && !post.image.startsWith('/')) {
     img.src = '/static/bloguploads/' + post.image;
-  } else {
-    img.src = post.image;
-  }
+
   img.alt = post.title + " cover image";
-} else {
-  // Optionally set a placeholder or leave src/alt empty
-  img.src = '/path/to/placeholder.jpg'; // or '' if you want no image
-  img.alt = 'No image available';
-}
+
 
 card.appendChild(img);
 
