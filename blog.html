@@ -89,15 +89,13 @@
           card.className = 'post-card';
 
           // Cover image if available
-          const card = document.createElement('div');
-card.classList.add('post-card');
-
-const img = document.createElement('img');
-img.src = post.image; // Will be /static/bloguploads/...
-img.alt = post.title;
-
-card.appendChild(img);
-// ...append title, date, etc.
+          if (post.image) {
+            const img = document.createElement('img');
+            img.src = post.image;
+           img.alt = post.title + " cover image";
+           img.className = 'post-card-image';
+           card.appendChild(img); 
+           }
 
 
           const body = document.createElement('div');
