@@ -1,7 +1,7 @@
 ---
 title: Image test 1 - How netlify allows images from cms blog posts
 date: 2025-07-19T23:59:45.150Z
-image: /bloguploads/p1120642.jpg
+image: /static/bloguploads/p1120642.jpg
 ---
 Etiam vitae urna nunc. Ut gravida eget nisi quis faucibus. In orci magna, ornare eget erat porta, cursus varius ante. Donec hendrerit enim nec tempus commodo. Suspendisse sit amet porttitor nulla, nec vestibulum felis. Donec scelerisque lacus quis tincidunt eleifend. Etiam consectetur molestie purus, vel vulputate nisl vulputate at. Mauris in dolor diam. Sed non fringilla ante. Mauris ac enim tellus.
 
