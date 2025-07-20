@@ -10,7 +10,7 @@ media_library:
   name: local
   config:
     media_folder: "static/bloguploads"
-    public_folder: "/bloguploads"
+    public_folder: "/static/bloguploads"
 
 collections:
   - name: "blog"
