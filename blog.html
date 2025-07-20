@@ -164,11 +164,18 @@ card.appendChild(img);
   const date = new Date(post.date);
   document.getElementById('post-date').textContent = isNaN(date) ? '' : date.toLocaleDateString();
 
-  document.getElementById('post-content').innerHTML = post.body || '';
+  document.getElementById('post-content').innerHTML = post.content || '';
+
 
   document.getElementById('blog-grid').style.display = 'none';
   document.getElementById('blog-content').style.display = 'block';
+  
+  
 }
+document.getElementById('back-button').addEventListener('click', () => {
+  document.getElementById('blog-content').style.display = 'none';
+  document.getElementById('blog-grid').style.display = 'grid'; // or 'block' if you prefer
+});
 
   </script>
 
