@@ -90,17 +90,24 @@
   card.className = 'post-card';
 
   // Cover image if available
-  if (post.image) {
-    const img = document.createElement('img');
-    if (!post.image.startsWith('http') && !post.image.startsWith('/')) {
-      img.src = '/static/bloguploads/' + post.image;
-    } else {
-      img.src = post.image;
-    }
-    img.alt = post.title + " cover image";
-    img.className = 'post-card-image';
-    card.appendChild(img);
+  const img = document.createElement('img');
+img.className = 'post-card-image';
+
+if (post.image) {
+  if (!post.image.startsWith('http') && !post.image.startsWith('/')) {
+    img.src = '/static/bloguploads/' + post.image;
+  } else {
+    img.src = post.image;
   }
+  img.alt = post.title + " cover image";
+} else {
+  // Optionally set a placeholder or leave src/alt empty
+  img.src = '/path/to/placeholder.jpg'; // or '' if you want no image
+  img.alt = 'No image available';
+}
+
+card.appendChild(img);
+
 
   const body = document.createElement('div');
   body.className = 'post-card-body';
