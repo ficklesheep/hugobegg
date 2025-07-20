@@ -92,10 +92,11 @@
           if (post.image) {
             const img = document.createElement('img');
             img.src = post.image;
-            img.alt = post.title + " cover image";
-            img.className = 'post-card-image';
-            card.appendChild(img);
+           img.alt = post.title + " cover image";
+           img.className = 'post-card-image';
+           card.appendChild(img);
           }
+
 
           const body = document.createElement('div');
           body.className = 'post-card-body';
