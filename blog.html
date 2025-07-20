@@ -92,9 +92,22 @@
   // Cover image if available
   const img = document.createElement('img');
 img.className = 'post-card-image';
-    img.src = '/static/bloguploads/' + post.image;
 
+if (post.image) {
+  if (!post.image.startsWith('http') && !post.image.startsWith('/')) {
+    img.src = '/static/bloguploads/' + post.image;
+  } else {
+    img.src = post.image;
+  }
   img.alt = post.title + " cover image";
+} else {
+  // No image found, use a placeholder or leave empty
+  img.src = '/static/bloguploads/placeholder.jpg';  // <-- optional placeholder image path
+  img.alt = 'No image available';
+}
+
+card.appendChild(img);
+
 
 
 card.appendChild(img);

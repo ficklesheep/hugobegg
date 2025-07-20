@@ -41,10 +41,12 @@ const posts = files.map(filePath => {
   return {
     title: data.title || 'Untitled',
     date: data.date || null,
+    image: data.image || null, // ✅ Add this line
     content: marked(content),
     slug: path.relative(postsDir, filePath).replace(/\\/g, '/').replace(/\.md$/, ''),
   };
 });
+
 
 // Ensure output directory exists
 const outputDir = path.dirname(outputPath);
