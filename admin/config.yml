@@ -4,7 +4,7 @@ backend:
   branch: dev
 
 media_folder: "static/bloguploads"
-public_folder: "/bloguploads"
+public_folder: "/static/bloguploads"
 
 media_library:
   name: local
@@ -15,7 +15,7 @@ media_library:
 collections:
   - name: "blog"
     label: "Blog Posts"
-    folder: "content/blog"
+    folder: "content/blog" 
     create: true
     slug: "{{slug}}"  # Keep files flat in content/blog
     fields:
