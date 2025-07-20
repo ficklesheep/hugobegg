@@ -124,6 +124,7 @@
 
     function showPost(index) {
       const post = postsData[index];
+      document.getElementById('post-title').textContent = post.image;
       document.getElementById('post-title').textContent = post.title;
 
       const date = new Date(post.date);
