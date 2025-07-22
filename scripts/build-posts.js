@@ -48,14 +48,6 @@ const posts = files.map(filePath => {
       fs.writeFileSync(filePath, updatedMarkdown, 'utf8');
     }
   }
-
-  return {
-    title: data.title || 'Untitled',
-    date: data.date || null,
-    image: data.image || null,
-    content: marked(content),
-    slug: path.relative(postsDir, filePath).replace(/\\/g, '/').replace(/\.md$/, ''),
-  };
   
   return {
   title: data.title || 'Untitled',
