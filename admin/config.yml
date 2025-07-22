@@ -22,5 +22,5 @@ collections:
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Date", name: "date", widget: "datetime", default: "" }
       - { label: "Image", name: "image", widget: "image" }  # ✅ New image field
-      - { label: "Desc", name: "desc", widget: "text" }
+      - { label: "Description", name: "description", widget: "text" }
       - { label: "Body", name: "body", widget: "text" }
