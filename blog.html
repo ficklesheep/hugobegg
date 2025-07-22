@@ -81,6 +81,8 @@
     fetch('/public/posts.json')
       .then(response => response.json())
       .then(posts => {
+        
+        posts.sort((a, b) => new Date(b.date) - new Date(a.date));
         postsData = posts;
         const grid = document.getElementById('blog-grid');
 
