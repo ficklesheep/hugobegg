@@ -120,9 +120,9 @@ card.appendChild(img);
   dateEl.className = 'post-card-date';
   dateEl.textContent = isNaN(date) ? '' : date.toLocaleDateString();
 
-  const title = document.createElement('desc');
+  const desc = document.createElement('div');
   desc.className = 'post-card-desc';
-  desc.textContent = post.desc;
+  desc.textContent = post.description || '';  // Fallback to empty if not provided
 
   const btn = document.createElement('button');
   btn.className = 'read-more-btn';
