@@ -453,6 +453,7 @@ h1 {
 }
 .footer__content--3{
     justify-content: space-between;
+    align-items: center;
 }
 .footer__content--3 a{
     color: rgb(151, 151, 151);
@@ -944,6 +945,7 @@ body:not(.main-body) ol li a{
     }
     .return-to-top{
         padding-top: none;
+        margin-right: 20px;
     }
 
 }
