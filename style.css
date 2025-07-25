@@ -272,8 +272,8 @@ body{
     grid-template-columns: 25% 75%;
 }
 .footer__index{
-    position: absolute;
-    bottom: 0;
+    position: fixed;
+    bottom: 0px;
     left: 20px;
     font-size: 13px;
 }
