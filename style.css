@@ -843,20 +843,20 @@ body:not(.main-body) ol li a{
     .menu-btn.open .menu-btn-burger {
         width: 0px;
         transition: all .3s ease-in-out;
-        z-index: 400;
+        z-index: 4000;
     }
 
     .menu-btn.open .menu-btn-burger::before {
         transform: rotate(45deg) translate(12px, -12px);
         transition: all .3s ease-in-out;
-        z-index: 400;
+        z-index: 4000;
 
     }
 
     .menu-btn.open .menu-btn-burger::after {
         transform: rotate(-45deg) translate(12px, 12px);
         transition: all .3s ease-in-out;
-        z-index: 400;
+        z-index: 4000;
 
     }
 
@@ -870,7 +870,7 @@ body:not(.main-body) ol li a{
         flex-direction: column;
         align-items: flex-end;
         transition: all .3s ease-in-out;   
-        z-index: 400;
+        z-index: 4000;
     }
 
     .menu.open nav {
