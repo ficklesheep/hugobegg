@@ -1,0 +1,26 @@
+{
+  "name": "hugobegg",
+  "version": "1.0.0",
+  "description": "website storage, for travel edits",
+  "main": "jquery-3.6.4.min.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build-posts": "node scripts/build-posts.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ficklesheep/hugobegg.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/ficklesheep/hugobegg/issues"
+  },
+  "homepage": "https://github.com/ficklesheep/hugobegg#readme",
+  "devDependencies": {
+    "gray-matter": "^4.0.3",
+    "marked": "^5.0.2"
+  }
+}

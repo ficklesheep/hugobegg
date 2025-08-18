@@ -1,0 +1,26 @@
+backend:
+  name: git-gateway
+  repo: ficklesheep/hugobegg
+  branch: dev
+
+media_folder: "static/bloguploads"
+public_folder: "/bloguploads"
+
+media_library:
+  name: local
+  config:
+    media_folder: "static/bloguploads"
+    public_folder: "/bloguploads"
+
+collections:
+  - name: "blog"
+    label: "Blog Posts"
+    folder: "content/blog" 
+    create: true
+    slug: "{{slug}}"  # Keep files flat in content/blog
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Date", name: "date", widget: "datetime", default: "" }
+      - { label: "Image", name: "image", widget: "image" }  # ✅ New image field
+      - { label: "Description", name: "description", widget: "text" }
+      - { label: "Body", name: "body", widget: "text" }

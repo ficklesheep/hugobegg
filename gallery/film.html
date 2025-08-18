@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-VGSYP9Q04M"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-VGSYP9Q04M');
+</script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hugo Begg Photography</title>
+
+    <link rel="stylesheet" href="https://use.typekit.net/fru4qyz.css">
+
+    <link rel="stylesheet" href="/style.css">
+    <script src="/jquery-3.6.4.min.js"></script>
+
+</head>
+
+<body style="background-color: white;">
+    <div id="gallery-lightboxes" class="gallery-lightboxes">
+
+    </div>
+
+   <div id="header-placeholder"></div>
+  <script>
+  fetch('/header.html')
+  .then(res => res.text())
+  .then(data => {
+    const placeholder = document.getElementById('header-placeholder');
+    const temp = document.createElement('div');
+    temp.innerHTML = data;
+
+    const fragment = document.createDocumentFragment();
+    while (temp.firstChild) {
+      fragment.appendChild(temp.firstChild);
+    }
+
+    placeholder.replaceWith(fragment);
+
+    // Move this code *after* the header has been inserted
+    const pageNames = {
+      "/index": "HOME",
+      "/gallery/street": "STREET",
+      "/gallery/landscapes": "LANDSCAPES", // optional fallback
+      "/gallery/travel": "TRAVEL",
+      "/gallery/film": "FILM",
+      "/about": "ABOUT"
+    };
+
+    const path = window.location.pathname;
+    const pageName = pageNames[path] || "UNKNOWN";
+
+    // Wait until the header is inserted before selecting elements from it
+    const nameSpan = document.querySelector("#page-name");
+    if (nameSpan) {
+nameSpan.innerHTML = '<strong style="font-size: 10px; padding-left: 4px;">/' + pageName + '</strong>';
+    }
+
+    // For debugging: just log to console (won’t be visible on mobile but won’t break page)
+    console.log("Page name:", pageName);
+  })
+  .catch(error => {
+    document.getElementById('header-placeholder').textContent = "Header load error: " + error;
+  });
+</script>
+
+    
+    <main class="main__gallery">
+       
+        <ol class="gallery__thumbnails"></ol>
+
+
+    </main>
+    <footer class="footer__gallery" style="color: white;">
+        <p><small>© 2023 Hugo Begg</small></p>
+    </footer>
+ <script>
+const olContainer = document.querySelector(".gallery__thumbnails");
+const lightboxContainer = document.getElementById("gallery-lightboxes");
+
+// Get image number (for lightbox anchors)
+function getImageNumberFromFileName(fileName) {
+  const match = fileName.match(/film_(\d+)\.jpg$/);
+  return match ? match[1] : null;
+}
+
+// Shuffle array helper
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+// Clear gallery and lightboxes
+function clearGallery() {
+  olContainer.innerHTML = '';
+  lightboxContainer.innerHTML = '';
+}
+
+// Create gallery thumbnails rows
+function createGalleryRows(fileNames) {
+  clearGallery();
+  const screenNarrow = window.innerWidth < 900;
+  const imagesPerRow = 4;
+
+  for (let i = 0; i < fileNames.length; i += imagesPerRow) {
+    const row = document.createElement("div");
+    row.className = "thumbnail__row";
+
+    const groupAItems = [];
+    const groupBItems = [];
+
+    for (let j = 0; j < imagesPerRow; j++) {
+      const index = i + j;
+      if (index >= fileNames.length) break;
+
+      const fileName = fileNames[index].trim();
+      const imageNumber = getImageNumberFromFileName(fileName);
+      if (!fileName || !imageNumber) continue;
+
+      const div = document.createElement("div");
+      const isThumbnailA = j < 2;
+      div.className = "thumbnail__item " + (isThumbnailA ? "thumbnail__A" : "thumbnail__B");
+
+      const imageSrc = `/gallery/images/film_thumbnails/${fileName}`;
+      const anchor = document.createElement("a");
+      anchor.className = "thumbnail__link__overlay";
+      anchor.href = `#film_${imageNumber}`;
+
+      const img = document.createElement("img");
+      img.className = "thumbnail__item--img lazyload";
+      img.setAttribute("data-src", imageSrc);
+      img.alt = "";
+
+      anchor.appendChild(img);
+      div.appendChild(anchor);
+
+      // Set ratio CSS variable asynchronously
+      const imgTemp = new Image();
+      imgTemp.onload = () => {
+        div.style.setProperty("--ratio", `${imgTemp.width}/${imgTemp.height}`);
+      };
+      imgTemp.src = imageSrc;
+
+      if (isThumbnailA) groupAItems.push(div);
+      else groupBItems.push(div);
+    }
+
+    if (screenNarrow) {
+      const groupAWrapper = document.createElement("div");
+      groupAWrapper.className = "thumbnail__group thumbnail__group--A";
+      groupAItems.forEach(el => groupAWrapper.appendChild(el));
+      row.appendChild(groupAWrapper);
+
+      const groupBWrapper = document.createElement("div");
+      groupBWrapper.className = "thumbnail__group thumbnail__group--B";
+      groupBItems.forEach(el => groupBWrapper.appendChild(el));
+      row.appendChild(groupBWrapper);
+    } else {
+      groupAItems.forEach(el => row.appendChild(el));
+      groupBItems.forEach(el => row.appendChild(el));
+    }
+
+    olContainer.appendChild(row);
+  }
+}
+
+// Create lightbox elements for full images
+function createLightboxElements(fileNames) {
+  lightboxContainer.innerHTML = "";
+  fileNames.forEach(fileName => {
+    const numMatch = fileName.match(/film_(\d+)\.jpg$/);
+    if (!numMatch) return;
+
+    const number = numMatch[1];
+    const fullSizeSrc = `/gallery/images/film_fullsize/${fileName}`;
+
+    const lightbox = document.createElement("div");
+    lightbox.className = "gallery-lightbox";
+    lightbox.id = `film_${number}`;
+
+    const anchor = document.createElement("a");
+    anchor.href = "#!";
+    anchor.innerHTML = `<div class="close-button-container"><div class="close-button-icon"></div></div>`;
+
+    const img = document.createElement("img");
+    img.className = "gallery-lightbox-image lazyload";
+    img.style.pointerEvents = "none";
+    img.setAttribute("data-src", fullSizeSrc);
+    img.alt = "";
+
+    lightbox.appendChild(anchor);
+    lightbox.appendChild(img);
+
+    lightboxContainer.appendChild(lightbox);
+  });
+}
+
+// Load gallery (shuffle only)
+function loadGallery() {
+  $.ajax({
+    url: '/gallery/images/film_fullsize/filelist.txt',
+    dataType: 'text',
+    success: function(data) {
+      let fileNames = data.split('\n').map(f => f.trim()).filter(f => f.length > 0);
+      fileNames = shuffleArray(fileNames);
+
+      createGalleryRows(fileNames);
+      createLightboxElements(fileNames);
+    }
+  });
+}
+
+// Reload gallery only on screen width breakpoint change
+let resizeTimeout;
+let lastIsNarrow = window.innerWidth < 900;
+
+window.addEventListener('resize', () => {
+  clearTimeout(resizeTimeout);
+  resizeTimeout = setTimeout(() => {
+    const isNarrow = window.innerWidth < 900;
+    if (isNarrow !== lastIsNarrow) {
+      lastIsNarrow = isNarrow;
+      loadGallery();
+    }
+  }, 200);
+});
+
+// Initial load
+document.addEventListener("DOMContentLoaded", () => {
+  loadGallery();
+});
+</script>
+
+    
+        
+    <script src="/mobileButton.js "></script>
+
+</body>
+
+<div id="footer-placeholder"></div>
+
+<script>
+  fetch('/footer.html')
+    .then(res => res.text())
+    .then(data => {
+      document.getElementById('footer-placeholder').innerHTML = data;
+    });
+</script>
+
+<script type="text/javascript " src="lazyload.js " id="lazyloadjs "></script>
+
+</html>

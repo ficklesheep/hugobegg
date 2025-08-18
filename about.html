@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-VGSYP9Q04M"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-VGSYP9Q04M');
+</script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hugo Begg Photography</title>
+
+    <link rel="stylesheet" href="https://use.typekit.net/fru4qyz.css">
+
+    <link rel="stylesheet" href="/style.css">
+
+</head>
+
+<body>
+    <div id="header-placeholder"></div>
+  <script>
+  fetch('/header.html')
+  .then(res => res.text())
+  .then(data => {
+    const placeholder = document.getElementById('header-placeholder');
+    const temp = document.createElement('div');
+    temp.innerHTML = data;
+
+    const fragment = document.createDocumentFragment();
+    while (temp.firstChild) {
+      fragment.appendChild(temp.firstChild);
+    }
+
+    placeholder.replaceWith(fragment);
+
+    // Move this code *after* the header has been inserted
+    const pageNames = {
+      "/index": "HOME",
+      "/gallery/street": "STREET",
+      "/gallery/landscapes": "LANDSCAPES", // optional fallback
+      "/gallery/travel": "TRAVEL",
+      "/gallery/film": "FILM",
+      "/about": "ABOUT"
+    };
+
+    const path = window.location.pathname;
+    const pageName = pageNames[path] || "UNKNOWN";
+
+    // Wait until the header is inserted before selecting elements from it
+    const nameSpan = document.querySelector("#page-name");
+    if (nameSpan) {
+nameSpan.innerHTML = '<strong style="font-size: 10px; padding-left: 4px;">/' + pageName + '</strong>';
+    }
+
+    // For debugging: just log to console (won’t be visible on mobile but won’t break page)
+    console.log("Page name:", pageName);
+  })
+  .catch(error => {
+    document.getElementById('header-placeholder').textContent = "Header load error: " + error;
+  });
+</script>
+
+    <main class="main--about">
+        <div class="about">
+            <div class="about__content">Hugo is an award-winning photographer based in Melbourne. His work expresses a curiosity for people, place and movement through a diverse range of photographic styles. Having just finished his studies as an electronic engineer Hugo is now travelling Latin America focusing on his street and landscape photographic work.<br><br>Hugo's talent has been recognized globally, including winning The Royal Meteorological Society's Young Weather Photographer of the Year Award in 2019 and earning multiple accolades and shorlistings in the Young Amateur Photographer of the Year competition, where he claimed first and fourth place in the Architecture category in 2021, and fourth place in the Low Light category in 2023. He has also been featured in Australasia's Top Emerging Photographers rankings, with top-20 placements in the Architecture (2022) and Black & White (2024) categories. <br><br>Professionally, Hugo merges his passions for music and photography by collaborating with Melbourne's classical musicians and ensembles, capturing their artistry with a keen eye for detail and emotion. His expertise in portraiture and street photography also makes him a sought-after choice for weddings and events.<br><br><b>Get in contact via email: hugobegg.photos@gmail.com</b></div>
+            <div class="about__img"><img class="about__img--img lazyload" data-src="/images/profile_0024.jpg" alt=""></div>
+        </div>
+        
+        
+    </main>
+
+
+    <script src="mobileButton.js "></script>
+
+</body>
+<div id="footer-placeholder"></div>
+
+<script>
+  fetch('/footer.html')
+    .then(res => res.text())
+    .then(data => {
+      document.getElementById('footer-placeholder').innerHTML = data;
+    });
+</script>
+<script type="text/javascript " src="lazyload.js " id="lazyloadjs "></script>
+</html>

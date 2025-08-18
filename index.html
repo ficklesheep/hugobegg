@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en" style="overflow: hidden;">
+    
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-VGSYP9Q04M"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-VGSYP9Q04M');
+</script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hugo Begg Photography</title>
+    <meta name="description" content="An award-winning Melbourne Photographer whose work expresses a curiosity for people, place, and movement through a diverse range of photographic styles">
+
+    <link rel="stylesheet" href="https://use.typekit.net/fru4qyz.css">
+
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body class ="main-body">
+    <div id="header-placeholder"></div>
+<script>
+  function initMobileMenu() {
+    const menuBtn = document.querySelector('.menu-btn');
+    const menu = document.querySelector('.menu');
+
+    if (menuBtn && menu) {
+      menuBtn.addEventListener('click', function () {
+        this.classList.toggle('open');           // animate burger
+        menu.classList.toggle('open');           // show/hide menu
+      });
+    } else {
+      console.warn('menu or menu-btn not found');
+    }
+  }
+
+  fetch('/header.html')
+    .then(res => res.text())
+    .then(data => {
+      const placeholder = document.getElementById('header-placeholder');
+      const temp = document.createElement('div');
+      temp.innerHTML = data;
+
+      const fragment = document.createDocumentFragment();
+      while (temp.firstChild) {
+        fragment.appendChild(temp.firstChild);
+      }
+
+      placeholder.replaceWith(fragment);
+
+      // ✅ Hide "HOME" if on homepage
+      const currentPath = window.location.pathname.replace(/\/$/, '');
+      const isHome = currentPath === '' || currentPath === '/index' || currentPath === '/index.html';
+      const homeNavItem = document.getElementById('nav-home');
+      if (isHome && homeNavItem) {
+        homeNavItem.style.display = 'none';
+      }
+
+      // ✅ Init menu after loading header
+      initMobileMenu();
+    });
+</script>
+
+    <main class="main main--index">
+
+ <div class="cover-container cover-container--1"></div>
+<div class="cover-container cover-container--2"></div>
+
+    <div class="cover-text" id="cover-text"></div>
+  <div class="nav-buttons">
+    <button id="prev-btn">‹</button>
+    <button id="next-btn">›</button>
+  
+     </div>
+    
+      
+    </main>
+<script>
+  const backgroundImages = [
+    '/gallery/images/street_fullsize/street_1303.jpg',
+    '/gallery/images/street_fullsize/street_0953.jpg',
+    '/gallery/images/street_fullsize/street_1717.jpg',
+    '/gallery/images/street_fullsize/street_1359.jpg',
+    '/gallery/images/street_fullsize/street_1116.jpg'
+  ];
+
+  const imageDescriptions = [
+    "MEXICO, 2025",
+    "MEXICO, 2025",
+    "MEXICO, 2025",
+    "MEXICO, 2025",
+    "MEXICO, 2025"
+  ];
+
+  let index = 0;
+  let activeIndex = 0;
+  let intervalId;
+
+  const containers = document.querySelectorAll('.cover-container');
+  const textElement = document.getElementById('cover-text');
+  const prevBtn = document.getElementById('prev-btn');
+  const nextBtn = document.getElementById('next-btn');
+
+  function showImage(i) {
+    const nextIndex = 1 - activeIndex;
+    const activeContainer = containers[activeIndex];
+    const nextContainer = containers[nextIndex];
+
+    nextContainer.style.backgroundImage = `url('${backgroundImages[i]}')`;
+    nextContainer.classList.add('active');
+    activeContainer.classList.remove('active');
+
+    activeIndex = nextIndex;
+
+    textElement.style.opacity = 0;
+    setTimeout(() => {
+      textElement.textContent = imageDescriptions[i];
+      textElement.style.opacity = 1;
+    }, 300);
+  }
+
+  function changeBackground() {
+    showImage(index);
+    index = (index + 1) % backgroundImages.length;
+  }
+
+  function prevImage() {
+    index = (index - 2 + backgroundImages.length) % backgroundImages.length;
+    changeBackground();
+    resetInterval();
+  }
+
+  function nextImage() {
+    changeBackground();
+    resetInterval();
+  }
+
+  function resetInterval() {
+    clearInterval(intervalId);
+    intervalId = setInterval(changeBackground, 5000);
+  }
+
+  function preloadImages(images, callback) {
+    let loaded = 0;
+    images.forEach((src) => {
+      const img = new Image();
+      img.onload = () => {
+        loaded++;
+        if (loaded === images.length) callback();
+      };
+      img.src = src;
+    });
+  }
+
+  // Set up buttons
+  prevBtn.addEventListener('click', prevImage);
+  nextBtn.addEventListener('click', nextImage);
+
+  // Start slideshow after images are preloaded
+  preloadImages(backgroundImages, () => {
+    showImage(index);
+    index = (index + 1) % backgroundImages.length;
+    intervalId = setInterval(changeBackground, 5000);
+  });
+</script>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (window.netlifyIdentity) {
+      window.netlifyIdentity.on('init', function (user) {
+        const url = new URL(window.location.href);
+        const token = url.hash.match(/invite_token=([^&]+)/);
+
+        if (!user && token) {
+          window.netlifyIdentity.open('login');
+        }
+
+        // Optional: redirect after login
+        window.netlifyIdentity.on('login', () => {
+          document.location.href = '/admin/';
+        });
+      });
+
+      window.netlifyIdentity.init();
+    }
+  });
+</script>
+
+
+   <script src="/mobileButton.js "></script>
+
+</body>
+
+</html>
