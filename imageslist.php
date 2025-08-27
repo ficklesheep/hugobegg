@@ -1,7 +1,7 @@
 <?php
 
 // Replace this path with the actual path to your image folder
-$imagePath = '/gallery/images/film_fullsize';
+$imagePath = '/gallery/images/carousel';
 
 $imageList = array();
 

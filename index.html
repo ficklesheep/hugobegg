@@ -80,56 +80,58 @@
       
     </main>
 <script>
-  const backgroundImages = [
-    '/gallery/images/street_fullsize/street_1303.jpg',
-    '/gallery/images/street_fullsize/street_0953.jpg',
-    '/gallery/images/street_fullsize/street_1717.jpg',
-    '/gallery/images/street_fullsize/street_1359.jpg',
-    '/gallery/images/street_fullsize/street_1116.jpg'
-  ];
-
-  const imageDescriptions = [
-    "MEXICO, 2025",
-    "MEXICO, 2025",
-    "MEXICO, 2025",
-    "MEXICO, 2025",
-    "MEXICO, 2025"
-  ];
-
-  let index = 0;
-  let activeIndex = 0;
-  let intervalId;
-
   const containers = document.querySelectorAll('.cover-container');
   const textElement = document.getElementById('cover-text');
   const prevBtn = document.getElementById('prev-btn');
   const nextBtn = document.getElementById('next-btn');
 
+  let index = 0;
+  let activeIndex = 0;
+  let intervalId;
+  let coverFiles = [];
+
+  // Extract location and year for caption
+  function extractLocationAndYear(fileName) {
+    // Match viewpor C_<location>--<country>--YYYY-MM-DD_xxxx.jpg
+    const match = fileName.match(/^C_(.+)--(\d{4})-\d{2}-\d{2}_\d+\.jpg$/);
+    if (!match) return null;
+
+    const rawLocation = match[1].replace(/--/g, ', ').replace(/-/g, ' ');
+    const year = match[2];
+    return {
+      location: rawLocation,
+      year: year
+    };
+  }
+
   function showImage(i) {
     const nextIndex = 1 - activeIndex;
     const activeContainer = containers[activeIndex];
     const nextContainer = containers[nextIndex];
+    const fileName = coverFiles[i];
 
-    nextContainer.style.backgroundImage = `url('${backgroundImages[i]}')`;
+    nextContainer.style.backgroundImage = `url('/gallery/images/carousel/${fileName}')`;
     nextContainer.classList.add('active');
     activeContainer.classList.remove('active');
 
     activeIndex = nextIndex;
 
+    // Caption handling
+    const info = extractLocationAndYear(fileName);
     textElement.style.opacity = 0;
     setTimeout(() => {
-      textElement.textContent = imageDescriptions[i];
+      textElement.textContent = info ? `${info.location.toUpperCase()} — ${info.year}` : "";
       textElement.style.opacity = 1;
     }, 300);
   }
 
   function changeBackground() {
     showImage(index);
-    index = (index + 1) % backgroundImages.length;
+    index = (index + 1) % coverFiles.length;
   }
 
   function prevImage() {
-    index = (index - 2 + backgroundImages.length) % backgroundImages.length;
+    index = (index - 2 + coverFiles.length) % coverFiles.length;
     changeBackground();
     resetInterval();
   }
@@ -152,7 +154,26 @@
         loaded++;
         if (loaded === images.length) callback();
       };
-      img.src = src;
+      img.src = `/gallery/images/carousel/${src}`;
+    });
+  }
+
+  // Load covers dynamically
+  function loadCovers() {
+    $.ajax({
+      url: '/gallery/images/carousel/filelist.txt',
+      dataType: 'text',
+      success: function(data) {
+        coverFiles = data.split('\n').map(f => f.trim()).filter(f => f.length > 0);
+
+        if (coverFiles.length === 0) return;
+
+        preloadImages(coverFiles, () => {
+          showImage(index);
+          index = (index + 1) % coverFiles.length;
+          intervalId = setInterval(changeBackground, 5000);
+        });
+      }
     });
   }
 
@@ -160,13 +181,10 @@
   prevBtn.addEventListener('click', prevImage);
   nextBtn.addEventListener('click', nextImage);
 
-  // Start slideshow after images are preloaded
-  preloadImages(backgroundImages, () => {
-    showImage(index);
-    index = (index + 1) % backgroundImages.length;
-    intervalId = setInterval(changeBackground, 5000);
-  });
+  // Start
+  document.addEventListener("DOMContentLoaded", loadCovers);
 </script>
+
 
 
 <script>
@@ -191,6 +209,7 @@
   });
 </script>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
    <script src="/mobileButton.js "></script>
 
