@@ -704,7 +704,9 @@ main{
   display: flex;
   flex-direction: column;
 }
-
+.cover-text{
+  bottom: 100px;
+}
 .header__main{
   grid-template-columns: 80% 10% 10%;
 }
