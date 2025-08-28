@@ -345,6 +345,7 @@ footer{
   right: 50px;
   display: flex;
   gap: 25px;
+  display: flex;
   z-index: 5;
 }
 
@@ -704,9 +705,7 @@ main{
   display: flex;
   flex-direction: column;
 }
-.cover-container{
-  bottom: 100px;
-}
+
 .header__main{
   grid-template-columns: 80% 10% 10%;
 }
@@ -936,9 +935,16 @@ main{
     }
   
 .cover-text{
-  bottom: 50px;
-  left: 50px;
+  bottom: 100px;
+  align-self: center;
 }
+
+.nav-buttons {
+  left: 0;
+  right: 0;
+  justify-self: center;
+}
+
 
 }
 
