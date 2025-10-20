@@ -1,19 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Hugo Begg Blog</title>
+<link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+
+<header class="header__main">
+
+<div class="header__column--1">
+HUGO BEGG
+</div>
+<div class="header__column header__column--2">
+<div class="menu">
+<nav>
+
+<div class="menu-btn ">
+<div class="menu-btn-burger "></div>
+</div>
+
+<ol>
+<li style=" list-style-type: none; border-bottom: none; "><a href="/gallery/street.html">STREET</a></li>
+<li style=" list-style-type: none; border-bottom: none;"><a href="/gallery/landscapes.html">LANDSCAPE</a></li>
+<li style=" list-style-type: none; border-bottom: none;"><a href="/gallery/travel.html">TRAVEL</a></li>
+<li style=" list-style-type: none; border-bottom: none; "><a href="/gallery/film.html">FILM</a></li>
+<li style=" list-style-type: none; border-bottom: none;"><a href="about.html">ABOUT</a></li>
+
+
+
+</ol>
+</nav>
+</div>
+
+</div>
+<div class="header__column--3">
+<a href="https://www.instagram.com/hugobegg/ "><img style="width: 20px;"src="/images/instagram.png " alt=" "></a>
+</div>
+</header>
+
 <main class="blog-container">
 
-  <!-- Blog post grid -->
-  <div id="blog-grid" class="blog-grid"></div>
+<!-- Blog post grid -->
+<div id="blog-grid" class="blog-grid"></div>
 
-  <!-- Blog content area -->
-  <div id="blog-content" class="blog-content" style="display: none;">
-    <button id="back-button">← Back to posts</button>
-    <h2 class="post-title" id="post-title"></h2>
-    <p class="post-date" id="post-date"></p>
-    <img id="post-image" class="post-image" />
+<!-- Blog content area -->
+<div id="blog-content" class="blog-content" style="display: none;">
+<button id="back-button">← Back to posts</button>
+<h2 class="post-title" id="post-title"></h2>
+<p class="post-date" id="post-date"></p>
+<div class="line"></div>
+<img id="post-image" class="post-image" />
 
-  <!-- Container for description, line, and full content -->
-  <div id="post-content-container"></div>
+<div class="post-content" id="post-content"></div>
 </div>
 </main>
+
+
+<div id="footer-placeholder"></div>
+
+<script>
+fetch('/footer.html')
+.then(res => res.text())
+.then(data => {
+document.getElementById('footer-placeholder').innerHTML = data;
+});
+</script>
 
 <script>
 let postsData = [];
@@ -22,7 +75,6 @@ fetch('/public/posts.json')
 .then(response => response.json())
 .then(posts => {
 
-// Sort posts by date descending
 posts.sort((a, b) => new Date(b.date) - new Date(a.date));
 postsData = posts;
 const grid = document.getElementById('blog-grid');
@@ -31,12 +83,15 @@ posts.forEach((post, index) => {
 const card = document.createElement('div');
 card.className = 'post-card';
 
-// Cover image
+// Cover image if available
 const img = document.createElement('img');
 img.className = 'post-card-image';
 if (post.image) {
-img.src = post.image.startsWith('http') || post.image.startsWith('/')
-? post.image: '/static/bloguploads/' + post.image;
+if (!post.image.startsWith('http') && !post.image.startsWith('/')) {
+img.src = '/static/bloguploads/' + post.image;
+} else {
+img.src = post.image;
+}
 img.alt = post.title + " cover image";
 } else {
 img.src = '/static/bloguploads/placeholder.jpg';
@@ -60,66 +115,72 @@ const description = document.createElement('div');
 description.className = 'post-card-desc';
 description.textContent = post.description || '';
 
-// Append elements to card body
+
 body.appendChild(title);
 body.appendChild(dateEl);
 body.appendChild(description);
 
 card.appendChild(body);
 
-// Make card clickable
+// Make the entire body clickable (including title and description)
 body.style.cursor = 'pointer';
 body.addEventListener('click', () => showPost(index));
 
 grid.appendChild(card);
 });
+
+
 });
 
-// Show a single post
 function showPost(index) {
 const post = postsData[index];
 
+
 document.getElementById('post-title').textContent = post.title;
+
 const date = new Date(post.date);
 document.getElementById('post-date').textContent = isNaN(date) ? '': date.toLocaleDateString();
 
 const imageEl = document.getElementById('post-image');
+
+console.log('post.image:', post.image);
+
+// Adjust this depending on your post.image value
 if (post.image) {
-imageEl.src = post.image.startsWith('http') || post.image.startsWith('/')
-? post.image: '/static/bloguploads/' + post.image;
+// If post.image is just a filename, prepend folder
+if (!post.image.startsWith('http') && !post.image.startsWith('/')) {
+imageEl.src = '/static/bloguploads/' + post.image;
+} else {
+imageEl.src = post.image;
+}
 imageEl.alt = post.title + ' image';
 } else {
 imageEl.src = '';
 imageEl.alt = '';
 }
 
-// Build description → line → full content
-const container = document.getElementById('post-content-container');
-container.innerHTML = ''; // clear previous
+document.getElementById('post-content').innerHTML = post.content || '';
 
-const descriptionEl = document.createElement('div');
-descriptionEl.className = 'post-description';
-descriptionEl.textContent = post.description || '';
 
-const line = document.createElement('div');
-line.className = 'line'; // style in CSS as visual separator
-
-const contentEl = document.createElement('div');
-contentEl.className = 'post-content';
-contentEl.innerHTML = post.content || '';
-
-container.appendChild(descriptionEl);
-container.appendChild(line);
-container.appendChild(contentEl);
-
-// Show the post, hide grid
 document.getElementById('blog-grid').style.display = 'none';
 document.getElementById('blog-content').style.display = 'block';
-}
 
-// Back button
+
+}
 document.getElementById('back-button').addEventListener('click', () => {
 document.getElementById('blog-content').style.display = 'none';
-document.getElementById('blog-grid').style.display = 'grid';
+document.getElementById('blog-grid').style.display = 'grid'; // or 'block' if you prefer
+});
+
+</script>
+<div id="footer-placeholder"></div>
+
+<script>
+fetch('/footer.html')
+.then(res => res.text())
+.then(data => {
+document.getElementById('footer-placeholder').innerHTML = data;
 });
 </script>
+</body>
+</html>
