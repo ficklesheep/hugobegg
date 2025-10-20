@@ -26,3 +26,11 @@ collections:
       - { label: "Image", name: "image", widget: "image" }  # ✅ New image field
       - { label: "Description", name: "description", widget: "text" }
       - { label: "Body", name: "body", widget: "markdown" }
+      
+  - label: "Body"
+    name: "body"
+    widget: "markdown"
+    editor_components: ["image", "code", "link"]
+
+  
+      
