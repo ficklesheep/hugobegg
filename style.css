@@ -57,7 +57,7 @@ html {
 }
 
 .back-button{
-background-color: none;
+background-color: red;
 }
 
 .post-card-desc{
@@ -113,7 +113,6 @@ background-color: none;
   max-width: 100%;
   height: auto;
   margin: 1rem 0;
-  border-radius: 8px;
 }
 
 .blog-content ul, .blog-content ol {
