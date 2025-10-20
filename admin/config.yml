@@ -1,7 +1,9 @@
 backend:
   name: git-gateway
   repo: ficklesheep/hugobegg
-  branch: dev
+  branch: master
+  site_domain: modest-wing-e14976.netlify.app
+
 
 media_folder: "static/bloguploads"
 public_folder: "/bloguploads"
@@ -23,4 +25,4 @@ collections:
       - { label: "Date", name: "date", widget: "datetime", default: "" }
       - { label: "Image", name: "image", widget: "image" }  # ✅ New image field
       - { label: "Description", name: "description", widget: "text" }
-      - { label: "Body", name: "body", widget: "text" }
+      - { label: "Body", name: "body", widget: "markdown" }
