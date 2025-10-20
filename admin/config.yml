@@ -4,7 +4,6 @@ backend:
   branch: master
   site_domain: modest-wing-e14976.netlify.app
 
-
 media_folder: "static/bloguploads"
 public_folder: "/bloguploads"
 
@@ -17,20 +16,15 @@ media_library:
 collections:
   - name: "blog"
     label: "Blog Posts"
-    folder: "content/blog" 
+    folder: "content/blog"
     create: true
-    slug: "{{slug}}"  # Keep files flat in content/blog
+    slug: "{{slug}}"
     fields:
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Date", name: "date", widget: "datetime", default: "" }
-      - { label: "Image", name: "image", widget: "image" }  # ✅ New image field
+      - { label: "Image", name: "image", widget: "image" }
       - { label: "Description", name: "description", widget: "text" }
-      - { label: "Body", name: "body", widget: "markdown" }
-      
-  - label: "Body"
-    name: "body"
-    widget: "markdown"
-    editor_components: ["image", "code", "link"]
-
-  
-      
+      - label: "Body"
+        name: "body"
+        widget: "markdown"
+        editor_components: ["image", "code", "link"]
