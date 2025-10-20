@@ -12,7 +12,6 @@ Praesent eget accumsan augue. Nullam feugiat condimentum diam, eget blandit mi e
 
 Fusce tincidunt mattis commodo. Proin ut libero luctus, ullamcorper libero n
 
-![](/bloguploads/p1120642.jpg "<script src=\"https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js\"></script>")
 
 on, porttitor nulla. Duis vestibulum quam eget placerat fermentum. Ut consequat massa nec feugiat pharetra. Maecenas quis magna dignissim, scelerisque dui vitae, bibendum metus. Sed sodales, enim quis interdum iaculis, sapien nulla feugiat erat, non pretium lectus dui quis lorem. Quisque eu neque eget odio laoreet commodo eget eu sapien. Nulla at urna scelerisque ex interdum luctus.
 
