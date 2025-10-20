@@ -5,4 +5,4 @@ description: Test
 ---
 TTest
 
-![Test alt](/bloguploads/p1120642.jpg "Test cap")
+![Test alt](static/bloguploads/p1120642.jpg "Test cap")
