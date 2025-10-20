@@ -7,12 +7,6 @@ backend:
 media_folder: "static/bloguploads"
 public_folder: "/bloguploads"
 
-media_library:
-  name: local
-  config:
-    media_folder: "static/bloguploads"
-    public_folder: "/bloguploads"
-
 collections:
   - name: "blog"
     label: "Blog Posts"
