@@ -9,119 +9,117 @@
     <h2 class="post-title" id="post-title"></h2>
     <p class="post-date" id="post-date"></p>
     <img id="post-image" class="post-image" />
-    
-    <!-- Container for description, line, and full content -->
-    <div id="post-content-container"></div>
-  </div>
+
+  <!-- Container for description, line, and full content -->
+  <div id="post-content-container"></div>
+</div>
 </main>
 
 <script>
 let postsData = [];
 
 fetch('/public/posts.json')
-  .then(response => response.json())
-  .then(posts => {
+.then(response => response.json())
+.then(posts => {
 
-    // Sort posts by date descending
-    posts.sort((a, b) => new Date(b.date) - new Date(a.date));
-    postsData = posts;
-    const grid = document.getElementById('blog-grid');
+// Sort posts by date descending
+posts.sort((a, b) => new Date(b.date) - new Date(a.date));
+postsData = posts;
+const grid = document.getElementById('blog-grid');
 
-    posts.forEach((post, index) => {
-      const card = document.createElement('div');
-      card.className = 'post-card';
+posts.forEach((post, index) => {
+const card = document.createElement('div');
+card.className = 'post-card';
 
-      // Cover image
-      const img = document.createElement('img');
-      img.className = 'post-card-image';
-      if (post.image) {
-        img.src = post.image.startsWith('http') || post.image.startsWith('/') 
-          ? post.image 
-          : '/static/bloguploads/' + post.image;
-        img.alt = post.title + " cover image";
-      } else {
-        img.src = '/static/bloguploads/placeholder.jpg';
-        img.alt = 'No image available';
-      }
-      card.appendChild(img);
+// Cover image
+const img = document.createElement('img');
+img.className = 'post-card-image';
+if (post.image) {
+img.src = post.image.startsWith('http') || post.image.startsWith('/')
+? post.image: '/static/bloguploads/' + post.image;
+img.alt = post.title + " cover image";
+} else {
+img.src = '/static/bloguploads/placeholder.jpg';
+img.alt = 'No image available';
+}
+card.appendChild(img);
 
-      const body = document.createElement('div');
-      body.className = 'post-card-body';
+const body = document.createElement('div');
+body.className = 'post-card-body';
 
-      const title = document.createElement('div');
-      title.className = 'post-card-title';
-      title.textContent = post.title;
+const title = document.createElement('div');
+title.className = 'post-card-title';
+title.textContent = post.title;
 
-      const date = new Date(post.date);
-      const dateEl = document.createElement('div');
-      dateEl.className = 'post-card-date';
-      dateEl.textContent = isNaN(date) ? '' : date.toLocaleDateString();
+const date = new Date(post.date);
+const dateEl = document.createElement('div');
+dateEl.className = 'post-card-date';
+dateEl.textContent = isNaN(date) ? '': date.toLocaleDateString();
 
-      const description = document.createElement('div');
-      description.className = 'post-card-desc';
-      description.textContent = post.description || '';
+const description = document.createElement('div');
+description.className = 'post-card-desc';
+description.textContent = post.description || '';
 
-      // Append elements to card body
-      body.appendChild(title);
-      body.appendChild(dateEl);
-      body.appendChild(description);
+// Append elements to card body
+body.appendChild(title);
+body.appendChild(dateEl);
+body.appendChild(description);
 
-      card.appendChild(body);
+card.appendChild(body);
 
-      // Make card clickable
-      body.style.cursor = 'pointer';
-      body.addEventListener('click', () => showPost(index));
+// Make card clickable
+body.style.cursor = 'pointer';
+body.addEventListener('click', () => showPost(index));
 
-      grid.appendChild(card);
-    });
-  });
+grid.appendChild(card);
+});
+});
 
 // Show a single post
 function showPost(index) {
-  const post = postsData[index];
+const post = postsData[index];
 
-  document.getElementById('post-title').textContent = post.title;
-  const date = new Date(post.date);
-  document.getElementById('post-date').textContent = isNaN(date) ? '' : date.toLocaleDateString();
+document.getElementById('post-title').textContent = post.title;
+const date = new Date(post.date);
+document.getElementById('post-date').textContent = isNaN(date) ? '': date.toLocaleDateString();
 
-  const imageEl = document.getElementById('post-image');
-  if (post.image) {
-    imageEl.src = post.image.startsWith('http') || post.image.startsWith('/') 
-      ? post.image 
-      : '/static/bloguploads/' + post.image;
-    imageEl.alt = post.title + ' image';
-  } else {
-    imageEl.src = '';
-    imageEl.alt = '';
-  }
+const imageEl = document.getElementById('post-image');
+if (post.image) {
+imageEl.src = post.image.startsWith('http') || post.image.startsWith('/')
+? post.image: '/static/bloguploads/' + post.image;
+imageEl.alt = post.title + ' image';
+} else {
+imageEl.src = '';
+imageEl.alt = '';
+}
 
-  // Build description → line → full content
-  const container = document.getElementById('post-content-container');
-  container.innerHTML = ''; // clear previous
+// Build description → line → full content
+const container = document.getElementById('post-content-container');
+container.innerHTML = ''; // clear previous
 
-  const descriptionEl = document.createElement('div');
-  descriptionEl.className = 'post-description';
-  descriptionEl.textContent = post.description || '';
+const descriptionEl = document.createElement('div');
+descriptionEl.className = 'post-description';
+descriptionEl.textContent = post.description || '';
 
-  const line = document.createElement('div');
-  line.className = 'line'; // style in CSS as visual separator
+const line = document.createElement('div');
+line.className = 'line'; // style in CSS as visual separator
 
-  const contentEl = document.createElement('div');
-  contentEl.className = 'post-content';
-  contentEl.innerHTML = post.content || '';
+const contentEl = document.createElement('div');
+contentEl.className = 'post-content';
+contentEl.innerHTML = post.content || '';
 
-  container.appendChild(descriptionEl);
-  container.appendChild(line);
-  container.appendChild(contentEl);
+container.appendChild(descriptionEl);
+container.appendChild(line);
+container.appendChild(contentEl);
 
-  // Show the post, hide grid
-  document.getElementById('blog-grid').style.display = 'none';
-  document.getElementById('blog-content').style.display = 'block';
+// Show the post, hide grid
+document.getElementById('blog-grid').style.display = 'none';
+document.getElementById('blog-content').style.display = 'block';
 }
 
 // Back button
 document.getElementById('back-button').addEventListener('click', () => {
-  document.getElementById('blog-content').style.display = 'none';
-  document.getElementById('blog-grid').style.display = 'grid';
+document.getElementById('blog-content').style.display = 'none';
+document.getElementById('blog-grid').style.display = 'grid';
 });
 </script>
