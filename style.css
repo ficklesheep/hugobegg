@@ -30,10 +30,11 @@ html {
 .line{
   display: block;
   width: 100%;
-  background-color: gray;
-  color: gray;
+  background-color: lightgray;
+  color: lightgray;
   height: 0.5px;
 }
+
 
 .post-card {
   background-color: #fff;
@@ -68,6 +69,20 @@ html {
 background-color: red;
 }
 
+.profile-img-cont{
+  width: 100px;
+  height: 100px;
+  background-color: red;
+}
+
+.profile-box{
+  display: flex;
+}
+
+.sub-cont{
+  display: flex;
+  flex-direction: column;
+}
 .post-card-desc{
   margin-bottom: 0.5rem;
   color: #222;
