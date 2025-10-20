@@ -138,6 +138,13 @@ const grid = document.getElementById('blog-grid');
 
 function showPost(index) {
 const post = postsData[index];
+
+
+document.getElementById('post-title').textContent = post.title;
+
+const date = new Date(post.date);
+document.getElementById('post-date').textContent = isNaN(date) ? '': date.toLocaleDateString();
+
 const imageEl = document.getElementById('post-image');
 
 console.log('post.image:', post.image);
@@ -155,11 +162,6 @@ imageEl.alt = post.title + ' image';
 imageEl.src = '';
 imageEl.alt = '';
 }
-
-document.getElementById('post-title').textContent = post.title;
-
-const date = new Date(post.date);
-document.getElementById('post-date').textContent = isNaN(date) ? '': date.toLocaleDateString();
 
 document.getElementById('post-content').innerHTML = post.content || '';
 
