@@ -15,7 +15,7 @@ html {
 }
 .blog-container{
   display: block;
-  margin-top: 120px;
+  margin-top: 10px;
   margin-bottom: 100px;
 }
 .blog-grid {
@@ -25,6 +25,14 @@ html {
   margin: 2rem auto;
   max-width: 1000px;
   padding: 1rem;
+}
+
+.line{
+  display: block;
+  width: 100%;
+  background-color: black;
+  color: black;
+  height: 1px;
 }
 
 .post-card {
