@@ -139,11 +139,11 @@ const post = postsData[index];
 
 
 document.getElementById('post-title').textContent = post.title;
-
+document.getElementById('post-description').textContent = post.description || '';
 const date = new Date(post.date);
 document.getElementById('post-date').textContent = isNaN(date) ? '': date.toLocaleDateString();
 
-document.getElementById('post-description').textContent = post.description || '';
+
 const imageEl = document.getElementById('post-image');
 
 console.log('post.image:', post.image);
