@@ -26,5 +26,3 @@ collections:
       - { label: "Description", name: "description", widget: "text" }
       - label: "Body"
         name: "body"
-        widget: "markdown"
-        editor_components: ["image", "code", "link"]
