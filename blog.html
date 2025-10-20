@@ -49,7 +49,9 @@ HUGO BEGG
 <div id="blog-content" class="blog-content" style="display: none;">
 <button id="back-button">← Back to posts</button>
 <h2 class="post-title" id="post-title"></h2>
+<div id="post-description" class="post-description"></div>
 <p class="post-date" id="post-date"></p>
+
 <div class="line"></div>
 <img id="post-image" class="post-image" />
 
@@ -141,6 +143,7 @@ document.getElementById('post-title').textContent = post.title;
 const date = new Date(post.date);
 document.getElementById('post-date').textContent = isNaN(date) ? '': date.toLocaleDateString();
 
+document.getElementById('post-description').textContent = post.description || '';
 const imageEl = document.getElementById('post-image');
 
 console.log('post.image:', post.image);
