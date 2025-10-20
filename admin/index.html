@@ -20,23 +20,8 @@ config: 'config.yml', // config.yml is in the same directory as this HTML file
 });
 });
 </script>
-<script>
-  CMS.registerEditorComponent({
-    id: "image",
-    label: "Image",
-    fields: [{ name: "src", label: "Image", widget: "image" }],
-    pattern: /^!\[.*\]\((.*)\)$/,
-    fromBlock: function (match) {
-      return { src: match[1] };
-    },
-    toBlock: function (obj) {
-      return `![Image](${obj.src})`;
-    },
-    toPreview: function (obj) {
-      return `<img src="${obj.src}" style="max-width: 100%;" />`;
-    },
-  });
-</script>
+
+
 
 <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 <script>
