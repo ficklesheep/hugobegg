@@ -2,39 +2,29 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-<title>CMS</title>
+  <title>CMS</title>
 </head>
 <body>
 
-<div id="nc-root"></div>
-<script src="https://unpkg.com/decap-cms@3.1.10/dist/decap-cms.js"></script>
+  <div id="nc-root"></div>
 
+  <!-- ✅ Use a stable version and remove the space -->
+  <script src="https://unpkg.com/decap-cms@3.0.5/dist/decap-cms.js"></script>
 
-<script>
-window.addEventListener('load', () => {
-console.log('CMS:', window.CMS);
+  <!-- ✅ Netlify Identity -->
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 
-// Initialize CMS with the correct config.yml path
-CMS.init({
-config: 'config.yml', // config.yml is in the same directory as this HTML file
-});
-});
-</script>
-
-
-
-<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-<script>
-if (window.netlifyIdentity) {
-window.netlifyIdentity.on("init", user => {
-if (!user) {
-window.netlifyIdentity.on("login", () => {
-document.location.href = "/index.html"; // or wherever you want to redirect
-});
-}
-});
-}
-</script>
+  <script>
+    if (window.netlifyIdentity) {
+      window.netlifyIdentity.on("init", user => {
+        if (!user) {
+          window.netlifyIdentity.on("login", () => {
+            document.location.href = "/index.html";
+          });
+        }
+      });
+    }
+  </script>
 
 </body>
 </html>
