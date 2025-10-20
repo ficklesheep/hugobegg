@@ -30,9 +30,9 @@ html {
 .line{
   display: block;
   width: 100%;
-  background-color: black;
-  color: black;
-  height: 1px;
+  background-color: gray;
+  color: gray;
+  height: 0.5px;
 }
 
 .post-card {
