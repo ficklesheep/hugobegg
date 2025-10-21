@@ -82,91 +82,83 @@ HUGO BEGG
 <div class="post-content" id="post-content"></div>
 
 <!-- === Cusdis: define locale BEFORE loading the Cusdis script === -->
-<script>
-window.CUSDIS_LOCALE = {
-en: {
-powered_by: 'Comments via Cusdis',
-post_comment: 'Send Comment',
-loading: 'Loading comments...',
-email: 'Your Email (optional)',
-nickname: 'Your Name',
-reply_placeholder: 'Write your reply...',
-comment_placeholder: 'Write your comment...',
-submit: 'Post Comment',
-like: '👍 Like',
-cancel: 'Cancel'
-}
-};
-</script>
-
-<!-- Single Cusdis embed container (only ONE) -->
+<!-- ✅ CUSDIS COMMENTS SECTION -->
 <div id="cusdis_thread"
-data-host="https://cusdis.com"
-data-app-id="2a79b9af-88d1-405c-a8f2-29b2650d0567"
-data-page-id=""
-data-page-url=""
-data-page-title=""
-data-lang="en">
+     data-host="https://cusdis.com"
+     data-app-id="2a79b9af-88d1-405c-a8f2-29b2650d0567"
+     data-page-id=""
+     data-page-url=""
+     data-page-title=""
+     data-lang="en">
 </div>
 
-<!-- Load Cusdis script once -->
-<script async defer src="https://cusdis.com/js/cusdis.es.js"></script>
-
-<!-- Auto-resize helper + safe render handler -->
 <script>
-// attempt to render Cusdis when available, with retries
-function renderCusdisNow() {
-const el = document.getElementById('cusdis_thread');
-if (!el) return;
+// 1️⃣ Define custom locale
+window.CUSDIS_LOCALE = {
+  en: {
+    powered_by: '',
+    post_comment: 'Send Comment',
+    loading: 'Loading comments...',
+    email: 'Your Email (optional)',
+    nickname: 'Your Name',
+    reply_placeholder: 'Write a reply...',
+    comment_placeholder: 'Write your comment...',
+    submit: 'Post Comment',
+    cancel: 'Cancel',
+  },
+};
+window.CUSDIS_LANG = 'en';
 
-// call when CUSDIS object becomes available
-if (window.CUSDIS && typeof window.CUSDIS.renderTo === 'function') {
-try {
-window.CUSDIS.renderTo(el);
-// attempt immediate resize after render
-setTimeout(resizeCusdis, 300);
-} catch (e) {
-// ignore
-console.warn('CUSDIS.renderTo error', e);
-}
-} else {
-// retry shortly until script loads
-setTimeout(renderCusdisNow, 250);
-}
+// 2️⃣ Load Cusdis script dynamically
+function loadCusdisScript() {
+  return new Promise((resolve) => {
+    const existing = document.querySelector('script[data-cusdis]');
+    if (existing) existing.remove(); // clear cache
+    const script = document.createElement('script');
+    script.src = `https://cusdis.com/js/cusdis.es.js?v=${Date.now()}`;
+    script.setAttribute('data-cusdis', 'true');
+    script.async = true;
+    script.defer = true;
+    script.onload = resolve;
+    document.head.appendChild(script);
+  });
 }
 
-// Resize iframe by reading its document body height.
+// 3️⃣ Re-render Cusdis once script is ready
+async function renderCusdisNow() {
+  await loadCusdisScript();
+  if (window.renderCusdis) {
+    window.renderCusdis();
+  } else {
+    // retry after delay if renderCusdis not yet defined
+    setTimeout(renderCusdisNow, 400);
+  }
+}
+
+// 4️⃣ Auto-resize the iframe height
 function resizeCusdis() {
-const iframe = document.querySelector('#cusdis_thread iframe');
-if (!iframe) return;
-try {
-const doc = iframe.contentDocument || iframe.contentWindow.document;
-if (!doc || !doc.body) return;
-const h = doc.body.scrollHeight;
-if (h && iframe.style.height !== h + 'px') {
-iframe.style.height = h + 'px';
+  const iframe = document.querySelector('#cusdis_thread iframe');
+  if (!iframe) return;
+  try {
+    const doc = iframe.contentDocument || iframe.contentWindow.document;
+    const height = doc.body.scrollHeight;
+    if (height) iframe.style.height = height + 'px';
+  } catch {}
 }
-} catch (e) {
-// cross-origin — ignore
-}
-}
-
-// periodic safety net for resizing (only while page open)
-const _cusdisResizeInterval = setInterval(resizeCusdis, 1000);
-window.addEventListener('load', function() {
-setTimeout(resizeCusdis, 500);
-});
-
-// Optional: also listen for messages from Cusdis (they sometimes post resize messages)
-window.addEventListener('message', function (event) {
-if (event && event.data && event.data.from === 'cusdis' && event.data.type === 'resize') {
-resizeCusdis();
-}
-});
+setInterval(resizeCusdis, 1000);
+window.addEventListener('load', resizeCusdis);
 </script>
 
-</div>
-<!-- end blog-content -->
+<style>
+#cusdis_thread iframe {
+  width: 100%;
+  min-height: 200px;
+  border: none;
+  overflow: hidden;
+  transition: height 0.3s ease;
+}
+</style>
+
 
 </main>
 
