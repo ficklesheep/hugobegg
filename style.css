@@ -129,6 +129,7 @@ color: #1426;
 #cusdis_thread {
   width: 80%;
   border: none;
+  font-size: 0.5em;
   transition: height 0.2s ease;
   min-height: 200px;
   overflow: hidden;
