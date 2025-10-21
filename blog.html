@@ -284,43 +284,62 @@ grid.appendChild(card);
 err));
 
 function showPost(index) {
-const post = postsData[index];
-if (!post) return;
+  const post = postsData[index];
+  if (!post) return;
 
-document.getElementById('post-title').textContent = post.title || '';
-document.getElementById('post-description').textContent = post.description || '';
+  // Set basic post info
+  document.getElementById('post-title').textContent = post.title || '';
+  document.getElementById('post-description').textContent = post.description || '';
 
-const date = new Date(post.date || '');
-document.getElementById('post-date').textContent = isNaN(date) ? '': date.toLocaleDateString();
+  const date = new Date(post.date || '');
+  document.getElementById('post-date').textContent = isNaN(date) ? '' : date.toLocaleDateString();
 
-const imageEl = document.getElementById('post-image');
-if (post.image) {
-imageEl.src = (post.image.startsWith('http') || post.image.startsWith('/')) ? post.image: '/static/bloguploads/' + post.image;
-imageEl.alt = post.title + ' image';
-} else {
-imageEl.src = '';
-imageEl.alt = '';
+  // Set main post image (optional)
+  const imageEl = document.getElementById('post-image');
+  if (post.image) {
+    imageEl.src = (post.image.startsWith('http') || post.image.startsWith('/')) ? post.image : '/static/bloguploads/' + post.image;
+    imageEl.alt = post.title + ' image';
+  } else {
+    imageEl.src = '';
+    imageEl.alt = '';
+  }
+
+  // Render post content
+  const contentEl = document.getElementById('post-content');
+  contentEl.innerHTML = post.content || '';
+
+  // Wrap images with captions
+  const imgs = contentEl.querySelectorAll('img[title]');
+  imgs.forEach(img => {
+    if (img.parentElement.tagName.toLowerCase() === 'figure') return;
+
+    const fig = document.createElement('figure');
+    img.replaceWith(fig);
+    fig.appendChild(img);
+
+    const caption = document.createElement('figcaption');
+    caption.textContent = img.getAttribute('title');
+    fig.appendChild(caption);
+  });
+
+  // Update Cusdis dataset attributes
+  const cusdisThread = document.getElementById('cusdis_thread');
+  const pageId = post.slug ? String(post.slug) : String(post.title || 'post-' + index);
+  cusdisThread.dataset.pageId = pageId;
+  cusdisThread.dataset.pageUrl = window.location.origin + '/blog/' + encodeURIComponent(pageId);
+  cusdisThread.dataset.pageTitle = post.title || '';
+
+  // Render Cusdis comments
+  renderCusdisNow();
+
+  // Show post view
+  document.getElementById('blog-grid').style.display = 'none';
+  document.getElementById('blog-content').style.display = 'block';
+
+  // Resize iframe for Cusdis
+  setTimeout(resizeCusdis, 600);
 }
 
-document.getElementById('post-content').innerHTML = post.content || '';
-
-// Update Cusdis dataset attributes (use slug if available or fallback to title)
-const cusdisThread = document.getElementById('cusdis_thread');
-const pageId = post.slug ? String(post.slug): String(post.title || 'post-' + index);
-cusdisThread.dataset.pageId = pageId;
-cusdisThread.dataset.pageUrl = window.location.origin + '/blog/' + encodeURIComponent(pageId);
-cusdisThread.dataset.pageTitle = post.title || '';
-
-// Render Cusdis (retries until widget loaded)
-renderCusdisNow();
-
-// show post view
-document.getElementById('blog-grid').style.display = 'none';
-document.getElementById('blog-content').style.display = 'block';
-
-// try to resize after a short delay
-setTimeout(resizeCusdis, 600);
-}
 
 // back button
 document.getElementById('back-button').addEventListener('click', () => {
