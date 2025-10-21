@@ -66,6 +66,8 @@ HUGO BEGG
 <img id="post-image" class="post-image" />
 
 <div class="post-content" id="post-content"></div>
+
+<!-- ✅ Custom Cusdis text -->
 <script>
 window.CUSDIS_LOCALE = {
   en: {
@@ -83,53 +85,42 @@ window.CUSDIS_LOCALE = {
 };
 </script>
 
+<!-- ✅ Single Cusdis embed -->
 <div id="cusdis_thread"
      data-host="https://cusdis.com"
-     data-app-id="YOUR_APP_ID"
-     data-page-id="..."
-     data-page-url="..."
-     data-page-title="..."
+     data-app-id="2a79b9af-88d1-405c-a8f2-29b2650d0567"
+     data-page-id=""
+     data-page-url=""
+     data-page-title=""
      data-lang="en">
 </div>
+
+<!-- ✅ Only one Cusdis script -->
 <script async defer src="https://cusdis.com/js/cusdis.es.js"></script>
 
-<div id="cusdis_thread"
-data-host="https://cusdis.com"
-data-app-id="2a79b9af-88d1-405c-a8f2-29b2650d0567"
-data-page-id="{{ PAGE_ID }}"
-data-page-url="{{ PAGE_URL }}"
-data-page-title="{{ PAGE_TITLE }}"
-></div>
-<script async defer src="https://cusdis.com/js/cusdis.es.js"></script>
+<!-- ✅ Auto-resize script -->
 <script>
-function autoResizeCusdis() {
+function resizeCusdis() {
   const iframe = document.querySelector('#cusdis_thread iframe');
   if (!iframe) return;
 
   try {
     const doc = iframe.contentDocument || iframe.contentWindow.document;
-    if (!doc) return;
+    if (!doc || !doc.body) return;
 
-    const scrollHeight = doc.body.scrollHeight;
-    if (scrollHeight && iframe.style.height !== scrollHeight + 'px') {
-      iframe.style.height = scrollHeight + 'px';
+    const height = doc.body.scrollHeight;
+    if (height && iframe.style.height !== height + 'px') {
+      iframe.style.height = height + 'px';
     }
-  } catch (e) {
-    // Cross-origin protection — ignore silently
+  } catch (err) {
+    // Ignore cross-origin restriction errors
   }
 }
 
-// Keep checking periodically (Cusdis adds comments dynamically)
-setInterval(autoResizeCusdis, 1000);
-
-// Run once on load
-window.addEventListener('load', autoResizeCusdis);
+setInterval(resizeCusdis, 1000);
+window.addEventListener('load', resizeCusdis);
 </script>
 
-
-
-
-</div>
 </main>
 
 
