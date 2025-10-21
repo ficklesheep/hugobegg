@@ -1,12 +1,3 @@
-backend:
-  name: git-gateway
-  repo: ficklesheep/hugobegg
-  branch: master
-  site_domain: modest-wing-e14976.netlify.app
-
-media_folder: "static/bloguploads"   # where images are stored in your repo
-public_folder: "static/bloguploads"        # how they appear in your site URLs
-
 collections:
   - name: "blog"
     label: "Blog Posts"
@@ -19,6 +10,7 @@ collections:
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Date", name: "date", widget: "datetime" }
       - { label: "Description", name: "description", widget: "text", required: false }
+      - { label: "Cover Image", name: "image", widget: "image", required: false, hint: "Optional cover image for this post" }
       - label: "Body"
         name: "body"
         widget: "markdown"
