@@ -135,6 +135,8 @@ border: none;
   margin: 0 auto;
   padding: 2rem;
   line-height: 1.6;
+  font-family: Times New Roman;
+  font-size: 14px;
 }
 #cusdis_thread {
   transform: scale(0.8);
@@ -158,7 +160,7 @@ margin-right: 10%;
 
 .post-description{
   font-style: italic;
-  font-size: 13px;
+  font-size: 16px;
 }
 
 .blog-content img {
