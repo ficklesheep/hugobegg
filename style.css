@@ -129,7 +129,8 @@ color: #1426;
 #cusdis_thread {
   transform: scale(0.8);
   width: 80%;
-
+margin-left: 10%;
+margin-right: 10%;
   border: none;
   font-size: 4px;
   transition: height 0.2s ease;
