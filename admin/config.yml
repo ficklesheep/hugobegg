@@ -1,3 +1,12 @@
+backend:
+  name: git-gateway
+  repo: ficklesheep/hugobegg
+  branch: master
+  site_domain: modest-wing-e14976.netlify.app
+
+media_folder: "static/bloguploads"   # where images are stored in your repo
+public_folder: "static/bloguploads"        # how they appear in your site URLs
+
 collections:
   - name: "blog"
     label: "Blog Posts"
@@ -15,3 +24,367 @@ collections:
         name: "body"
         widget: "markdown"
         hint: "Main content (use the image button to insert photos inline)"
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Hugo Begg Blog</title>
+<link rel="stylesheet" href="/style.css" />
+
+</head>
+<body>
+
+<header class="header__main">
+<div class="header__column--1">
+HUGO BEGG
+</div>
+<div class="header__column header__column--2">
+<div class="menu">
+<nav>
+<div class="menu-btn">
+<div class="menu-btn-burger"></div>
+</div>
+<ol>
+<li style="list-style:none"><a href="/gallery/street.html">STREET</a></li>
+<li style="list-style:none"><a href="/gallery/landscapes.html">LANDSCAPE</a></li>
+<li style="list-style:none"><a href="/gallery/travel.html">TRAVEL</a></li>
+<li style="list-style:none"><a href="/gallery/film.html">FILM</a></li>
+<li style="list-style:none"><a href="about.html">ABOUT</a></li>
+</ol>
+</nav>
+</div>
+</div>
+<div class="header__column--3">
+<a href="https://www.instagram.com/hugobegg/"><img style="width:20px" src="/images/instagram.png" alt=""></a>
+</div>
+</header>
+
+<main class="blog-container">
+
+<!-- Blog post grid -->
+<div id="blog-grid" class="blog-grid"></div>
+
+<!-- Blog content area -->
+<div id="blog-content" class="blog-content" style="display:none;">
+<button id="back-button" class="back-button">Back to posts</button>
+<h2 class="post-title" id="post-title"></h2>
+<div id="post-description" class="post-description"></div>
+
+<div class="profile-box">
+<div class="profile-img-cont"></div>
+<div class="sub-cont">
+<div class="author">
+HUGO BEGG
+</div>
+<p class="post-date" id="post-date"></p>
+</div>
+</div>
+
+<div class="line"></div>
+<img id="post-image" class="post-image" />
+
+<div class="post-content" id="post-content"></div>
+<div class="line"></div>
+<script>
+// Cusdis theme customization
+window.CUSDIS_THEME = {
+fontSize: '16px',
+colors: {
+primary: '#000',
+// Accent or link color
+text: '#222',
+// Main text color
+background: '#fff',
+// Background color
+border: '#ddd' // Border and separator color
+},
+customCss: 
+/* Comment header (name + timestamp) */
+.cusdis-comment__header {
+font-size: 1rem !important;
+font-weight: 600 !important;
+color: #111 !important;
+margin-bottom: 0.3rem !important;
+}
+
+/* Comment text */
+.cusdis-comment__content {
+font-size: 0.95rem !important;
+line-height: 1.5 !important;
+color: #222 !important;
+margin-bottom: 1rem !important;
+}
+
+/* Input boxes (comment form) */
+.cusdis-comment__textarea,
+.cusdis-input {
+font-size: 0.95rem !important;
+border-radius: 6px !important;
+border: 1px solid #ccc !important;
+padding: 8px 10px !important;
+background: #fafafa !important;
+}
+
+/* Labels and section titles */
+.cusdis-title,
+.cusdis-commentbox__title {
+font-size: 0.85rem !important;
+font-weight: 700 !important;
+letter-spacing: 0.5px !important;
+text-transform: uppercase !important;
+color: #444 !important;
+margin-bottom: 0.5rem !important;
+}
+
+/* Buttons */
+.cusdis-btn {
+background: #000 !important;
+color: #fff !important;
+border-radius: 6px !important;
+padding: 8px 14px !important;
+font-size: 0.9rem !important;
+text-transform: uppercase !important;
+letter-spacing: 0.5px !important;
+border: none !important;
+transition: background 0.2s ease !important;
+}
+.cusdis-btn:hover {
+background: #333 !important;
+}
+
+/* Layout adjustments */
+.cusdis-commentbox {
+margin-top: 1.5rem !important;
+}
+
+/* Like button and meta actions */
+.cusdis-comment__actions {
+font-size: 0.8rem !important;
+color: #777 !important;
+}
+
+/* Powered by Cusdis link */
+.cusdis-powered-by {
+font-size: 0.75rem !important;
+color: #aaa !important;
+margin-top: 1rem !important;
+}
+
+};
+</script>
+
+
+<div id="cusdis_thread"
+data-host="https://cusdis.com"
+data-app-id="2a79b9af-88d1-405c-a8f2-29b2650d0567"
+data-page-id=""
+data-page-url=""
+data-page-title=""
+data-lang="en">
+</div>
+
+<!-- Load Cusdis script once -->
+<script async defer src="https://cusdis.com/js/cusdis.es.js"></script>
+
+<!-- Auto-resize helper + safe render handler -->
+<script>
+// attempt to render Cusdis when available, with retries
+function renderCusdisNow() {
+const el = document.getElementById('cusdis_thread');
+if (!el) return;
+
+// call when CUSDIS object becomes available
+if (window.CUSDIS && typeof window.CUSDIS.renderTo === 'function') {
+try {
+window.CUSDIS.renderTo(el);
+// attempt immediate resize after render
+setTimeout(resizeCusdis, 300);
+} catch (e) {
+// ignore
+console.warn('CUSDIS.renderTo error', e);
+}
+} else {
+// retry shortly until script loads
+setTimeout(renderCusdisNow, 250);
+}
+}
+
+// Resize iframe by reading its document body height.
+function resizeCusdis() {
+const iframe = document.querySelector('#cusdis_thread iframe');
+if (!iframe) return;
+try {
+const doc = iframe.contentDocument || iframe.contentWindow.document;
+if (!doc || !doc.body) return;
+const h = doc.body.scrollHeight;
+if (h && iframe.style.height !== h + 'px') {
+iframe.style.height = h + 'px';
+}
+} catch (e) {
+// cross-origin — ignore
+}
+}
+
+// periodic safety net for resizing (only while page open)
+const _cusdisResizeInterval = setInterval(resizeCusdis, 1000);
+window.addEventListener('load', function() {
+setTimeout(resizeCusdis, 500);
+});
+
+// Optional: also listen for messages from Cusdis (they sometimes post resize messages)
+window.addEventListener('message', function (event) {
+if (event && event.data && event.data.from === 'cusdis' && event.data.type === 'resize') {
+resizeCusdis();
+}
+});
+</script>
+
+</div>
+<!-- end blog-content -->
+
+</main>
+
+<div id="footer-placeholder"></div>
+<script>
+fetch('/footer.html').then(r => r.text()).then(t => {
+document.getElementById('footer-placeholder').innerHTML = t;
+});
+</script>
+
+<script>
+/* Main posts loader & UI logic */
+let postsData = [];
+
+fetch('/public/posts.json')
+.then(response => response.json())
+.then(posts => {
+posts.sort((a, b) => new Date(b.date) - new Date(a.date));
+postsData = posts;
+const grid = document.getElementById('blog-grid');
+
+posts.forEach((post, index) => {
+const card = document.createElement('div');
+card.className = 'post-card';
+
+const img = document.createElement('img');
+img.className = 'post-card-image';
+if (post.image) {
+img.src = (post.image.startsWith('http') || post.image.startsWith('/')) ? post.image: '/static/bloguploads/' + post.image;
+img.alt = post.title + ' cover image';
+} else {
+img.src = '/static/bloguploads/placeholder.jpg';
+img.alt = 'No image available';
+}
+card.appendChild(img);
+
+const body = document.createElement('div');
+body.className = 'post-card-body';
+
+const title = document.createElement('div');
+title.className = 'post-card-title';
+title.textContent = post.title;
+
+const date = new Date(post.date || '');
+const dateEl = document.createElement('div');
+dateEl.className = 'post-card-date';
+dateEl.textContent = isNaN(date) ? '': date.toLocaleDateString();
+
+const description = document.createElement('div');
+description.className = 'post-card-desc';
+description.textContent = post.description || '';
+
+body.appendChild(title);
+body.appendChild(dateEl);
+body.appendChild(description);
+
+card.appendChild(body);
+
+body.style.cursor = 'pointer';
+body.addEventListener('click', () => showPost(index));
+
+grid.appendChild(card);
+});
+})
+.catch(err => console.error('posts.json load error',
+err));
+
+function showPost(index) {
+  const post = postsData[index];
+  if (!post) return;
+
+  // Set basic post info
+  document.getElementById('post-title').textContent = post.title || '';
+  document.getElementById('post-description').textContent = post.description || '';
+
+  const date = new Date(post.date || '');
+  document.getElementById('post-date').textContent = isNaN(date) ? '' : date.toLocaleDateString();
+
+  // Set main post image (optional)
+  const imageEl = document.getElementById('post-image');
+  if (post.image) {
+    imageEl.src = (post.image.startsWith('http') || post.image.startsWith('/')) ? post.image : '/static/bloguploads/' + post.image;
+    imageEl.alt = post.title + ' image';
+  } else {
+    imageEl.src = '';
+    imageEl.alt = '';
+  }
+
+  // Render post content
+  const contentEl = document.getElementById('post-content');
+  contentEl.innerHTML = post.content || '';
+
+  // Wrap images with captions
+  const imgs = contentEl.querySelectorAll('img[title]');
+  imgs.forEach(img => {
+    if (img.parentElement.tagName.toLowerCase() === 'figure') return;
+
+    const fig = document.createElement('figure');
+    img.replaceWith(fig);
+    fig.appendChild(img);
+
+    const caption = document.createElement('figcaption');
+    caption.textContent = img.getAttribute('title');
+    fig.appendChild(caption);
+  });
+
+  // Update Cusdis dataset attributes
+  const cusdisThread = document.getElementById('cusdis_thread');
+  const pageId = post.slug ? String(post.slug) : String(post.title || 'post-' + index);
+  cusdisThread.dataset.pageId = pageId;
+  cusdisThread.dataset.pageUrl = window.location.origin + '/blog/' + encodeURIComponent(pageId);
+  cusdisThread.dataset.pageTitle = post.title || '';
+
+  // Render Cusdis comments
+  renderCusdisNow();
+
+  // Show post view
+  document.getElementById('blog-grid').style.display = 'none';
+  document.getElementById('blog-content').style.display = 'block';
+
+  // Resize iframe for Cusdis
+  setTimeout(resizeCusdis, 600);
+}
+
+
+// back button
+document.getElementById('back-button').addEventListener('click', () => {
+document.getElementById('blog-content').style.display = 'none';
+document.getElementById('blog-grid').style.display = 'grid';
+});
+</script>
+
+</body>
+</html>
+
+
+No image available in the Dodds ect ion 
+You said:
+Can you just update the yml feilds
+You said:
+Do the labels match witbthe blog.html
+You said:
+But the cover image
+
+ChatGPT can make mistakes. Check important info.
