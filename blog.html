@@ -71,6 +71,31 @@
     <img id="post-image" class="post-image" />
 
     <div class="post-content" id="post-content"></div>
+<script>
+  window.CUSDIS_LOCALE = { /* keep your translations here */ };
+
+  // Add your custom CSS overrides
+  window.CUSDIS_THEME = {
+    fontSize: '16px',
+    colors: {
+      primary: '#000',
+      text: '#222',
+      background: '#fff'
+    },
+    // Inject extra CSS
+    customCss: `
+      .cusdis-comment__header { font-size: 1.2rem !important; font-weight: 600 !important; }
+      .cusdis-comment__content, .cusdis-comment__textarea, .cusdis-input {
+        font-size: 1rem !important;
+      }
+      .cusdis-title, .cusdis-commentbox__title {
+        font-size: 1.3rem !important;
+        font-weight: bold !important;
+        text-transform: uppercase;
+      }
+    `
+  };
+</script>
 
     <!-- === Cusdis: define locale BEFORE loading the Cusdis script === -->
     <script>
