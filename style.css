@@ -66,6 +66,8 @@ html {
 
 #back-button {
   background: none;
+  border: 1px solid #ccc;
+  border-radius: 8px;
   color: #333;
   padding: 6px 12px;
   font-size: 0.9rem;
