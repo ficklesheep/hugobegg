@@ -89,7 +89,7 @@ background-color: red;
   display: flex;
   height: 45px;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-around;
 }
 .post-card-desc{
   margin-bottom: 0.5rem;
