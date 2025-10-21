@@ -88,7 +88,7 @@ background-color: red;
 .sub-cont{
   display: flex;
   flex-direction: column;
-  align-content: center;
+  justify-content: space-between;
 }
 .post-card-desc{
   margin-bottom: 0.5rem;
