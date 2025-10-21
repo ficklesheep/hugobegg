@@ -87,6 +87,7 @@ background-color: red;
 
 .sub-cont{
   display: flex;
+  height: 45px;
   flex-direction: column;
   justify-content: space-between;
 }
