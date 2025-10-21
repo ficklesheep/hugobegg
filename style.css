@@ -126,7 +126,7 @@ color: #1426;
   font-family: 'Helvetica Neue', sans-serif;
   line-height: 1.6;
 }
-#cusdis_thread iframe {
+#cusdis_thread {
   width: 80%;
   border: none;
   transition: height 0.2s ease;
