@@ -91,60 +91,63 @@ HUGO BEGG
      data-lang="en">
 </div>
 
-<!-- ✅ CUSTOM TEXT + AUTO-RESIZE + DYNAMIC LOAD -->
 <script>
-  // 1️⃣ Custom field labels and button text
-  window.CUSDIS_LOCALE = {
-    en: {
-      powered_by: '',
-      post_comment: 'Send Comment',
-      loading: 'Loading comments...',
-      email: 'Your Email (optional)',
-      nickname: 'Your Name',
-      reply_placeholder: 'Write a reply...',
-      comment_placeholder: 'Write your comment...',
-      submit: 'Post Comment',
-      cancel: 'Cancel',
-    }
-  };
-  window.CUSDIS_LANG = 'en';
-
-  // 2️⃣ Load Cusdis dynamically *after* locale setup (bypass caching)
-  (function loadCusdis() {
-    const script = document.createElement('script');
-    script.src = `https://cusdis.com/js/cusdis.es.js?v=${Date.now()}`;
-    script.async = true;
-    script.defer = true;
-    document.head.appendChild(script);
-  })();
-
-  // 3️⃣ Auto-resize Cusdis iframe
-  function resizeCusdis() {
-    const iframe = document.querySelector('#cusdis_thread iframe');
-    if (!iframe) return;
-    try {
-      const doc = iframe.contentDocument || iframe.contentWindow.document;
-      if (!doc || !doc.body) return;
-      const height = doc.body.scrollHeight;
-      if (height && iframe.style.height !== height + 'px') {
-        iframe.style.height = height + 'px';
-      }
-    } catch (err) { /* ignore cross-origin restrictions */ }
+// ✅ Define custom labels BEFORE loading the script
+window.CUSDIS_LOCALE = {
+  en: {
+    powered_by: '',
+    post_comment: 'Send Comment',
+    loading: 'Loading comments...',
+    email: 'Your Email (optional)',
+    nickname: 'Your Name',
+    reply_placeholder: 'Write a reply...',
+    comment_placeholder: 'Write your comment...',
+    submit: 'Post Comment',
+    cancel: 'Cancel',
   }
-  setInterval(resizeCusdis, 1000);
-  window.addEventListener('load', resizeCusdis);
+};
+window.CUSDIS_LANG = 'en';
+
+// ✅ Load Cusdis script dynamically
+(function loadCusdis() {
+  const script = document.createElement('script');
+  script.src = 'https://cusdis.com/js/cusdis.es.js';
+  script.async = true;
+  script.defer = true;
+  script.onload = () => {
+    // ✅ Force refresh widget to apply locale
+    if (window.CUSDIS) window.CUSDIS.renderTo(document.getElementById('cusdis_thread'));
+  };
+  document.head.appendChild(script);
+})();
+
+// ✅ Auto-resize Cusdis iframe
+function resizeCusdis() {
+  const iframe = document.querySelector('#cusdis_thread iframe');
+  if (!iframe) return;
+  try {
+    const doc = iframe.contentDocument || iframe.contentWindow.document;
+    if (!doc || !doc.body) return;
+    const height = doc.body.scrollHeight;
+    if (height && iframe.style.height !== height + 'px') {
+      iframe.style.height = height + 'px';
+    }
+  } catch (err) { /* ignore cross-origin restrictions */ }
+}
+setInterval(resizeCusdis, 1000);
+window.addEventListener('load', resizeCusdis);
 </script>
 
 <style>
-  /* 4️⃣ Optional: style to make it look clean and adaptive */
-  #cusdis_thread iframe {
-    width: 100%;
-    min-height: 200px;
-    border: none;
-    overflow: hidden;
-    transition: height 0.3s ease;
-  }
+#cusdis_thread iframe {
+  width: 100%;
+  min-height: 200px;
+  border: none;
+  overflow: hidden;
+  transition: height 0.3s ease;
+}
 </style>
+
 
 
 </div>
