@@ -65,10 +65,25 @@ html {
   color: #222;
 }
 
-.back-button{
-background-color: transparent;
-color: #142642;
+#back-button {
+  background: none;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  color: #333;
+  padding: 6px 12px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-bottom: 1rem;
 }
+
+#back-button:hover {
+  border-color: #999;
+  color: #000;
+  background-color: #f8f8f8;
+}
+
+#back
 
 .profile-img-cont{
   display: block;
