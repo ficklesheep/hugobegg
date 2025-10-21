@@ -67,7 +67,9 @@ HUGO BEGG
 
 <div class="post-content" id="post-content"></div>
 
-<!-- ✅ Custom Cusdis text -->
+<div class="post-content" id="post-content"></div>
+
+<!-- ✅ Define custom Cusdis text BEFORE the script loads -->
 <script>
 window.CUSDIS_LOCALE = {
   en: {
@@ -75,17 +77,17 @@ window.CUSDIS_LOCALE = {
     post_comment: 'Send Comment',
     loading: 'Loading comments...',
     email: 'Your Email (optional)',
-    nickname: 'Name',
-    reply_placeholder: 'Type your reply here...',
-    comment_placeholder: 'Type your comment here...',
-    submit: 'Post',
-    like: 'Like',
+    nickname: 'Your Name',
+    reply_placeholder: 'Write a reply...',
+    comment_placeholder: 'Write your comment...',
+    submit: 'Post Comment',
+    like: '👍 Like',
     cancel: 'Cancel',
   }
 };
 </script>
 
-<!-- ✅ Single Cusdis embed -->
+<!-- ✅ Cusdis embed -->
 <div id="cusdis_thread"
      data-host="https://cusdis.com"
      data-app-id="2a79b9af-88d1-405c-a8f2-29b2650d0567"
@@ -95,26 +97,58 @@ window.CUSDIS_LOCALE = {
      data-lang="en">
 </div>
 
+<!-- ✅ Load Cusdis script AFTER locale -->
+<script async defer src="https://cusdis.com/js/cusdis.es.js"></script>
+
+<!-- ✅ Auto-resize fix -->
+<script>
+function resizeCusdis() {
+  const iframe = document.querySelector('#cusdis_thread iframe');
+  if (!iframe) return;
+  try {
+    const doc = iframe.contentDocument || iframe.contentWindow.document;
+    if (!doc || !doc.body) return;
+    const height = doc.body.scrollHeight;
+    if (height && iframe.style.height !== height + 'px') {
+      iframe.style.height = height + 'px';
+    }
+  } catch (err) { }
+}
+setInterval(resizeCusdis, 1000);
+window.addEventListener('load', resizeCusdis);
+</script>
+
+
+<!-- ✅ Single Cusdis embed -->
+<div id="cusdis_thread"
+data-host="https://cusdis.com"
+data-app-id="2a79b9af-88d1-405c-a8f2-29b2650d0567"
+data-page-id=""
+data-page-url=""
+data-page-title=""
+data-lang="en">
+</div>
+
 <!-- ✅ Only one Cusdis script -->
 <script async defer src="https://cusdis.com/js/cusdis.es.js"></script>
 
 <!-- ✅ Auto-resize script -->
 <script>
 function resizeCusdis() {
-  const iframe = document.querySelector('#cusdis_thread iframe');
-  if (!iframe) return;
+const iframe = document.querySelector('#cusdis_thread iframe');
+if (!iframe) return;
 
-  try {
-    const doc = iframe.contentDocument || iframe.contentWindow.document;
-    if (!doc || !doc.body) return;
+try {
+const doc = iframe.contentDocument || iframe.contentWindow.document;
+if (!doc || !doc.body) return;
 
-    const height = doc.body.scrollHeight;
-    if (height && iframe.style.height !== height + 'px') {
-      iframe.style.height = height + 'px';
-    }
-  } catch (err) {
-    // Ignore cross-origin restriction errors
-  }
+const height = doc.body.scrollHeight;
+if (height && iframe.style.height !== height + 'px') {
+iframe.style.height = height + 'px';
+}
+} catch (err) {
+// Ignore cross-origin restriction errors
+}
 }
 
 setInterval(resizeCusdis, 1000);
