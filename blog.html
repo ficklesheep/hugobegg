@@ -81,134 +81,26 @@ HUGO BEGG
 
 <div class="post-content" id="post-content"></div>
 
-<!-- === REPLACE ENTIRE CUSDIS SECTION WITH THIS BLOCK === -->
-<div id="cusdis_thread"
-     data-host="https://cusdis.com"
-     data-app-id="2a79b9af-88d1-405c-a8f2-29b2650d0567"
-     data-page-id=""
-     data-page-url=""
-     data-page-title=""
-     data-lang="en"></div>
+<div
+  id="cusdis_thread"
+  data-host="https://cusdis.com"
+  data-app-id="YOUR_APP_ID"
+  data-page-id="{{ .File.Path }}"
+  data-page-url="{{ .Permalink }}"
+  data-page-title="{{ .Title }}"
+  data-strings='{
+    "powered_by": "Comments hosted by Cusdis",
+    "post_comment": "Send",
+    "loading": "Loading comments...",
+    "email": "Email (optional)",
+    "nickname": "Name",
+    "reply_placeholder": "Write your reply here...",
+    "comment_placeholder": "Write something nice...",
+    "submit": "Send"
+  }'
+></div>
 
-<script>
-/* ===== 1) set locale BEFORE loading the widget ===== */
-window.CUSDIS_LOCALE = {
-  en: {
-    powered_by: '',
-    post_comment: 'Send Comment',
-    loading: 'Loading comments...',
-    email: 'Your Email (optional)',
-    nickname: 'Your Name',
-    reply_placeholder: 'Write a reply...',
-    comment_placeholder: 'Write your comment...',
-    submit: 'Post Comment',
-    cancel: 'Cancel'
-  }
-};
-window.CUSDIS_LANG = 'en';
-
-/* ===== 2) helper: remove any existing cusdis script/iframe (avoid duplicates/cached iframe) ===== */
-function purgeOldCusdis() {
-  // remove previously injected cusdis script tags
-  document.querySelectorAll('script[data-cusdis]').forEach(s => s.remove());
-  // remove any existing iframe inside #cusdis_thread
-  const el = document.getElementById('cusdis_thread');
-  if (el) {
-    const iframe = el.querySelector('iframe');
-    if (iframe) iframe.remove();
-  }
-}
-
-/* ===== 3) load cusdis script (cache-busted) and return a Promise when ready ===== */
-function loadCusdisScript() {
-  return new Promise((resolve, reject) => {
-    purgeOldCusdis();
-    // create script
-    const s = document.createElement('script');
-    s.setAttribute('data-cusdis', 'true');
-    s.async = true;
-    s.defer = true;
-    s.src = 'https://cusdis.com/js/cusdis.es.js?v=' + Date.now();
-    s.onload = () => resolve();
-    s.onerror = (e) => reject(e);
-    document.head.appendChild(s);
-  });
-}
-
-/* ===== 4) render function used by your showPost() — updates thread attributes then renders ===== */
-async function renderCusdisNow() {
-  try {
-    // ensure script loaded (reloads fresh each call to avoid cached iframe issues)
-    await loadCusdisScript();
-
-    const container = document.getElementById('cusdis_thread');
-    if (!container) return;
-    // If CUSDIS API exists, use it; otherwise fallback to global render if available
-    if (window.CUSDIS && typeof window.CUSDIS.renderTo === 'function') {
-      window.CUSDIS.renderTo(container);
-    } else if (typeof window.renderCusdis === 'function') {
-      window.renderCusdis(); // older helpers
-    } else if (typeof window.CUSDIS === 'object') {
-      // last resort: attempt renderTo after small delay
-      setTimeout(() => {
-        if (window.CUSDIS && typeof window.CUSDIS.renderTo === 'function') window.CUSDIS.renderTo(container);
-      }, 300);
-    } else {
-      // keep retrying a few times until the SDK defines the API
-      let tries = 0;
-      const t = setInterval(() => {
-        tries++;
-        if (window.CUSDIS && typeof window.CUSDIS.renderTo === 'function') {
-          clearInterval(t);
-          window.CUSDIS.renderTo(container);
-        } else if (tries > 10) {
-          clearInterval(t);
-          console.warn('Cusdis: render API not available after retries');
-        }
-      }, 300);
-    }
-    // small delay then resize
-    setTimeout(resizeCusdis, 500);
-  } catch (err) {
-    console.error('Failed to load Cusdis script', err);
-  }
-}
-
-/* ===== 5) auto-resize function (keeps the iframe height in sync) ===== */
-function resizeCusdis() {
-  const iframe = document.querySelector('#cusdis_thread iframe');
-  if (!iframe) return;
-  try {
-    const doc = iframe.contentDocument || iframe.contentWindow.document;
-    if (!doc || !doc.body) return;
-    const h = doc.body.scrollHeight;
-    if (h && iframe.style.height !== h + 'px') iframe.style.height = h + 'px';
-  } catch (e) {
-    // cross-origin protections may throw; ignore if so
-  }
-}
-
-/* periodic safety net */
-const __cusdisResizeInterval = setInterval(resizeCusdis, 1000);
-window.addEventListener('load', resizeCusdis);
-
-/* expose helper globally (so your showPost() can call renderCusdisNow()) */
-window.renderCusdisNow = renderCusdisNow;
-window.resizeCusdis = resizeCusdis;
-</script>
-
-<style>
-/* small optional styling for the iframe */
-#cusdis_thread { margin-top: 2rem; }
-#cusdis_thread iframe {
-  width: 100% !important;
-  min-height: 200px;
-  border: none !important;
-  overflow: hidden !important;
-  transition: height 0.15s ease;
-}
-</style>
-<!-- === end cusdis block === -->
+<script async defer src="https://cusdis.com/js/cusdis.es.js"></script>
 
 
 
