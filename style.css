@@ -157,6 +157,10 @@ margin-right: 10%;
   font-size: 28px;
 }
 
+.post-description{
+  font-style: italic;
+  font-size: 18px;
+}
 
 .blog-content img {
   max-width: 100%;
