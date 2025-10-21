@@ -45,6 +45,10 @@ figure figcaption {
   text-align: center;   /* center the caption */
   color: #555;          /* optional: slightly grey */
   margin-top: 0.2rem;   /* spacing from the image */
+  margin-bottom: 25px;
+}
+figure{
+  margin-top: 25px;
 }
 .post-card {
   background-color: #fff;
