@@ -5,28 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Hugo Begg Blog</title>
 <link rel="stylesheet" href="/style.css" />
-<style>
-/* small helpful styles for Cusdis iframe */
-#cusdis_thread {
-margin-top: 2rem; }
-    #cusdis_thread iframe {
-      width: 100% !important;
-      border: none !important;
-      min-height: 200px;
-      transition: height 0.15s ease;
-      overflow: hidden !important;
-    }
 
-    /* minimal back button */
-    .back-button {
-      background: none;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      padding: 6px 10px;
-      font-size: 0.95rem;
-      cursor: pointer;
-    }
-</style>
 </head>
 <body>
 
@@ -81,49 +60,91 @@ HUGO BEGG
 
 <div class="post-content" id="post-content"></div>
 <script>
-
-// Add your custom CSS overrides
+// Cusdis theme customization
 window.CUSDIS_THEME = {
-fontSize: '16px',
-colors: {
-primary: '#000',
-text: '#222',
-background: '#fff'
-},
-// Inject extra CSS
-customCss: `
-.cusdis-comment__header { font-size: 1.2rem !important; font-weight: 600 !important; }
-.cusdis-comment__content, .cusdis-comment__textarea, .cusdis-input {
-font-size: 0.5rem !important;
-}
-.cusdis-title, .cusdis-commentbox__title {
-font-size: 0.5rem !important;
-font-weight: bold !important;
-text-transform: uppercase;
-}
-`
+  fontSize: '16px',
+  colors: {
+    primary: '#000',        // Accent or link color
+    text: '#222',           // Main text color
+    background: '#fff',     // Background color
+    border: '#ddd'          // Border and separator color
+  },
+  customCss: `
+    /* Comment header (name + timestamp) */
+    .cusdis-comment__header {
+      font-size: 1rem !important;
+      font-weight: 600 !important;
+      color: #111 !important;
+      margin-bottom: 0.3rem !important;
+    }
+
+    /* Comment text */
+    .cusdis-comment__content {
+      font-size: 0.95rem !important;
+      line-height: 1.5 !important;
+      color: #222 !important;
+      margin-bottom: 1rem !important;
+    }
+
+    /* Input boxes (comment form) */
+    .cusdis-comment__textarea,
+    .cusdis-input {
+      font-size: 0.95rem !important;
+      border-radius: 6px !important;
+      border: 1px solid #ccc !important;
+      padding: 8px 10px !important;
+      background: #fafafa !important;
+    }
+
+    /* Labels and section titles */
+    .cusdis-title,
+    .cusdis-commentbox__title {
+      font-size: 0.85rem !important;
+      font-weight: 700 !important;
+      letter-spacing: 0.5px !important;
+      text-transform: uppercase !important;
+      color: #444 !important;
+      margin-bottom: 0.5rem !important;
+    }
+
+    /* Buttons */
+    .cusdis-btn {
+      background: #000 !important;
+      color: #fff !important;
+      border-radius: 6px !important;
+      padding: 8px 14px !important;
+      font-size: 0.9rem !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.5px !important;
+      border: none !important;
+      transition: background 0.2s ease !important;
+    }
+    .cusdis-btn:hover {
+      background: #333 !important;
+    }
+
+    /* Layout adjustments */
+    .cusdis-commentbox {
+      margin-top: 1.5rem !important;
+    }
+
+    /* Like button and meta actions */
+    .cusdis-comment__actions {
+      font-size: 0.8rem !important;
+      color: #777 !important;
+    }
+
+    /* Powered by Cusdis link */
+    .cusdis-powered-by {
+      font-size: 0.75rem !important;
+      color: #aaa !important;
+      margin-top: 1rem !important;
+    }
+  `
 };
 </script>
 
-<!-- === Cusdis: define locale BEFORE loading the Cusdis script === -->
-<script>
-window.CUSDIS_LOCALE = {
-en: {
-powered_by: 'Comments via Cusdis',
-post_comment: 'Send Comment',
-loading: 'Loading comments...',
-email: 'Your Email (optional)',
-nickname: 'Your Name',
-reply_placeholder: 'Write your reply...',
-comment_placeholder: 'Write your comment...',
-submit: 'Post Comment',
-like: '👍 Like',
-cancel: 'Cancel'
-}
-};
-</script>
 
-<!-- Single Cusdis embed container (only ONE) -->
 <div id="cusdis_thread"
 data-host="https://cusdis.com"
 data-app-id="2a79b9af-88d1-405c-a8f2-29b2650d0567"
