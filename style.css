@@ -134,7 +134,7 @@ color: #1426;
   padding-top: 1rem;
 }
 
-.cusdis-thread {
+#cusdis-thread {
   height: auto !important;
   max-height: none !important;
   overflow: visible !important;
