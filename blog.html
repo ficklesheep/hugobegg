@@ -75,16 +75,34 @@ data-page-title="{{ PAGE_TITLE }}"
 ></div>
 <script async defer src="https://cusdis.com/js/cusdis.es.js"></script>
 <script>
-  // Auto-resize Cusdis iframe
+  function resizeCusdis() {
+    const iframe = document.querySelector('#cusdis_thread iframe');
+    if (iframe && iframe.contentWindow) {
+      iframe.contentWindow.postMessage({ from: 'parent', type: 'resize' }, '*');
+    }
+  }
+
+  // Listen to Cusdis' resize messages
   window.addEventListener("message", function (event) {
-    if (event.data && event.data.from === "cusdis") {
+    if (event.data && event.data.from === "cusdis" && event.data.type === "resize") {
       const iframe = document.querySelector('#cusdis_thread iframe');
-      if (iframe && event.data.type === "resize") {
+      if (iframe) {
         iframe.style.height = event.data.data + "px";
       }
     }
   });
+
+  // Periodically check if content grows (Cusdis doesn't always send updates)
+  const observer = new MutationObserver(() => resizeCusdis());
+  const thread = document.getElementById('cusdis_thread');
+  if (thread) {
+    observer.observe(thread, { childList: true, subtree: true });
+  }
+
+  // Also trigger resize occasionally (safety net)
+  setInterval(resizeCusdis, 2000);
 </script>
+
 
 
 </div>
