@@ -70,9 +70,11 @@ background-color: red;
 }
 
 .profile-img-cont{
+  display: block;
   width: 100px;
   height: 100px;
   background-color: red;
+  border-radius: 20px;
 }
 
 .profile-box{
