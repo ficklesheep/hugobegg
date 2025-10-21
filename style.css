@@ -127,8 +127,9 @@ color: #1426;
   line-height: 1.6;
 }
 #cusdis_thread {
-  transform: scale(0.5);
+  transform: scale(0.8);
   width: 80%;
+
   border: none;
   font-size: 4px;
   transition: height 0.2s ease;
