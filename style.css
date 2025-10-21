@@ -20,12 +20,13 @@ html {
 }
 .blog-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  justify-content: start; /* instead of stretching 1fr */
+  grid-template-columns: repeat(auto-fit, minmax(300px, max-content));
   gap: 2rem;
   margin: 2rem auto;
   max-width: 1000px;
+  justify-content: center; /* center fewer posts */
 }
+
 
 
 .line{
