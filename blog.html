@@ -74,6 +74,70 @@ data-page-url="{{ PAGE_URL }}"
 data-page-title="{{ PAGE_TITLE }}"
 ></div>
 <script async defer src="https://cusdis.com/js/cusdis.es.js"></script>
+<script>
+/* Remove Cusdis scrollbar: force iframe to expand and remove fixed heights */
+(function() {
+  const FIX_STYLE = {
+    height: 'auto',
+    minHeight: '400px',     // adjust if you want smaller/larger initial height
+    maxHeight: 'none',
+    overflow: 'visible',
+    border: 'none',
+  };
+
+  function styleIframe(iframe) {
+    try {
+      // remove inline height attribute and force styles on the iframe element
+      iframe.removeAttribute('height');
+      Object.assign(iframe.style, FIX_STYLE);
+      // also remove any !important inline style if present by overriding via cssText
+      iframe.style.cssText += ';height:auto !important; max-height:none !important; overflow:visible !important;';
+    } catch (e) {
+      // cross-origin access not needed here — we only set parent iframe element styles
+      console.warn('cusdis iframe style attempt:', e);
+    }
+  }
+
+  function applyToAll() {
+    const iframes = document.querySelectorAll('iframe[src*="cusdis.com"], iframe[src*="cusdis"]');
+    iframes.forEach(styleIframe);
+  }
+
+  // Run once after a short delay (give Cusdis time to inject)
+  setTimeout(applyToAll, 500);
+
+  // Also run again after 2s and 5s in case it injects slower
+  setTimeout(applyToAll, 2000);
+  setTimeout(applyToAll, 5000);
+
+  // MutationObserver: watch the document for newly added iframes and style them immediately
+  const mo = new MutationObserver((mutations) => {
+    for (const m of mutations) {
+      if (!m.addedNodes) continue;
+      for (const node of m.addedNodes) {
+        if (node.tagName === 'IFRAME' && node.src && node.src.includes('cusdis')) {
+          styleIframe(node);
+        }
+        // also if a subtree is added that contains an iframe
+        if (node.querySelectorAll) {
+          const found = node.querySelectorAll('iframe[src*="cusdis.com"], iframe[src*="cusdis"]');
+          found.forEach(styleIframe);
+        }
+      }
+    }
+  });
+  mo.observe(document.documentElement || document.body, { childList: true, subtree: true });
+
+  // As a last-resort periodic fixer for the first 10 seconds (handles race conditions)
+  let tries = 0;
+  const interval = setInterval(() => {
+    applyToAll();
+    tries++;
+    if (tries > 10) clearInterval(interval);
+  }, 1000);
+})();
+</script>
+
 
 </div>
 </main>
@@ -190,7 +254,7 @@ cusdisThread.dataset.pageTitle = post.title;
 
 // Re-render Cusdis widget
 if (window.CUSDIS) {
-  window.CUSDIS.renderTo(cusdisThread);
+window.CUSDIS.renderTo(cusdisThread);
 }
 
 document.getElementById('blog-grid').style.display = 'none';

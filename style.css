@@ -126,19 +126,7 @@ color: #1426;
   font-family: 'Helvetica Neue', sans-serif;
   line-height: 1.6;
 }
-#cusdis_thread {
-  width: 100%;
-  max-width: 800px; /* optional */
-  margin-top: 2rem;
-  border-top: 1px solid #ddd;
-  padding-top: 1rem;
-}
 
-#cusdis-thread {
-  height: 100% !important;
-  max-height: none !important;
-  overflow: visible !important;
-}
 
 .blog-content h2, .blog-content h3 {
   margin-top: 1.5em;
