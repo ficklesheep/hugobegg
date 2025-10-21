@@ -127,12 +127,13 @@ color: #1426;
   line-height: 1.6;
 }
 #cusdis_thread iframe {
-  width: 100% !important;
-  height: auto !important;
-  min-height: 400px;
+  width: 100%;
   border: none;
-  overflow: visible !important;
+  transition: height 0.2s ease;
+  min-height: 200px;
+  overflow: hidden;
 }
+
 
 
 .blog-content h2, .blog-content h3 {
