@@ -38,6 +38,13 @@ html {
 .post-content{
   margin-bottom: 100px;
 }
+figure figcaption {
+  font-size: 0.85rem;  /* smaller text */
+  font-style: italic;   /* italics */
+  text-align: center;   /* center the caption */
+  color: #555;          /* optional: slightly grey */
+  margin-top: 0.4rem;   /* spacing from the image */
+}
 .post-card {
   background-color: #fff;
   overflow: hidden;
