@@ -127,7 +127,7 @@ color: #1426;
   line-height: 1.6;
 }
 #cusdis_thread iframe {
-  width: 100%;
+  width: 80%;
   border: none;
   transition: height 0.2s ease;
   min-height: 200px;
