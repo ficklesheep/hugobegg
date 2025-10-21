@@ -2,22 +2,24 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Hugo Begg Blog</title>
-<link rel="stylesheet" href="/style.css" />
-<style>
-/* small helpful styles for Cusdis iframe */
-#cusdis_thread {
-margin-top: 2rem; }
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hugo Begg Blog</title>
+  <link rel="stylesheet" href="/style.css" />
+
+  <style>
+    /* Cusdis iframe styling */
+    #cusdis_thread {
+      margin-top: 2rem;
+    }
     #cusdis_thread iframe {
       width: 100% !important;
       border: none !important;
       min-height: 200px;
-      transition: height 0.15s ease;
+      transition: height 0.2s ease;
       overflow: hidden !important;
     }
 
-    /* minimal back button */
+    /* Minimal back button */
     .back-button {
       background: none;
       border: 1px solid #ddd;
@@ -26,174 +28,10 @@ margin-top: 2rem; }
       font-size: 0.95rem;
       cursor: pointer;
     }
-</style>
+  </style>
 </head>
 <body>
 
 <header class="header__main">
-<div class="header__column--1">
-HUGO BEGG
-</div>
-<div class="header__column header__column--2">
-<div class="menu">
-<nav>
-<div class="menu-btn">
-<div class="menu-btn-burger"></div>
-</div>
-<ol>
-<li style="list-style:none"><a href="/gallery/street.html">STREET</a></li>
-<li style="list-style:none"><a href="/gallery/landscapes.html">LANDSCAPE</a></li>
-<li style="list-style:none"><a href="/gallery/travel.html">TRAVEL</a></li>
-<li style="list-style:none"><a href="/gallery/film.html">FILM</a></li>
-<li style="list-style:none"><a href="about.html">ABOUT</a></li>
-</ol>
-</nav>
-</div>
-</div>
-<div class="header__column--3">
-<a href="https://www.instagram.com/hugobegg/"><img style="width:20px" src="/images/instagram.png" alt=""></a>
-</div>
-</header>
-
-<main class="blog-container">
-
-<!-- Blog post grid -->
-<div id="blog-grid" class="blog-grid"></div>
-
-<!-- Blog content area -->
-<div id="blog-content" class="blog-content" style="display:none;">
-<button id="back-button" class="back-button">Back to posts</button>
-<h2 class="post-title" id="post-title"></h2>
-<div id="post-description" class="post-description"></div>
-
-<div class="profile-box">
-<div class="profile-img-cont"></div>
-<div class="sub-cont">
-<div class="author">
-HUGO BEGG
-</div>
-<p class="post-date" id="post-date"></p>
-</div>
-</div>
-
-<div class="line"></div>
-<img id="post-image" class="post-image" />
-
-<div class="post-content" id="post-content"></div>
-
-
-
-</main>
-
-<div id="footer-placeholder"></div>
-<script>
-fetch('/footer.html').then(r => r.text()).then(t => {
-document.getElementById('footer-placeholder').innerHTML = t;
-});
-</script>
-
-<script>
-/* Main posts loader & UI logic */
-let postsData = [];
-
-fetch('/public/posts.json')
-.then(response => response.json())
-.then(posts => {
-posts.sort((a, b) => new Date(b.date) - new Date(a.date));
-postsData = posts;
-const grid = document.getElementById('blog-grid');
-
-posts.forEach((post, index) => {
-const card = document.createElement('div');
-card.className = 'post-card';
-
-const img = document.createElement('img');
-img.className = 'post-card-image';
-if (post.image) {
-img.src = (post.image.startsWith('http') || post.image.startsWith('/')) ? post.image: '/static/bloguploads/' + post.image;
-img.alt = post.title + ' cover image';
-} else {
-img.src = '/static/bloguploads/placeholder.jpg';
-img.alt = 'No image available';
-}
-card.appendChild(img);
-
-const body = document.createElement('div');
-body.className = 'post-card-body';
-
-const title = document.createElement('div');
-title.className = 'post-card-title';
-title.textContent = post.title;
-
-const date = new Date(post.date || '');
-const dateEl = document.createElement('div');
-dateEl.className = 'post-card-date';
-dateEl.textContent = isNaN(date) ? '': date.toLocaleDateString();
-
-const description = document.createElement('div');
-description.className = 'post-card-desc';
-description.textContent = post.description || '';
-
-body.appendChild(title);
-body.appendChild(dateEl);
-body.appendChild(description);
-
-card.appendChild(body);
-
-body.style.cursor = 'pointer';
-body.addEventListener('click', () => showPost(index));
-
-grid.appendChild(card);
-});
-})
-.catch(err => console.error('posts.json load error',
-err));
-
-function showPost(index) {
-const post = postsData[index];
-if (!post) return;
-
-document.getElementById('post-title').textContent = post.title || '';
-document.getElementById('post-description').textContent = post.description || '';
-
-const date = new Date(post.date || '');
-document.getElementById('post-date').textContent = isNaN(date) ? '': date.toLocaleDateString();
-
-const imageEl = document.getElementById('post-image');
-if (post.image) {
-imageEl.src = (post.image.startsWith('http') || post.image.startsWith('/')) ? post.image: '/static/bloguploads/' + post.image;
-imageEl.alt = post.title + ' image';
-} else {
-imageEl.src = '';
-imageEl.alt = '';
-}
-
-document.getElementById('post-content').innerHTML = post.content || '';
-
-// Update Cusdis dataset attributes (use slug if available or fallback to title)
-const cusdisThread = document.getElementById('cusdis_thread');
-const pageId = post.slug ? String(post.slug): String(post.title || 'post-' + index);
-cusdisThread.dataset.pageId = pageId;
-cusdisThread.dataset.pageUrl = window.location.origin + '/blog/' + encodeURIComponent(pageId);
-cusdisThread.dataset.pageTitle = post.title || '';
-
-// Render Cusdis (retries until widget loaded)
-renderCusdisNow();
-
-// show post view
-document.getElementById('blog-grid').style.display = 'none';
-document.getElementById('blog-content').style.display = 'block';
-
-// try to resize after a short delay
-setTimeout(resizeCusdis, 600);
-}
-
-// back button
-document.getElementById('back-button').addEventListener('click', () => {
-document.getElementById('blog-content').style.display = 'none';
-document.getElementById('blog-grid').style.display = 'grid';
-});
-</script>
-
-</body>
-</html>
+  <div class="header__column--1">HUGO BEGG</div>
+  <div class="header__column header__column
