@@ -66,6 +66,15 @@ HUGO BEGG
 <img id="post-image" class="post-image" />
 
 <div class="post-content" id="post-content"></div>
+<div id="cusdis_thread"
+data-host="https://cusdis.com"
+data-app-id="2a79b9af-88d1-405c-a8f2-29b2650d0567"
+data-page-id="{{ PAGE_ID }}"
+data-page-url="{{ PAGE_URL }}"
+data-page-title="{{ PAGE_TITLE }}"
+></div>
+<script async defer src="https://cusdis.com/js/cusdis.es.js"></script>
+
 </div>
 </main>
 
@@ -173,7 +182,16 @@ imageEl.alt = '';
 }
 
 document.getElementById('post-content').innerHTML = post.content || '';
+// Update Cusdis comment section dynamically
+const cusdisThread = document.getElementById('cusdis_thread');
+cusdisThread.dataset.pageId = post.title;
+cusdisThread.dataset.pageUrl = window.location.origin + '/blog/' + post.slug;
+cusdisThread.dataset.pageTitle = post.title;
 
+// Re-render Cusdis widget
+if (window.CUSDIS) {
+  window.CUSDIS.renderTo(cusdisThread);
+}
 
 document.getElementById('blog-grid').style.display = 'none';
 document.getElementById('blog-content').style.display = 'block';
