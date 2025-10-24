@@ -147,6 +147,7 @@ border: none;
   font-family: Times New Roman;
   font-size: 14px;
 }
+
 #cusdis_thread {
   transform: scale(0.8);
   width: 80%;
@@ -775,7 +776,9 @@ main{
   grid-template-columns: 80% 10% 10%;
 }
 
-
+.blog-content{
+  font-size: 12px;
+}
 .blurb{
   writing-mode: horizontal-tb;
   transform: rotate(0deg);
