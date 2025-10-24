@@ -39,7 +39,7 @@ const posts = files.map(filePath => {
   // ✅ Update image path if it exists
   if (data.image) {
     const filename = path.basename(data.image);
-    const correctPath = `/static/bloguploads/${filename}`;
+    const correctPath = `/images/bloguploads/${filename}`;
     if (data.image !== correctPath) {
       console.log(`Updating image path in ${filePath}`);
       data.image = correctPath;
