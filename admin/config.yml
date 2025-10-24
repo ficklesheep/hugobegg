@@ -5,7 +5,7 @@ backend:
   site_domain: modest-wing-e14976.netlify.app
 
 media_folder: "images/bloguploads"   # where images are stored in your repo
-public_folder: "images/bloguploads"        # how they appear in your site URLs
+public_folder: "/images/bloguploads"        # how they appear in your site URLs
 
 collections:
   - name: "blog"
