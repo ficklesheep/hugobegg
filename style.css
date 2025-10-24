@@ -32,11 +32,13 @@ html {
   grid-template-columns: repeat(2, 1fr);
   gap: 10px;
   justify-items: center;
+  width: 100vw;
+  margin-left: 5%;
+  margin-right: 5%;
 }
 .img-row img {
   width: 100%;
   height: auto;
-  border-radius: 8px;
 }
 @media (max-width: 600px) {
   .img-row {
