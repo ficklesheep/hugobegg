@@ -20,14 +20,13 @@ collections:
       - { label: "Date", name: "date", widget: "datetime" }
       - { label: "Description", name: "description", widget: "text", required: false }
       - { label: "Cover Image", name: "image", widget: "image", required: false, hint: "Optional cover image for this post" }
-
       - label: "Body"
         name: "body"
         widget: "markdown"
         hint: "Main content (use the image button to insert photos inline)"
-
       - label: "Gallery"
         name: "gallery"
+        label_singular: "Image"
         widget: "list"
         required: false
         hint: "Optional gallery block with flexible layouts"
