@@ -92,8 +92,8 @@
 
   // Extract location and year for caption
   function extractLocationAndYear(fileName) {
-    // Match viewpor C_<location>--<country>--YYYY-MM-DD_xxxx.jpg
-    const match = fileName.match(/^C_(.+)--(\d{4})-\d{2}-\d{2}_\d+\.jpg$/);
+    // Match viewpor C_<location>--<country>--YYYY-MM-DD_xxxx.webp
+    const match = fileName.match(/^C_(.+)--(\d{4})-\d{2}-\d{2}_\d+\.webp$/);
     if (!match) return null;
 
     const rawLocation = match[1].replace(/--/g, ', ').replace(/-/g, ' ');
