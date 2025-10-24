@@ -25,43 +25,46 @@ html {
   margin: 2rem auto;
   max-width: 1000px;
   justify-content: center; /* center fewer posts */
-}
-.img-row {
-  display: flex !important;
+}.img-row {
+  display: flex;
   flex-wrap: nowrap;
   justify-content: center;
-  align-items: flex-start;
   gap: 10px;
 
-  /* full-bleed breakout */
+  /* Break out of content width */
   width: 100vw;
-  margin-left: 50%;
-  transform: translateX(-50%);
-  box-sizing: border-box;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
 
-  margin-top: 20px;
-  margin-bottom: 20px;
+  /* Add side margins */
+  padding: 0 4vw;
+  box-sizing: border-box;
 }
 
 .img-row img {
-  flex: 1 1 0;
-  max-width: 48%;
+  width: 48%;
   height: auto;
   border-radius: 8px;
   object-fit: cover;
 }
 
-/* Optional: captions beneath each image */
-.img-row figure {
-  flex: 1 1 0;
-  margin: 0;
+@media (max-width: 800px) {
+  .img-row {
+    flex-wrap: wrap;
+    width: 100%;
+    position: static;
+    margin: 0 auto;
+    padding: 0;
+  }
+
+  .img-row img {
+    width: 100%;
+  }
 }
-.img-row figcaption {
-  text-align: center;
-  font-size: 0.9em;
-  margin-top: 4px;
-  color: #666;
-}
+
 
 /* ---- Responsive: stack on mobile ---- */
 @media (max-width: 768px) {
