@@ -297,7 +297,7 @@ function showPost(index) {
   // Set main post image (optional)
   const imageEl = document.getElementById('post-image');
   if (post.image) {
-    imageEl.src = (post.image.startsWith('http') || post.image.startsWith('/')) ? post.image : '/static/bloguploads/' + post.image;
+    imageEl.src = (post.image.startsWith('http') || post.image.startsWith('/')) ? post.image : '/images/bloguploads/' + post.image;
     imageEl.alt = post.title + ' image';
   } else {
     imageEl.src = '';
