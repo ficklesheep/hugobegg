@@ -25,44 +25,20 @@ html {
   margin: 2rem auto;
   max-width: 1000px;
   justify-content: center; /* center fewer posts */
-}
-.gallery {
+}.post-content p {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
-  margin: 1.5rem 0;
   justify-content: center;
+  gap: 8px;
 }
 
-.gallery img {
-  width: 100%;
+.post-content p img {
+  flex: 1 1 48%;
+  max-width: 48%;
   height: auto;
-  border-radius: 8px;
-  object-fit: cover;
+  border-radius: 4px;
 }
 
-/* Layout options */
-.gallery.side-by-side img {
-  flex: 1 1 calc(50% - 10px);
-  max-width: calc(50% - 10px);
-}
-
-.gallery.three img {
-  flex: 1 1 calc(33.333% - 10px);
-  max-width: calc(33.333% - 10px);
-}
-
-.gallery.full img {
-  flex: 1 1 100%;
-  max-width: 100%;
-}
-
-@media (max-width: 700px) {
-  .gallery.side-by-side img,
-  .gallery.three img {
-    max-width: 100%;
-  }
-}
 
 
 
