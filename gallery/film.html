@@ -84,7 +84,7 @@ const lightboxContainer = document.getElementById("gallery-lightboxes");
 
 // Get image number (for lightbox anchors)
 function getImageNumberFromFileName(fileName) {
-  const match = fileName.match(/film_(\d+)\.jpg$/);
+  const match = fileName.match(/film_(\d+)\.webp$/);
   return match ? match[1] : null;
 }
 
@@ -175,7 +175,7 @@ function createGalleryRows(fileNames) {
 function createLightboxElements(fileNames) {
   lightboxContainer.innerHTML = "";
   fileNames.forEach(fileName => {
-    const numMatch = fileName.match(/film_(\d+)\.jpg$/);
+    const numMatch = fileName.match(/film_(\d+)\.webp$/);
     if (!numMatch) return;
 
     const number = numMatch[1];

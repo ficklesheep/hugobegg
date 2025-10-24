@@ -104,11 +104,11 @@
 
     // Get image number (for lightbox anchors)
     function getImageNumberFromFileName(fileName) {
-      const match = fileName.match(/_(\d+)\.jpg$/);
+      const match = fileName.match(/_(\d+)\.webp$/);
       return match ? match[1]: null;
     }
 
-    // Extract date as integer YYYYMMDD from filename like T_location--country--YYYYMMDD_xxxx.jpg
+    // Extract date as integer YYYYMMDD from filename like T_location--country--YYYYMMDD_xxxx.webp
     function getDateFromFileName(fileName) {
       // Match --YYYY-MM-DD_ pattern
       const match = fileName.match(/--(\d{4})-(\d{2})-(\d{2})_/);
@@ -138,8 +138,8 @@
 
     // Extract location and year for caption
     function extractLocationAndYear(fileName) {
-      // Match T_<location>--<country>--YYYY-MM-DD_xxxx.jpg
-      const match = fileName.match(/^T_(.+)--(\d{4})-\d{2}-\d{2}_\d+\.jpg$/);
+      // Match T_<location>--<country>--YYYY-MM-DD_xxxx.webp
+      const match = fileName.match(/^T_(.+)--(\d{4})-\d{2}-\d{2}_\d+\.webp$/);
       if (!match) return null;
 
       // match[1] = "San-Miguel--Mexico"
@@ -226,7 +226,7 @@
       lightboxContainer.innerHTML = "";
       fileNames.forEach(fileName => {
         const info = extractLocationAndYear(fileName);
-        const numMatch = fileName.match(/_(\d+)\.jpg$/);
+        const numMatch = fileName.match(/_(\d+)\.webp$/);
         if (!numMatch) return;
 
         const number = numMatch[1];

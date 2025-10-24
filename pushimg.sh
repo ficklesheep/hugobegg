@@ -7,7 +7,6 @@ command -v magick >/dev/null 2>&1 || {
 }
 
 # Directory paths
-LOAD_DIR="gallery/images/load"
 FILM_DIR="gallery/images/film_fullsize"
 FILM_THUMBS_DIR="gallery/images/film_thumbnails"
 LANDSCAPES_DIR="gallery/images/landscapes_fullsize"
@@ -24,127 +23,76 @@ STREET_LIST_FILE="$STREET_DIR/filelist.txt"
 TRAVEL_LIST_FILE="$TRAVEL_DIR/filelist.txt"
 COVERS_LIST_FILE="$COVERS_DIR/filelist.txt"
 
-# Update file list (only image files, remove missing)
+# Create missing thumbnail dirs
+mkdir -p "$FILM_THUMBS_DIR" "$LANDSCAPES_THUMBS_DIR" "$STREET_THUMBS_DIR" "$TRAVEL_THUMBS_DIR"
+
+# --- Helper: resize/convert image to webp ---
+convert_to_webp() {
+    local input=$1
+    local output=$2
+    local width=$3
+    local height=$4
+
+    [[ ! -f "$input" ]] && { echo "Missing: $input"; return; }
+    [[ -f "$output" ]] && return  # Skip existing
+
+    magick "$input" -resize "${width}x${height}>" -quality 85 "$output"
+    echo "✅ Created $output"
+}
+
+# --- Helper: update filelist.txt ---
 update_file_list() {
     local dir=$1
     local list_file=$2
 
-    # For carousel, ignore cover.jpg
+    # Ignore cover.webp in carousel
     if [[ "$dir" == "$COVERS_DIR" ]]; then
-        find "$dir" -maxdepth 1 -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" \) \
-            ! -iname "cover.jpg" -exec basename {} \; > "$list_file"
+        find "$dir" -maxdepth 1 -type f -iname "*.webp" ! -iname "cover.webp" -exec basename {} \; > "$list_file"
     else
-        find "$dir" -maxdepth 1 -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" \) \
-            -exec basename {} \; > "$list_file"
+        find "$dir" -maxdepth 1 -type f -iname "*.webp" -exec basename {} \; > "$list_file"
     fi
+    echo "📄 Updated $list_file"
 }
 
-# Update all file lists
-update_all_file_lists() {
-    echo "Updating all file lists..."
-    update_file_list "$FILM_DIR" "$FILM_LIST_FILE"
-    update_file_list "$LANDSCAPES_DIR" "$LANDSCAPES_LIST_FILE"
-    update_file_list "$STREET_DIR" "$STREET_LIST_FILE"
-    update_file_list "$TRAVEL_DIR" "$TRAVEL_LIST_FILE"
-    update_file_list "$COVERS_DIR" "$COVERS_LIST_FILE"
-    echo "All file lists updated."
-}
+# --- Process one directory pair ---
+process_pair() {
+    local full_dir=$1
+    local thumb_dir=$2
+    local list_file=$3
 
-# Resize image
-resize_image() {
-    local image_path=$1
-    local dest_path=$2
-    local max_width=$3
-    local max_height=$4
+    echo "Processing $full_dir ..."
 
-    [[ ! -f "$image_path" ]] && { echo "Skipping missing $image_path"; return; }
-    magick "$image_path" -resize "${max_width}x${max_height}>" "$dest_path"
-    echo "Resized $image_path -> $dest_path"
-}
+    for img in "$full_dir"/*.{jpg,jpeg,png}; do
+        [[ -f "$img" ]] || continue
+        base=$(basename "$img")
+        name="${base%.*}"
 
-# Recreate missing thumbnail
-recreate_missing_thumbnail() {
-    local thumb_file=$1
-    local full_file=$2
-    [[ ! -f "$full_file" || -f "$thumb_file" ]] && return
-    resize_image "$full_file" "$thumb_file" 900 900
-}
+        full_webp="$full_dir/$name.webp"
+        thumb_webp="$thumb_dir/$name.webp"
 
-# Move files from LOAD_DIR
-move_resized_files() {
-    for file in "$LOAD_DIR"/*; do
-        [[ -f "$file" ]] || continue
-        filename=$(basename "$file")
-        first_letter=${filename:0:1}
+        # 1. Convert fullsize to webp (keep original JPG)
+        convert_to_webp "$img" "$full_webp" 1850 1850
 
-        # Skip carousel cover.jpg
-        [[ "$first_letter" == [cC] && "$filename" == "cover.jpg" ]] && { echo "Skipping $filename"; continue; }
-
-        name="${filename%.*}"
-        ext="${filename##*.}"
-
-        case "$first_letter" in
-            f|F) full="$FILM_DIR"; thumb="$FILM_THUMBS_DIR"; list="$FILM_LIST_FILE" ;;
-            l|L) full="$LANDSCAPES_DIR"; thumb="$LANDSCAPES_THUMBS_DIR"; list="$LANDSCAPES_LIST_FILE" ;;
-            s|S) full="$STREET_DIR"; thumb="$STREET_THUMBS_DIR"; list="$STREET_LIST_FILE" ;;
-            t|T) full="$TRAVEL_DIR"; thumb="$TRAVEL_THUMBS_DIR"; list="$TRAVEL_LIST_FILE" ;;
-            c|C) full="$COVERS_DIR"; thumb=""; list="$COVERS_LIST_FILE" ;;
-            *) echo "Skipping unknown category: $filename"; continue ;;
-        esac
-
-        mkdir -p "$full"
-        [[ -n "$thumb" ]] && mkdir -p "$thumb"
-
-        resize_image "$file" "$full/$filename" 1850 1850
-        [[ -n "$thumb" ]] && resize_image "$file" "$thumb/$name.jpg" 900 900
-
-        update_file_list "$full" "$list"
+        # 2. Create thumbnail as webp
+        convert_to_webp "$img" "$thumb_webp" 900 900
     done
+
+    # 3. Update filelist
+    update_file_list "$full_dir" "$list_file"
 }
 
-# Delete orphaned thumbnails
-delete_orphaned_thumbnails() {
-    for thumb_dir in "$FILM_THUMBS_DIR" "$LANDSCAPES_THUMBS_DIR" "$STREET_THUMBS_DIR" "$TRAVEL_THUMBS_DIR"; do
-        [[ -d "$thumb_dir" ]] || continue
-        full_dir=""
-        case "$thumb_dir" in
-            "$FILM_THUMBS_DIR") full_dir="$FILM_DIR" ;;
-            "$LANDSCAPES_THUMBS_DIR") full_dir="$LANDSCAPES_DIR" ;;
-            "$STREET_THUMBS_DIR") full_dir="$STREET_DIR" ;;
-            "$TRAVEL_THUMBS_DIR") full_dir="$TRAVEL_DIR" ;;
-        esac
-        for thumb in "$thumb_dir"/*; do
-            [[ -f "$thumb" ]] || continue
-            [[ ! -f "$full_dir/$(basename "$thumb")" ]] && { rm "$thumb"; echo "Deleted orphan $thumb"; }
-        done
-    done
-}
+# --- Main run ---
+process_pair "$FILM_DIR" "$FILM_THUMBS_DIR" "$FILM_LIST_FILE"
+process_pair "$LANDSCAPES_DIR" "$LANDSCAPES_THUMBS_DIR" "$LANDSCAPES_LIST_FILE"
+process_pair "$STREET_DIR" "$STREET_THUMBS_DIR" "$STREET_LIST_FILE"
+process_pair "$TRAVEL_DIR" "$TRAVEL_THUMBS_DIR" "$TRAVEL_LIST_FILE"
 
-# Recreate missing thumbnails
-recreate_missing_thumbnails() {
-    for thumb_dir in "$FILM_THUMBS_DIR" "$LANDSCAPES_THUMBS_DIR" "$STREET_THUMBS_DIR" "$TRAVEL_THUMBS_DIR"; do
-        full_dir=""
-        case "$thumb_dir" in
-            "$FILM_THUMBS_DIR") full_dir="$FILM_DIR" ;;
-            "$LANDSCAPES_THUMBS_DIR") full_dir="$LANDSCAPES_DIR" ;;
-            "$STREET_THUMBS_DIR") full_dir="$STREET_DIR" ;;
-            "$TRAVEL_THUMBS_DIR") full_dir="$TRAVEL_DIR" ;;
-        esac
-        for full_file in "$full_dir"/*; do
-            [[ -f "$full_file" ]] || continue
-            name="${full_file##*/}"; name="${name%.*}"
-            recreate_missing_thumbnail "$thumb_dir/$name.jpg" "$full_file"
-        done
-    done
-}
+# Process carousel (no thumbnails)
+for img in "$COVERS_DIR"/*.{jpg,jpeg,png}; do
+    [[ -f "$img" ]] || continue
+    name="${img%.*}"
+    convert_to_webp "$img" "$name.webp" 1850 1850
+done
+update_file_list "$COVERS_DIR" "$COVERS_LIST_FILE"
 
-# Main
-if [[ "$1" == "update_lists" ]]; then
-    update_all_file_lists
-    exit 0
-fi
-
-move_resized_files
-delete_orphaned_thumbnails
-recreate_missing_thumbnails
-update_all_file_lists  # <-- ensures file lists reflect current state
+echo "✅ All conversions complete."

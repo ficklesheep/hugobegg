@@ -91,7 +91,7 @@
 
     // Get image number (for lightbox anchors)
     function getImageNumberFromFileName(fileName) {
-      const match = fileName.match(/street_(\d+)\.jpg$/);
+      const match = fileName.match(/street_(\d+)\.webp$/);
       return match ? match[1]: null;
     }
 
@@ -184,7 +184,7 @@
     function createLightboxElements(fileNames) {
       lightboxContainer.innerHTML = "";
       fileNames.forEach(fileName => {
-        const numMatch = fileName.match(/street_(\d+)\.jpg$/);
+        const numMatch = fileName.match(/street_(\d+)\.webp$/);
         if (!numMatch) return;
 
         const number = numMatch[1];
