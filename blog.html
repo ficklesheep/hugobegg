@@ -306,8 +306,29 @@ imageEl.alt = '';
 
 // Render post content
 const contentEl = document.getElementById('post-content');
+
 contentEl.innerHTML = post.content || '';
 
+// After inserting markdown content (contentEl.innerHTML = post.body or similar):
+const paragraphs = contentEl.querySelectorAll('p');
+let currentRow = [];
+
+paragraphs.forEach(p => {
+  const imgs = p.querySelectorAll('img');
+  if (imgs.length === 1 && p.childNodes.length === 1) {
+    currentRow.push(p);
+  } else {
+    // When we hit text or non-image, wrap the collected images if >1
+    if (currentRow.length > 1) {
+      const rowDiv = document.createElement('div');
+      rowDiv.className = 'img-row';
+      currentRow.forEach(imgP => rowDiv.appendChild(imgP.querySelector('img')));
+      currentRow[0].parentNode.insertBefore(rowDiv, currentRow[0]);
+      currentRow.forEach(imgP => imgP.remove());
+    }
+    currentRow = [];
+  }
+});
 
 // Wrap images with captions
 const imgs = contentEl.querySelectorAll('img[title]');
