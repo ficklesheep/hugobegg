@@ -4,8 +4,8 @@ backend:
   branch: master
   site_domain: modest-wing-e14976.netlify.app
 
-media_folder: "images/bloguploads"   # where images are stored in your repo
-public_folder: "images/bloguploads"        # how they appear in your site URLs
+media_folder: "images/bloguploads"   # stored in repo
+public_folder: "/images/bloguploads" # public URL path (note leading slash!)
 
 collections:
   - name: "blog"
@@ -20,7 +20,22 @@ collections:
       - { label: "Date", name: "date", widget: "datetime" }
       - { label: "Description", name: "description", widget: "text", required: false }
       - { label: "Cover Image", name: "image", widget: "image", required: false, hint: "Optional cover image for this post" }
+
       - label: "Body"
         name: "body"
         widget: "markdown"
         hint: "Main content (use the image button to insert photos inline)"
+
+      - label: "Gallery"
+        name: "gallery"
+        widget: "list"
+        required: false
+        hint: "Optional gallery block with flexible layouts"
+        fields:
+          - { label: "Image", name: "img", widget: "image" }
+          - { label: "Caption", name: "caption", widget: "string", required: false }
+          - label: "Layout"
+            name: "layout"
+            widget: "select"
+            options: ["single", "side-by-side", "three", "full-bleed"]
+            default: "single"

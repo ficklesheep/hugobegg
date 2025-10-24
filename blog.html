@@ -307,6 +307,31 @@ imageEl.alt = '';
 // Render post content
 const contentEl = document.getElementById('post-content');
 contentEl.innerHTML = post.content || '';
+if (post.gallery && Array.isArray(post.gallery)) {
+  const galleryContainer = document.createElement('div');
+  galleryContainer.className = 'gallery-container';
+
+  post.gallery.forEach(item => {
+    const div = document.createElement('div');
+    div.className = 'gallery-item ' + (item.layout || 'single');
+
+    const img = document.createElement('img');
+    img.src = item.img.startsWith('/') ? item.img : '/images/bloguploads/' + item.img;
+    img.alt = item.caption || '';
+    div.appendChild(img);
+
+    if (item.caption) {
+      const caption = document.createElement('p');
+      caption.className = 'caption';
+      caption.textContent = item.caption;
+      div.appendChild(caption);
+    }
+
+    galleryContainer.appendChild(div);
+  });
+
+  contentEl.appendChild(galleryContainer);
+}
 
 // Wrap images with captions
 const imgs = contentEl.querySelectorAll('img[title]');

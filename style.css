@@ -26,6 +26,43 @@ html {
   max-width: 1000px;
   justify-content: center; /* center fewer posts */
 }
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 1.5rem 0;
+  justify-content: center;
+}
+
+.gallery img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+/* Layout options */
+.gallery.side-by-side img {
+  flex: 1 1 calc(50% - 10px);
+  max-width: calc(50% - 10px);
+}
+
+.gallery.three img {
+  flex: 1 1 calc(33.333% - 10px);
+  max-width: calc(33.333% - 10px);
+}
+
+.gallery.full img {
+  flex: 1 1 100%;
+  max-width: 100%;
+}
+
+@media (max-width: 700px) {
+  .gallery.side-by-side img,
+  .gallery.three img {
+    max-width: 100%;
+  }
+}
 
 
 
