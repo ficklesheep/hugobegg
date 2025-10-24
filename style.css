@@ -32,9 +32,9 @@ html {
   grid-template-columns: repeat(2, 1fr);
   gap: 10px;
   justify-items: center;
-  width: 100vw;
-  margin-left: 5%;
-  margin-right: 5%;
+  width: 90vw;
+  margin-left: 5vw;
+  margin-right: 5vw;
 }
 .img-row img {
   width: 100%;
