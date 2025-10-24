@@ -27,20 +27,20 @@ html {
   justify-content: center; /* center fewer posts */
 }
 
-  .img-row {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+.img-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   gap: 10px;
+  justify-items: center;
 }
 .img-row img {
-  width: 48%;
+  width: 100%;
   height: auto;
   border-radius: 8px;
 }
 @media (max-width: 600px) {
-  .img-row img {
-    width: 100%;
+  .img-row {
+    grid-template-columns: 1fr;
   }
 }
 
