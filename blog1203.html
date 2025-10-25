@@ -244,13 +244,11 @@ caption.textContent = img.getAttribute('title');
 fig.appendChild(caption);
 });
 
-/* Step 2: Group standalone images (or figures) into img-row */
-const paragraphs = contentEl.querySelectorAll('p');
+const paragraphs = Array.from(contentEl.querySelectorAll('p'));
 let currentRow = [];
 
 function flushRow() {
   if (currentRow.length === 1) {
-    // Single image stays in its own container
     const p = currentRow[0];
     const imgOrFig = p.querySelector('img, figure');
     if (imgOrFig) {
@@ -258,21 +256,31 @@ function flushRow() {
       container.className = 'single-img';
       imgOrFig.replaceWith(container);
       container.appendChild(imgOrFig);
-      p.remove();
     }
+    p.remove();
   } else if (currentRow.length > 1) {
-    // Multiple images -> wrap in img-row
     const rowDiv = document.createElement('div');
     rowDiv.className = 'img-row';
     currentRow.forEach(p => {
-      const el = p.querySelector('img, figure');
-      if (el) rowDiv.appendChild(el);
+      const imgs = p.querySelectorAll('img, figure');
+      imgs.forEach(img => rowDiv.appendChild(img));
     });
     currentRow[0].parentNode.insertBefore(rowDiv, currentRow[0]);
     currentRow.forEach(p => p.remove());
   }
   currentRow = [];
 }
+
+paragraphs.forEach(p => {
+  const imgs = p.querySelectorAll('img, figure');
+  if (imgs.length > 0) {
+    currentRow.push(p);
+  } else {
+    flushRow();
+  }
+});
+flushRow();
+
 
 
 
