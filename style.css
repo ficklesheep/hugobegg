@@ -38,7 +38,7 @@ html {
   display: flex;
   flex-wrap: nowrap;
   justify-content: center;
-  gap: 10px;
+  gap: 15px;
   width: 100vw;
   position: relative;
   left: 50%;
@@ -54,6 +54,7 @@ html {
   width: 48%;
   margin: 0;
   overflow: hidden;
+  border-radius:; 0 !important;
 }
 
 .img-row img {
