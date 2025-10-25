@@ -22,6 +22,10 @@ html {
   margin-top: 25px;
   margin-bottom: 25px;
 } 
+
+.blog-content img{
+  justify-self: center;
+}
 .blog-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, max-content));
