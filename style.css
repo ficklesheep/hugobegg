@@ -25,6 +25,7 @@ html {
 
 .blog-content img{
   justify-self: center;
+  margin-top: 35px;
 }
 .blog-grid {
   display: grid;
