@@ -1,152 +1,350 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Post Viewer</title>
-  <style>
-    body {
-      font-family: system-ui, sans-serif;
-      line-height: 1.6;
-      margin: 0;
-      padding: 20px;
-      max-width: 800px;
-      margin-left: auto;
-      margin-right: auto;
-    }
+  <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Hugo Begg Blog</title>
+<link rel="stylesheet" href="/style.css" />
 
-    .img-row {
-      display: flex;
-      flex-wrap: nowrap;
-      justify-content: center;
-      gap: 10px;
-      width: 100vw;
-      position: relative;
-      left: 50%;
-      right: 50%;
-      margin-left: -50vw;
-      margin-right: -50vw;
-      padding: 0 4vw;
-      box-sizing: border-box;
-    }
+<style>
+/* Image row layout */
+.img-row {
+display: flex;
+flex-wrap: nowrap;
+justify-content: center;
+gap: 10px;
 
-    .img-row > figure,
-    .img-row > img {
-      width: 48%;
-      margin: 0;
-      border-radius: 8px;
-      overflow: hidden;
-    }
+/* Break out of content width */
+width: 100vw;
+position: relative;
+left: 50%;
+right: 50%;
+margin-left: -50vw;
+margin-right: -50vw;
 
-    .img-row img {
-      width: 100%;
-      height: auto;
-      display: block;
-      object-fit: cover;
-      border-radius: 8px;
-    }
+/* Add side margins */
+padding: 0 4vw;
+box-sizing: border-box;
+}
 
-    .img-row figcaption {
-      text-align: center;
-      font-size: 0.9em;
-      color: #666;
-      margin-top: 4px;
-    }
+.img-row > figure,
+.img-row > img {
+width: 48%;
+margin: 0;
+border-radius: 8px;
+overflow: hidden;
+}
 
-    @media (max-width: 800px) {
-      .img-row {
-        flex-wrap: wrap;
-        width: 100%;
-        position: static;
-        margin: 0 auto;
-        padding: 0;
-      }
+.img-row img {
+width: 100%;
+height: auto;
+display: block;
+object-fit: cover;
+border-radius: 8px;
+}
 
-      .img-row > figure,
-      .img-row > img {
-        width: 100%;
-      }
-    }
-  </style>
+.img-row figcaption {
+text-align: center;
+font-size: 0.9em;
+color: #666;
+margin-top: 4px;
+}
+
+@media (max-width: 800px) {
+.img-row {
+flex-wrap: wrap;
+width: 100%;
+position: static;
+margin: 0 auto;
+padding: 0;
+}
+
+.img-row > figure,
+.img-row > img {
+width: 100%;
+}
+}
+</style>
 </head>
 <body>
-  <article id="post-content"></article>
 
-  <script>
-    const post = {
-      // Simulate content loaded from Markdown or CMS:
-      content: `
-This is a paragraph before the images.
+<header class="header__main">
+<div class="header__column--1">
+HUGO BEGG
+</div>
 
-![Alt 1](image1.jpg "Caption 1")
-![Alt 2](image2.jpg)
+<div class="header__column header__column--2">
+<div class="menu">
+<nav>
+<div class="menu-btn">
+<div class="menu-btn-burger"></div>
+</div>
+<ol>
+<li style="list-style:none"><a href="/gallery/street.html">STREET</a></li>
+<li style="list-style:none"><a href="/gallery/landscapes.html">LANDSCAPE</a></li>
+<li style="list-style:none"><a href="/gallery/travel.html">TRAVEL</a></li>
+<li style="list-style:none"><a href="/gallery/film.html">FILM</a></li>
+<li style="list-style:none"><a href="about.html">ABOUT</a></li>
+</ol>
+</nav>
+</div>
+</div>
 
-Another paragraph after.
+<div class="header__column--3">
+<a href="https://www.instagram.com/hugobegg/">
+<img style="width:20px" src="/images/instagram.png" alt="">
+</a>
+</div>
+</header>
+
+<main class="blog-container">
+<!-- Blog post grid -->
+<div id="blog-grid" class="blog-grid"></div>
+
+<!-- Blog content area -->
+<div id="blog-content" class="blog-content" style="display:none;">
+<button id="back-button" class="back-button">Back to posts</button>
+<h2 class="post-title" id="post-title"></h2>
+<div id="post-description" class="post-description"></div>
+
+<div class="profile-box">
+<div class="profile-img-cont"></div>
+<div class="sub-cont">
+<div class="author">
+HUGO BEGG
+</div>
+<p class="post-date" id="post-date"></p>
+</div>
+</div>
+
+<div class="line"></div>
+<img id="post-image" class="post-image" />
+
+<div class="post-content" id="post-content"></div>
+<div class="line"></div>
+
+<!-- Cusdis theme and rendering -->
+<script>
+window.CUSDIS_THEME = {
+fontSize: '16px',
+colors: {
+primary: '#000',
+text: '#222',
+background: '#fff',
+border: '#ddd'
+},
+customCss: `
+.cusdis-comment__header { font-size: 1rem !important; font-weight: 600 !important; color: #111 !important; margin-bottom: 0.3rem !important; }
+.cusdis-comment__content { font-size: 0.95rem !important; line-height: 1.5 !important; color: #222 !important; margin-bottom: 1rem !important; }
+.cusdis-comment__textarea, .cusdis-input { font-size: 0.95rem !important; border-radius: 6px !important; border: 1px solid #ccc !important; padding: 8px 10px !important; background: #fafafa !important; }
+.cusdis-title, .cusdis-commentbox__title { font-size: 0.85rem !important; font-weight: 700 !important; text-transform: uppercase !important; color: #444 !important; margin-bottom: 0.5rem !important; }
+.cusdis-btn { background: #000 !important; color: #fff !important; border-radius: 6px !important; padding: 8px 14px !important; font-size: 0.9rem !important; text-transform: uppercase !important; border: none !important; transition: background 0.2s ease !important; }
+.cusdis-btn:hover { background: #333 !important; }
+.cusdis-commentbox { margin-top: 1.5rem !important; }
+.cusdis-comment__actions { font-size: 0.8rem !important; color: #777 !important; }
+.cusdis-powered-by { font-size: 0.75rem !important; color: #aaa !important; margin-top: 1rem !important; }
 `
-    };
+};
+</script>
 
-    function showPost() {
-      const contentEl = document.getElementById('post-content');
+<div id="cusdis_thread"
+data-host="https://cusdis.com"
+data-app-id="2a79b9af-88d1-405c-a8f2-29b2650d0567"
+data-page-id=""
+data-page-url=""
+data-page-title=""
+data-lang="en">
+</div>
 
-      // Convert newlines into paragraphs if there are no <p> tags
-      const lines = post.content.trim().split(/\n{2,}/);
-      const htmlWithParagraphs = lines.map(line => {
-        if (line.trim().startsWith('<')) return line;
-        return '<p>' + line.replace(/\n/g, '<br>') + '</p>';
-      }).join('\n');
+<script async defer src="https://cusdis.com/js/cusdis.es.js"></script>
 
-      contentEl.innerHTML = htmlWithParagraphs;
+<script>
+function renderCusdisNow() {
+const el = document.getElementById('cusdis_thread');
+if (!el) return;
 
-      // --- Step 1: Wrap images with captions ---
-      const imgsWithTitles = contentEl.querySelectorAll('img[title]');
-      imgsWithTitles.forEach(img => {
-        if (img.parentElement.tagName.toLowerCase() === 'figure') return;
+if (window.CUSDIS && typeof window.CUSDIS.renderTo === 'function') {
+try {
+window.CUSDIS.renderTo(el);
+setTimeout(resizeCusdis, 300);
+} catch (e) {
+console.warn('CUSDIS.renderTo error', e);
+}
+} else {
+setTimeout(renderCusdisNow, 250);
+}
+}
 
-        const fig = document.createElement('figure');
-        img.replaceWith(fig);
-        fig.appendChild(img);
+function resizeCusdis() {
+const iframe = document.querySelector('#cusdis_thread iframe');
+if (!iframe) return;
+try {
+const doc = iframe.contentDocument || iframe.contentWindow.document;
+if (!doc || !doc.body) return;
+const h = doc.body.scrollHeight;
+if (h && iframe.style.height !== h + 'px') {
+iframe.style.height = h + 'px';
+}
+} catch (e) {}
+}
 
-        const caption = document.createElement('figcaption');
-        caption.textContent = img.getAttribute('title');
-        fig.appendChild(caption);
-      });
+const _cusdisResizeInterval = setInterval(resizeCusdis, 1000);
+window.addEventListener('load', () => setTimeout(resizeCusdis, 500));
+window.addEventListener('message', e => {
+if (e?.data?.from === 'cusdis' && e.data.type === 'resize') resizeCusdis();
+});
+</script>
+</div>
+</main>
 
-      // --- Step 2: Group adjacent images or figures into .img-row ---
-      const paragraphs = contentEl.querySelectorAll('p');
-      let currentRow = [];
+<div id="footer-placeholder"></div>
+<script>
+fetch('/footer.html').then(r => r.text()).then(t => {
+document.getElementById('footer-placeholder').innerHTML = t;
+});
+</script>
 
-      paragraphs.forEach(p => {
-        const imgs = p.querySelectorAll('img, figure');
-        if (imgs.length === 1 && p.childNodes.length === 1) {
-          currentRow.push(p);
-        } else {
-          if (currentRow.length > 1) {
-            const rowDiv = document.createElement('div');
-            rowDiv.className = 'img-row';
-            currentRow.forEach(imgP => {
-              const el = imgP.querySelector('img, figure');
-              if (el) rowDiv.appendChild(el);
-            });
-            currentRow[0].parentNode.insertBefore(rowDiv, currentRow[0]);
-            currentRow.forEach(imgP => imgP.remove());
-          }
-          currentRow = [];
-        }
-      });
+<script>
+let postsData = [];
 
-      if (currentRow.length > 1) {
-        const rowDiv = document.createElement('div');
-        rowDiv.className = 'img-row';
-        currentRow.forEach(imgP => {
-          const el = imgP.querySelector('img, figure');
-          if (el) rowDiv.appendChild(el);
-        });
-        currentRow[0].parentNode.insertBefore(rowDiv, currentRow[0]);
-        currentRow.forEach(imgP => imgP.remove());
-      }
-    }
+fetch('/public/posts.json')
+.then(response => response.json())
+.then(posts => {
+posts.sort((a, b) => new Date(b.date) - new Date(a.date));
+postsData = posts;
+const grid = document.getElementById('blog-grid');
 
-    document.addEventListener('DOMContentLoaded', showPost);
-  </script>
+posts.forEach((post, index) => {
+const card = document.createElement('div');
+card.className = 'post-card';
+
+const img = document.createElement('img');
+img.className = 'post-card-image';
+if (post.image) {
+img.src = (post.image.startsWith('http') || post.image.startsWith('/'))
+? post.image: '/images/bloguploads/' + post.image;
+img.alt = post.title + ' cover image';
+} else {
+img.src = '/images/bloguploads/placeholder.jpg';
+img.alt = 'No image available';
+}
+card.appendChild(img);
+
+const body = document.createElement('div');
+body.className = 'post-card-body';
+
+const title = document.createElement('div');
+title.className = 'post-card-title';
+title.textContent = post.title;
+
+const date = new Date(post.date || '');
+const dateEl = document.createElement('div');
+dateEl.className = 'post-card-date';
+dateEl.textContent = isNaN(date) ? '': date.toLocaleDateString();
+
+const description = document.createElement('div');
+description.className = 'post-card-desc';
+description.textContent = post.description || '';
+
+body.appendChild(title);
+body.appendChild(dateEl);
+body.appendChild(description);
+
+card.appendChild(body);
+
+body.style.cursor = 'pointer';
+body.addEventListener('click', () => showPost(index));
+
+grid.appendChild(card);
+});
+})
+.catch(err => console.error('posts.json load error', err));
+
+function showPost(index) {
+const post = postsData[index];
+if (!post) return;
+
+document.getElementById('post-title').textContent = post.title || '';
+document.getElementById('post-description').textContent = post.description || '';
+
+const date = new Date(post.date || '');
+document.getElementById('post-date').textContent = isNaN(date) ? '': date.toLocaleDateString();
+
+const imageEl = document.getElementById('post-image');
+if (post.image) {
+imageEl.src = (post.image.startsWith('http') || post.image.startsWith('/'))
+? post.image: '/images/bloguploads/' + post.image;
+imageEl.alt = post.title + ' image';
+} else {
+imageEl.src = '';
+imageEl.alt = '';
+}
+
+const contentEl = document.getElementById('post-content');
+contentEl.innerHTML = post.content || '';
+
+/* Step 1: Wrap captioned images first */
+const imgsWithTitles = contentEl.querySelectorAll('img[title]');
+imgsWithTitles.forEach(img => {
+if (img.parentElement.tagName.toLowerCase() === 'figure') return;
+const fig = document.createElement('figure');
+img.replaceWith(fig);
+fig.appendChild(img);
+const caption = document.createElement('figcaption');
+caption.textContent = img.getAttribute('title');
+fig.appendChild(caption);
+});
+
+/* Step 2: Group standalone images (or figures) into img-row */
+const paragraphs = contentEl.querySelectorAll('p');
+let currentRow = [];
+
+function flushRow() {
+if (currentRow.length > 1) {
+const rowDiv = document.createElement('div');
+rowDiv.className = 'img-row';
+currentRow.forEach(p => {
+const el = p.querySelector('img, figure');
+if (el) rowDiv.appendChild(el);
+});
+currentRow[0].parentNode.insertBefore(rowDiv,
+currentRow[0]);
+currentRow.forEach(p => p.remove());
+}
+currentRow = [];
+}
+
+paragraphs.forEach(p => {
+const imgs = p.querySelectorAll('img, figure');
+if (imgs.length === 1 && p.childNodes.length === 1) {
+currentRow.push(p);
+} else {
+flushRow();
+}
+});
+flushRow();
+
+const cusdisThread = document.getElementById('cusdis_thread');
+const pageId = post.slug ? String(post.slug): String(post.title || 'post-' + index);
+cusdisThread.dataset.pageId = pageId;
+cusdisThread.dataset.pageUrl = window.location.origin + '/blog/' + encodeURIComponent(pageId);
+cusdisThread.dataset.pageTitle = post.title || '';
+
+renderCusdisNow();
+
+document.getElementById('blog-grid').style.display = 'none';
+document.getElementById('blog-content').style.display = 'block';
+setTimeout(resizeCusdis,
+600);
+}
+
+document.getElementById('back-button').addEventListener('click', () => {
+document.getElementById('blog-content').style.display = 'none';
+document.getElementById('blog-grid').style.display = 'grid';
+});
+</script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="/mobileButton.js"></script>
 </body>
 </html>
