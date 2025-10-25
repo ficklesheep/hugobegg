@@ -70,6 +70,11 @@ html {
   color: #666;
   margin-top: 4px;
 }
+.blog-content p img {
+  display: block;
+  margin: 0 auto 1rem auto;
+  max-width: 100%;
+}
 
 @media (max-width: 800px) {
   .img-row {
