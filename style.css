@@ -27,49 +27,54 @@ html {
   justify-content: center; /* center fewer posts */
 }
 .img-row {
-  display: flex !important;
+  display: flex;
   flex-wrap: nowrap;
   justify-content: center;
-  align-items: flex-start;
   gap: 10px;
-  padding-left: 4vw;
-  padding-right: 4vw;
-  /* full-bleed breakout */
   width: 100vw;
-  margin-left: 50%;
-  transform: translateX(-50%);
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  padding: 0 4vw;
   box-sizing: border-box;
-  margin-top: 20px;
+}
+
+.img-row > figure,
+.img-row > img {
+  width: 48%;
+  margin: 0;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 .img-row img {
-  flex: 1 1 0;
-  width: auto;
-  height: 400px;
+  width: 100%;
+  height: auto;
+  display: block;
   object-fit: cover;
 }
 
-/* Optional: captions beneath each image */
-.img-row figure {
-  flex: 1 1 0;
-  margin: 0;
-}
 .img-row figcaption {
   text-align: center;
   font-size: 0.9em;
-  margin-top: 4px;
   color: #666;
+  margin-top: 4px;
 }
 
-/* ---- Responsive: stack on mobile ---- */
-@media (max-width: 768px) {
+@media (max-width: 800px) {
   .img-row {
-    flex-direction: column;
-    align-items: center;
+    flex-wrap: wrap;
+    width: 100%;
+    position: static;
+    margin: 0 auto;
+    padding: 0;
   }
-  .img-row img,
-  .img-row figure {
-    max-width: 90%;
+
+  .img-row > figure,
+  .img-row > img {
+    width: 100%;
   }
 }
 
