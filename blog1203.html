@@ -248,44 +248,31 @@ fig.appendChild(caption);
 const paragraphs = contentEl.querySelectorAll('p');
 let currentRow = [];
 
-
 function flushRow() {
-if (currentRow.length === 1) {
-const p = currentRow[0];
-const imgOrFig = p.querySelector('img, figure');
-if (imgOrFig) {
-const container = document.createElement('div');
-container.className = 'single-img';
-imgOrFig.replaceWith(container);
-container.appendChild(imgOrFig);
+  if (currentRow.length === 1) {
+    // Single image stays in its own container
+    const p = currentRow[0];
+    const imgOrFig = p.querySelector('img, figure');
+    if (imgOrFig) {
+      const container = document.createElement('div');
+      container.className = 'single-img';
+      imgOrFig.replaceWith(container);
+      container.appendChild(imgOrFig);
+      p.remove();
+    }
+  } else if (currentRow.length > 1) {
+    // Multiple images -> wrap in img-row
+    const rowDiv = document.createElement('div');
+    rowDiv.className = 'img-row';
+    currentRow.forEach(p => {
+      const el = p.querySelector('img, figure');
+      if (el) rowDiv.appendChild(el);
+    });
+    currentRow[0].parentNode.insertBefore(rowDiv, currentRow[0]);
+    currentRow.forEach(p => p.remove());
+  }
+  currentRow = [];
 }
-p.remove();
-} else if (currentRow.length > 1) {
-const rowDiv = document.createElement('div');
-rowDiv.className = 'img-row';
-currentRow.forEach(p => {
-const el = p.querySelector('img, figure');
-if (el) rowDiv.appendChild(el);
-p.remove();
-});
-currentRow[0].parentNode.insertBefore(rowDiv,
-currentRow[0]);
-}
-currentRow = [];
-}
-
-paragraphs.forEach(p => {
-// Skip empty paragraphs
-if (!p.textContent.trim() && p.querySelector('img, figure')) {
-currentRow.push(p);
-} else if (p.querySelector('img, figure') && p.childNodes.length === 1) {
-currentRow.push(p);
-} else {
-flushRow();
-}
-});
-flushRow();
-
 
 
 
