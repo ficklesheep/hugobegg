@@ -226,22 +226,25 @@ const contentEl = document.getElementById('post-content');
 contentEl.innerHTML = post.content || '';
 
 // Convert <break> in CMS content into empty <p> tags
-contentEl.querySelectorAll('*').forEach(node => {
-  if (node.nodeType === Node.TEXT_NODE) {
-    const parts = node.textContent.split('<break>');
-    if (parts.length > 1) {
-      const parent = node.parentNode;
+// Replace <break> in Markdown with empty <p> tags
+contentEl.querySelectorAll('p, span, div').forEach(node => {
+  if (!node.childNodes.length) return;
+  node.childNodes.forEach(child => {
+    if (child.nodeType === Node.TEXT_NODE && child.textContent.includes('<break>')) {
+      const parts = child.textContent.split('<break>');
+      const parent = child.parentNode;
       parts.forEach((part, i) => {
-        if (part.trim()) parent.insertBefore(document.createTextNode(part), node);
+        if (part.trim()) parent.insertBefore(document.createTextNode(part), child);
         if (i < parts.length - 1) {
-          const p = document.createElement('p');
-          parent.insertBefore(p, node);
+          const p = document.createElement('p'); // empty paragraph
+          parent.insertBefore(p, child);
         }
       });
-      parent.removeChild(node);
+      parent.removeChild(child);
     }
-  }
+  });
 });
+
 
 /* Step 1: Wrap captioned images first */
 const imgsWithTitles = contentEl.querySelectorAll('img[title]');
