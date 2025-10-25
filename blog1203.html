@@ -201,6 +201,47 @@ grid.appendChild(card);
 });
 })
 .catch(err => console.error('posts.json load error', err));
+function wrapImages() {
+  const contentEl = document.getElementById('post-content');
+  const paragraphs = Array.from(contentEl.querySelectorAll('p'));
+  let rowBuffer = [];
+
+  function flushRow() {
+    if (rowBuffer.length === 0) return;
+
+    if (rowBuffer.length === 1) {
+      // Single image: leave it as-is
+      rowBuffer = [];
+      return;
+    }
+
+    // Multiple images: wrap in img-row
+    const rowDiv = document.createElement('div');
+    rowDiv.className = 'img-row';
+
+    rowBuffer.forEach(p => {
+      const imgs = p.querySelectorAll('img, figure');
+      imgs.forEach(img => rowDiv.appendChild(img));
+      p.remove();
+    });
+
+    // Insert the rowDiv before the first paragraph in the buffer
+    const firstP = rowBuffer[0];
+    if (firstP.parentNode) firstP.parentNode.insertBefore(rowDiv, firstP);
+    rowBuffer = [];
+  }
+
+  paragraphs.forEach(p => {
+    const imgs = p.querySelectorAll('img, figure');
+    if (imgs.length > 0) {
+      rowBuffer.push(p);
+    } else {
+      flushRow();
+    }
+  });
+
+  flushRow();
+}
 
 function showPost(index) {
   const post = postsData[index];
@@ -227,6 +268,9 @@ function showPost(index) {
   contentEl.innerHTML = post.content || '';
   contentEl.innerHTML = contentEl.innerHTML.replace(/<break>/g, '<p></p>');
 
+
+// wrap consecutive images
+wrapImages();
   // COMMENT OUT IMAGE WRAPPING FOR NOW
   // const imgsWithTitles = contentEl.querySelectorAll('img[title]');
   // ... all wrapping logic ...
