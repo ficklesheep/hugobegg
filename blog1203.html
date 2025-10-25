@@ -316,6 +316,7 @@ window.addEventListener('load', () => {
 document.getElementById('back-button').addEventListener('click', () => {
 document.getElementById('blog-content').style.display = 'none';
 document.getElementById('blog-grid').style.display = 'grid';
+  history.pushState("", document.title, window.location.pathname); // removes hash without reloading
 });
 </script>
 
