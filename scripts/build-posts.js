@@ -57,7 +57,13 @@ const posts = files.map(filePath => {
   date: data.date || null,
   image: data.image || null,
   description: data.description || '', // ✅ <-- Add this line
-  content: marked(content),
+  // Preprocess content to separate image groups with blank lines
+// Two or more blank lines should prevent images from grouping together
+const processedContent = content.replace(
+  /(\n\s*\n)(\s*\n)+/g, '\n\n\n' // normalize multiple blank lines
+);
+
+  content: marked(processedContent),
   slug: path.relative(postsDir, filePath).replace(/\\/g, '/').replace(/\.md$/, ''),
 };
 });
