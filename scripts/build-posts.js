@@ -38,16 +38,19 @@ const posts = files.map(filePath => {
 
   // ✅ Update image path if it exists
   if (data.image) {
-    const filename = path.basename(data.image);
-    const correctPath = `/images/bloguploads/${filename}`;
-    if (data.image !== correctPath) {
-      console.log(`Updating image path in ${filePath}`);
-      data.image = correctPath;
+  let filename = path.basename(data.image);
+  // Force .webp extension
+  filename = filename.replace(/\.(jpg|jpeg|png)$/i, '.webp');
+  const correctPath = `/images/bloguploads/${filename}`;
+  if (data.image !== correctPath) {
+    console.log(`Updating image path in ${filePath}`);
+    data.image = correctPath;
 
-      const updatedMarkdown = matter.stringify(content, data);
-      fs.writeFileSync(filePath, updatedMarkdown, 'utf8');
-    }
+    const updatedMarkdown = matter.stringify(content, data);
+    fs.writeFileSync(filePath, updatedMarkdown, 'utf8');
   }
+}
+
   
   return {
   title: data.title || 'Untitled',
