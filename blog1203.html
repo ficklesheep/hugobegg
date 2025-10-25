@@ -318,6 +318,26 @@ document.getElementById('blog-content').style.display = 'none';
 document.getElementById('blog-grid').style.display = 'grid';
   history.pushState("", document.title, window.location.pathname); // removes hash without reloading
 });
+
+function openPostFromHash() {
+  const slug = window.location.hash.slice(1); // remove '#'
+  if (!slug) {
+    // No hash → show grid
+    document.getElementById('blog-content').style.display = 'none';
+    document.getElementById('blog-grid').style.display = 'grid';
+  } else {
+    const postIndex = postsData.findIndex(p => (p.slug || p.title) === slug);
+    if (postIndex >= 0) showPost(postIndex);
+  }
+}
+
+// Run on page load
+window.addEventListener('load', openPostFromHash);
+
+// Run on hash change
+window.addEventListener('hashchange', openPostFromHash);
+
+
 </script>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
