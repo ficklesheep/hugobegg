@@ -288,8 +288,22 @@ wrapConsecutiveImages();
   document.getElementById('blog-grid').style.display = 'none';
   document.getElementById('blog-content').style.display = 'block';
   setTimeout(resizeCusdis, 600);
+  
+  window.location.hash = post.slug || 'post-' + index;
+
 }
 
+window.addEventListener('hashchange', () => {
+  const slug = window.location.hash.slice(1); // remove '#'
+  if (!slug) {
+    // No hash → show grid
+    document.getElementById('blog-content').style.display = 'none';
+    document.getElementById('blog-grid').style.display = 'grid';
+  } else {
+    const postIndex = postsData.findIndex(p => (p.slug || p.title) === slug);
+    if (postIndex >= 0) showPost(postIndex);
+  }
+});
 
 document.getElementById('back-button').addEventListener('click', () => {
 document.getElementById('blog-content').style.display = 'none';
