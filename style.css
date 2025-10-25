@@ -73,6 +73,8 @@ html {
 .blog-content p img {
   display: block;
   margin: 0 auto 1rem auto;
+  width: 100%;
+  height: auto;
   max-width: 100%;
 }
 
