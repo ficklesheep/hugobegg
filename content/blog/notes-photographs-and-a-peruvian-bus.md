@@ -1,7 +1,7 @@
 ---
 title: Notes, Photographs and a Peruvian Bus
 date: 2025-10-24T21:12:00.000-05:00
-description: My thoughts on my photographic journey
+description: Thoughts on my photographic journey
 image: images/bloguploads/IMG-20251020-WA0001.webp
 ---
 There are beautiful parallels between photography and music. Light and shadow meet loud and soft; frames both cluttered and minimal meet music's commotion and tranquility. There's a fine balance between colours, textures, lines, and contours, which both mediums put forth so differently to the world. Differently, yet so vastly alike. As music commands the ears, photos command the eyes — both masters of their own sense. The way music paints a picture equals that of a photograph's own harmonies. What can't be said is spoken so eloquently. 
