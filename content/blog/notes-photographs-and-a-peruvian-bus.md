@@ -12,7 +12,7 @@ I would waste away warm Sunday afternoons playing in the front yard, hearing the
 
 I'm sure the neighborhood was thrilled when my own small hands took command of the violin. I can only say I'm surprised at their patience when said violin suffered a lively, end-pin related death, my prayers were answered, and I migrated loudly to the trumpet. Wonderfully, this avenue of my creative pursuits is still open some 16 years later. I owe this to my ever-supportive family and my own patience as I progressed from raspberries to orchestral performances. I often think that without music, my love of photography may not have come about. Perhaps by also being constantly overshadowed by my sister's musical dedication and my own aversions to structured practice pushed me towards a different creative outlet.
 
-![](images/bloguploads/P1130592.webp "Mexico, June 2025")
+![](images/bloguploads/P1120954.webp)
 
 ![](images/bloguploads/P1120954.webp)
 
