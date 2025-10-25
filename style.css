@@ -16,7 +16,7 @@ html {
 .blog-container{
   display: block;
   margin-top: 10px;
-  margin-bottom: 100px;
+  margin-bottom: 300px;
 }
 .blog-content p{
   margin-top: 25px;
@@ -86,7 +86,9 @@ html {
     margin: 0 auto;
     padding: 0;
   }
-
+  .blog-container{
+    margin-bottom: 50px;
+  }
   .img-row > figure,
   .img-row > img {
     width: 100%;
