@@ -38,43 +38,46 @@ const posts = files.map(filePath => {
 
   // ✅ Update image path if it exists
   if (data.image) {
-  let filename = path.basename(data.image);
-  // Force .webp extension
-  filename = filename.replace(/\.(jpg|jpeg|png)$/i, '.webp');
-  const correctPath = `/images/bloguploads/${filename}`;
-  if (data.image !== correctPath) {
-    console.log(`Updating image path in ${filePath}`);
-    data.image = correctPath;
+    let filename = path.basename(data.image);
+    // Force .webp extension
+    filename = filename.replace(/\.(jpg|jpeg|png)$/i, '.webp');
+    const correctPath = `/images/bloguploads/${filename}`;
+    if (data.image !== correctPath) {
+      console.log(`Updating image path in ${filePath}`);
+      data.image = correctPath;
 
-    const updatedMarkdown = matter.stringify(content, data);
-    fs.writeFileSync(filePath, updatedMarkdown, 'utf8');
+      const updatedMarkdown = matter.stringify(content, data);
+      fs.writeFileSync(filePath, updatedMarkdown, 'utf8');
+    }
   }
-}
 
-  
-  return {
-  title: data.title || 'Untitled',
-  date: data.date || null,
-  image: data.image || null,
-  description: data.description || '', // ✅ <-- Add this line
-  
   // --- Distinguish single vs double newlines between images ---
-let processed = content
-  // Handle double newlines first → mark them specially
-  .replace(/!\[([^\]]*)\]\(([^)]+)\)\n\n!\[([^\]]*)\]\(([^)]+)\)/g, 
-    '![\$1]($2)\n<!--IMG_BREAK-->\n![\$3]($4)')
-  // Convert markdown to HTML
-  .trim();
+  let processed = content
+    // Replace images separated by two newlines with a marker
+    .replace(
+      /!\[([^\]]*)\]\(([^)]+)\)\n\n!\[([^\]]*)\]\(([^)]+)\)/g,
+      '![$1]($2)\n<!--IMG_BREAK-->\n![$3]($4)'
+    )
+    .trim();
 
-const html = marked(processed);
+  const html = marked(processed);
+  // Replace marker with vertical separator
+  const finalContent = html.replace(
+    /<!--IMG_BREAK-->/g,
+    '</div><div class="img-vertical-sep">'
+  );
 
-// Replace our marker with a divider that forces vertical stacking
-const finalContent = html.replace(/<!--IMG_BREAK-->/g, '</div><div class="img-vertical-sep">');
-
-
-  content: marked(finalContent),
-  slug: path.relative(postsDir, filePath).replace(/\\/g, '/').replace(/\.md$/, ''),
-};
+  return {
+    title: data.title || 'Untitled',
+    date: data.date || null,
+    image: data.image || null,
+    description: data.description || '',
+    content: finalContent,
+    slug: path
+      .relative(postsDir, filePath)
+      .replace(/\\/g, '/')
+      .replace(/\.md$/, ''),
+  };
 });
 
 // Ensure output directory exists
