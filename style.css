@@ -39,7 +39,7 @@ html {
   flex-wrap: nowrap;
   justify-content: center;
   gap: 15px;
-  width: 100vw;
+  width: 10vw;
   position: relative;
   left: 50%;
   right: 50%;
