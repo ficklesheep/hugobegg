@@ -16,9 +16,9 @@ html {
 .blog-container{
   display: block;
   margin-top: 10px;
-  margin-bottom: 300px;
+  margin-bottom: 150px;
 }
-.blog-content p{
+.blog-content p *:not(post-date){
   margin-top: 25px;
   margin-bottom: 25px;
 } 
