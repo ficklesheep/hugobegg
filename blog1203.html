@@ -203,95 +203,47 @@ grid.appendChild(card);
 .catch(err => console.error('posts.json load error', err));
 
 function showPost(index) {
-const post = postsData[index];
-if (!post) return;
+  const post = postsData[index];
+  if (!post) return;
 
-document.getElementById('post-title').textContent = post.title || '';
-document.getElementById('post-description').textContent = post.description || '';
+  document.getElementById('post-title').textContent = post.title || '';
+  document.getElementById('post-description').textContent = post.description || '';
 
-const date = new Date(post.date || '');
-document.getElementById('post-date').textContent = isNaN(date) ? '': date.toLocaleDateString();
+  const date = new Date(post.date || '');
+  document.getElementById('post-date').textContent = isNaN(date) ? '' : date.toLocaleDateString();
 
-const imageEl = document.getElementById('post-image');
-if (post.image) {
-imageEl.src = (post.image.startsWith('http') || post.image.startsWith('/'))
-? post.image: '/images/bloguploads/' + post.image;
-imageEl.alt = post.title + ' image';
-} else {
-imageEl.src = '';
-imageEl.alt = '';
-}
-
-const contentEl = document.getElementById('post-content');
-contentEl.innerHTML = post.content || '';
-
-// Replace <break> in CMS content with empty <p> elements
-contentEl.innerHTML = contentEl.innerHTML.replace(/<break>/g, '<p></p>');
-
-// ----------------- IMAGE WRAPPING LOGIC -----------------
-const imgsWithTitles = contentEl.querySelectorAll('img[title]');
-imgsWithTitles.forEach(img => {
-  if (img.parentElement.tagName.toLowerCase() === 'figure') return;
-  const fig = document.createElement('figure');
-  img.replaceWith(fig);
-  fig.appendChild(img);
-  const caption = document.createElement('figcaption');
-  caption.textContent = img.getAttribute('title');
-  fig.appendChild(caption);
-});
-
-const paragraphs = Array.from(contentEl.querySelectorAll('p'));
-let currentRow = [];
-
-function flushRow() {
-  if (currentRow.length === 1) {
-    const p = currentRow[0];
-    const imgOrFig = p.querySelector('img, figure');
-    if (imgOrFig) {
-      const container = document.createElement('div');
-      container.className = 'single-img';
-      imgOrFig.replaceWith(container);
-      container.appendChild(imgOrFig);
-    }
-    p.remove();
-  } else if (currentRow.length > 1) {
-    const rowDiv = document.createElement('div');
-    rowDiv.className = 'img-row';
-    currentRow.forEach(p => {
-      const imgs = p.querySelectorAll('img, figure');
-      imgs.forEach(img => rowDiv.appendChild(img));
-      p.remove();
-    });
-    currentRow[0].parentNode.insertBefore(rowDiv, currentRow[0]);
-  }
-  currentRow = [];
-}
-
-paragraphs.forEach(p => {
-  const imgs = p.querySelectorAll('img, figure');
-  if (imgs.length > 0) {
-    currentRow.push(p);
+  const imageEl = document.getElementById('post-image');
+  if (post.image) {
+    imageEl.src = (post.image.startsWith('http') || post.image.startsWith('/'))
+      ? post.image
+      : '/images/bloguploads/' + post.image;
+    imageEl.alt = post.title + ' image';
   } else {
-    flushRow();
+    imageEl.src = '';
+    imageEl.alt = '';
   }
-});
-flushRow();
-// --------------------------------------------------------
 
+  const contentEl = document.getElementById('post-content');
+  contentEl.innerHTML = post.content || '';
+  contentEl.innerHTML = contentEl.innerHTML.replace(/<break>/g, '<p></p>');
 
-const cusdisThread = document.getElementById('cusdis_thread');
-const pageId = post.slug ? String(post.slug): String(post.title || 'post-' + index);
-cusdisThread.dataset.pageId = pageId;
-cusdisThread.dataset.pageUrl = window.location.origin + '/blog/' + encodeURIComponent(pageId);
-cusdisThread.dataset.pageTitle = post.title || '';
+  // COMMENT OUT IMAGE WRAPPING FOR NOW
+  // const imgsWithTitles = contentEl.querySelectorAll('img[title]');
+  // ... all wrapping logic ...
 
-renderCusdisNow();
+  const cusdisThread = document.getElementById('cusdis_thread');
+  const pageId = post.slug ? String(post.slug) : String(post.title || 'post-' + index);
+  cusdisThread.dataset.pageId = pageId;
+  cusdisThread.dataset.pageUrl = window.location.origin + '/blog/' + encodeURIComponent(pageId);
+  cusdisThread.dataset.pageTitle = post.title || '';
 
-document.getElementById('blog-grid').style.display = 'none';
-document.getElementById('blog-content').style.display = 'block';
-setTimeout(resizeCusdis,
-600);
+  renderCusdisNow();
+
+  document.getElementById('blog-grid').style.display = 'none';
+  document.getElementById('blog-content').style.display = 'block';
+  setTimeout(resizeCusdis, 600);
 }
+
 
 document.getElementById('back-button').addEventListener('click', () => {
 document.getElementById('blog-content').style.display = 'none';
