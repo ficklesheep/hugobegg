@@ -18,6 +18,10 @@ html {
   margin-top: 10px;
   margin-bottom: 100px;
 }
+.blog-content p{
+  margin-top: 25px;
+  margin-bottom: 25px;
+} 
 .blog-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, max-content));
