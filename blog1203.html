@@ -242,19 +242,19 @@ const paragraphs = contentEl.querySelectorAll('p');
 let currentRow = [];
 
 function flushRow() {
-if (currentRow.length > 1) {
-const rowDiv = document.createElement('div');
-rowDiv.className = 'img-row';
-currentRow.forEach(p => {
-const el = p.querySelector('img, figure');
-if (el) rowDiv.appendChild(el);
-});
-currentRow[0].parentNode.insertBefore(rowDiv,
-currentRow[0]);
-currentRow.forEach(p => p.remove());
+  if (currentRow.length > 0) {  // wrap even single images
+    const rowDiv = document.createElement('div');
+    rowDiv.className = 'img-row';
+    currentRow.forEach(p => {
+      const el = p.querySelector('img, figure');
+      if (el) rowDiv.appendChild(el);
+    });
+    currentRow[0].parentNode.insertBefore(rowDiv, currentRow[0]);
+    currentRow.forEach(p => p.remove());
+  }
+  currentRow = [];
 }
-currentRow = [];
-}
+
 
 paragraphs.forEach(p => {
 const imgs = p.querySelectorAll('img, figure');
