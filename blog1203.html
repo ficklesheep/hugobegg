@@ -248,6 +248,9 @@ fig.appendChild(caption);
 const paragraphs = contentEl.querySelectorAll('p');
 let currentRow = [];
 
+// Step 2: Wrap standalone images into proper containers
+const paragraphs = Array.from(contentEl.querySelectorAll('p'));
+let currentRow = [];
 
 function flushRow() {
 if (currentRow.length === 1) {
