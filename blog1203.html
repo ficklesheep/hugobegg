@@ -225,53 +225,10 @@ imageEl.alt = '';
 const contentEl = document.getElementById('post-content');
 contentEl.innerHTML = post.content || '';
 
-// Convert <break> in CMS content into empty <p> tags
-// Replace <break> in Markdown with empty <p> tags
-// Replace <break> in CMS content with actual empty <p> elements
+// Replace <break> in CMS content with empty <p> elements
 contentEl.innerHTML = contentEl.innerHTML.replace(/<break>/g, '<p></p>');
 
-
-
-/* Step 1: Wrap captioned images first */
-const imgsWithTitles = contentEl.querySelectorAll('img[title]');
-imgsWithTitles.forEach(img => {
-if (img.parentElement.tagName.toLowerCase() === 'figure') return;
-const fig = document.createElement('figure');
-img.replaceWith(fig);
-fig.appendChild(img);
-const caption = document.createElement('figcaption');
-caption.textContent = img.getAttribute('title');
-fig.appendChild(caption);
-});
-
-const paragraphs = Array.from(contentEl.querySelectorAll('p'));
-let currentRow = [];
-
-function flushRow() {
-  if (currentRow.length === 1) {
-    const p = currentRow[0];
-    const imgOrFig = p.querySelector('img, figure');
-    if (imgOrFig) {
-      const container = document.createElement('div');
-      container.className = 'single-img';
-      imgOrFig.replaceWith(container);
-      container.appendChild(imgOrFig);
-    }
-    p.remove();
-  } else if (currentRow.length > 1) {
-    const rowDiv = document.createElement('div');
-    rowDiv.className = 'img-row';
-    currentRow.forEach(p => {
-      const imgs = p.querySelectorAll('img, figure');
-      imgs.forEach(img => rowDiv.appendChild(img));
-    });
-    currentRow[0].parentNode.insertBefore(rowDiv, currentRow[0]);
-    currentRow.forEach(p => p.remove());
-  }
-  currentRow = [];
-}
-
-// Step 1: Wrap captioned images in <figure>
+// ----------------- IMAGE WRAPPING LOGIC -----------------
 const imgsWithTitles = contentEl.querySelectorAll('img[title]');
 imgsWithTitles.forEach(img => {
   if (img.parentElement.tagName.toLowerCase() === 'figure') return;
@@ -283,7 +240,6 @@ imgsWithTitles.forEach(img => {
   fig.appendChild(caption);
 });
 
-// Step 2: Wrap images/figures into rows or single containers
 const paragraphs = Array.from(contentEl.querySelectorAll('p'));
 let currentRow = [];
 
@@ -320,6 +276,7 @@ paragraphs.forEach(p => {
   }
 });
 flushRow();
+// --------------------------------------------------------
 
 
 const cusdisThread = document.getElementById('cusdis_thread');
