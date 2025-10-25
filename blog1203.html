@@ -305,6 +305,14 @@ window.addEventListener('hashchange', () => {
   }
 });
 
+window.addEventListener('load', () => {
+  const slug = window.location.hash.slice(1);
+  if (slug) {
+    const postIndex = postsData.findIndex(p => (p.slug || p.title) === slug);
+    if (postIndex >= 0) showPost(postIndex);
+  }
+});
+
 document.getElementById('back-button').addEventListener('click', () => {
 document.getElementById('blog-content').style.display = 'none';
 document.getElementById('blog-grid').style.display = 'grid';
