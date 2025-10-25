@@ -57,7 +57,22 @@ const posts = files.map(filePath => {
   date: data.date || null,
   image: data.image || null,
   description: data.description || '', // ✅ <-- Add this line
-  content: marked(content),
+  
+  // --- Distinguish single vs double newlines between images ---
+let processed = content
+  // Handle double newlines first → mark them specially
+  .replace(/!\[([^\]]*)\]\(([^)]+)\)\n\n!\[([^\]]*)\]\(([^)]+)\)/g, 
+    '![\$1]($2)\n<!--IMG_BREAK-->\n![\$3]($4)')
+  // Convert markdown to HTML
+  .trim();
+
+const html = marked(processed);
+
+// Replace our marker with a divider that forces vertical stacking
+const finalContent = html.replace(/<!--IMG_BREAK-->/g, '</div><div class="img-vertical-sep">');
+
+
+  content: marked(finalContent),
   slug: path.relative(postsDir, filePath).replace(/\\/g, '/').replace(/\.md$/, ''),
 };
 });
