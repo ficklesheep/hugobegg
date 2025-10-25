@@ -227,23 +227,9 @@ contentEl.innerHTML = post.content || '';
 
 // Convert <break> in CMS content into empty <p> tags
 // Replace <break> in Markdown with empty <p> tags
-contentEl.querySelectorAll('p, span, div').forEach(node => {
-  if (!node.childNodes.length) return;
-  node.childNodes.forEach(child => {
-    if (child.nodeType === Node.TEXT_NODE && child.textContent.includes('<break>')) {
-      const parts = child.textContent.split('<break>');
-      const parent = child.parentNode;
-      parts.forEach((part, i) => {
-        if (part.trim()) parent.insertBefore(document.createTextNode(part), child);
-        if (i < parts.length - 1) {
-          const p = document.createElement('p'); // empty paragraph
-          parent.insertBefore(p, child);
-        }
-      });
-      parent.removeChild(child);
-    }
-  });
-});
+// Replace <break> in CMS content with actual empty <p> elements
+contentEl.innerHTML = contentEl.innerHTML.replace(/<break>/g, '<p></p>');
+
 
 
 /* Step 1: Wrap captioned images first */
