@@ -225,6 +225,24 @@ imageEl.alt = '';
 const contentEl = document.getElementById('post-content');
 contentEl.innerHTML = post.content || '';
 
+// Convert <break> in CMS content into empty <p> tags
+contentEl.querySelectorAll('*').forEach(node => {
+  if (node.nodeType === Node.TEXT_NODE) {
+    const parts = node.textContent.split('<break>');
+    if (parts.length > 1) {
+      const parent = node.parentNode;
+      parts.forEach((part, i) => {
+        if (part.trim()) parent.insertBefore(document.createTextNode(part), node);
+        if (i < parts.length - 1) {
+          const p = document.createElement('p');
+          parent.insertBefore(p, node);
+        }
+      });
+      parent.removeChild(node);
+    }
+  }
+});
+
 /* Step 1: Wrap captioned images first */
 const imgsWithTitles = contentEl.querySelectorAll('img[title]');
 imgsWithTitles.forEach(img => {
@@ -242,17 +260,19 @@ const paragraphs = contentEl.querySelectorAll('p');
 let currentRow = [];
 
 function flushRow() {
-  if (currentRow.length > 0) {  // wrap even single images
-    const rowDiv = document.createElement('div');
-    rowDiv.className = 'img-row';
-    currentRow.forEach(p => {
-      const el = p.querySelector('img, figure');
-      if (el) rowDiv.appendChild(el);
-    });
-    currentRow[0].parentNode.insertBefore(rowDiv, currentRow[0]);
-    currentRow.forEach(p => p.remove());
-  }
-  currentRow = [];
+if (currentRow.length > 0) {
+// wrap even single images
+const rowDiv = document.createElement('div');
+rowDiv.className = 'img-row';
+currentRow.forEach(p => {
+const el = p.querySelector('img, figure');
+if (el) rowDiv.appendChild(el);
+});
+currentRow[0].parentNode.insertBefore(rowDiv,
+currentRow[0]);
+currentRow.forEach(p => p.remove());
+}
+currentRow = [];
 }
 
 
