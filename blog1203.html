@@ -271,6 +271,46 @@ function flushRow() {
   currentRow = [];
 }
 
+// Step 1: Wrap captioned images in <figure>
+const imgsWithTitles = contentEl.querySelectorAll('img[title]');
+imgsWithTitles.forEach(img => {
+  if (img.parentElement.tagName.toLowerCase() === 'figure') return;
+  const fig = document.createElement('figure');
+  img.replaceWith(fig);
+  fig.appendChild(img);
+  const caption = document.createElement('figcaption');
+  caption.textContent = img.getAttribute('title');
+  fig.appendChild(caption);
+});
+
+// Step 2: Wrap images/figures into rows or single containers
+const paragraphs = Array.from(contentEl.querySelectorAll('p'));
+let currentRow = [];
+
+function flushRow() {
+  if (currentRow.length === 1) {
+    const p = currentRow[0];
+    const imgOrFig = p.querySelector('img, figure');
+    if (imgOrFig) {
+      const container = document.createElement('div');
+      container.className = 'single-img';
+      imgOrFig.replaceWith(container);
+      container.appendChild(imgOrFig);
+    }
+    p.remove();
+  } else if (currentRow.length > 1) {
+    const rowDiv = document.createElement('div');
+    rowDiv.className = 'img-row';
+    currentRow.forEach(p => {
+      const imgs = p.querySelectorAll('img, figure');
+      imgs.forEach(img => rowDiv.appendChild(img));
+      p.remove();
+    });
+    currentRow[0].parentNode.insertBefore(rowDiv, currentRow[0]);
+  }
+  currentRow = [];
+}
+
 paragraphs.forEach(p => {
   const imgs = p.querySelectorAll('img, figure');
   if (imgs.length > 0) {
@@ -281,18 +321,6 @@ paragraphs.forEach(p => {
 });
 flushRow();
 
-
-
-
-paragraphs.forEach(p => {
-const imgs = p.querySelectorAll('img, figure');
-if (imgs.length === 1 && p.childNodes.length === 1) {
-currentRow.push(p);
-} else {
-flushRow();
-}
-});
-flushRow();
 
 const cusdisThread = document.getElementById('cusdis_thread');
 const pageId = post.slug ? String(post.slug): String(post.title || 'post-' + index);
