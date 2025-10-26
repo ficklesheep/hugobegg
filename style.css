@@ -76,6 +76,10 @@ html {
 }
 
 @media (max-width: 800px) {
+   .blog-content{
+     font-size: 10px;
+   }
+  
   .img-row {
     flex-wrap: wrap;
     width: 100%;
@@ -99,6 +103,12 @@ html {
   .img-row {
     flex-direction: column;
     align-items: center;
+  }
+  .author{
+    fony-size: 10px;
+  }
+  .post-date{
+    fony-size: 10px;
   }
   .img-row img,
   .img-row figure {
