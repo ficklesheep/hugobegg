@@ -105,10 +105,10 @@ html {
     align-items: center;
   }
   .author{
-    fony-size: 10px;
+    font-size: 10px;
   }
   .post-date{
-    fony-size: 10px;
+    font-size: 10px;
   }
   .img-row img,
   .img-row figure {
