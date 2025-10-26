@@ -10,34 +10,43 @@
 </head>
 <body>
 
-<header class="header__main">
-<div class="header__column--1">
-HUGO BEGG
-</div>
+<div id="header-placeholder"></div>
+<script>
+fetch('/header.html')
+  .then(res => res.text())
+  .then(data => {
+    const placeholder = document.getElementById('header-placeholder');
+    const temp = document.createElement('div');
+    temp.innerHTML = data;
 
-<div class="header__column header__column--2">
-<div class="menu">
-<nav>
-<div class="menu-btn">
-<div class="menu-btn-burger"></div>
-</div>
-<ol>
-<li style="list-style:none"><a href="/gallery/street.html">STREET</a></li>
-<li style="list-style:none"><a href="/gallery/landscapes.html">LANDSCAPE</a></li>
-<li style="list-style:none"><a href="/gallery/travel.html">TRAVEL</a></li>
-<li style="list-style:none"><a href="/gallery/film.html">FILM</a></li>
-<li style="list-style:none"><a href="about.html">ABOUT</a></li>
-</ol>
-</nav>
-</div>
-</div>
+    const fragment = document.createDocumentFragment();
+    while (temp.firstChild) fragment.appendChild(temp.firstChild);
+    placeholder.replaceWith(fragment);
 
-<div class="header__column--3">
-<a href="https://www.instagram.com/hugobegg/">
-<img style="width:20px" src="/images/instagram.png" alt="">
-</a>
-</div>
-</header>
+    // Map paths to page names
+    const pageNames = {
+      "/index": "HOME",
+      "/gallery/street": "STREET",
+      "/gallery/landscapes": "LANDSCAPES",
+      "/gallery/travel": "TRAVEL",
+      "/gallery/film": "FILM",
+      "/about": "ABOUT",
+      "/blog": "NOTES" // <- your blog page
+    };
+
+    const path = window.location.pathname.replace(/\/$/, ""); // remove trailing slash
+    const pageName = pageNames[path] || "UNKNOWN";
+
+    const nameSpan = document.querySelector("#page-name");
+    if (nameSpan) {
+      nameSpan.innerHTML = '<strong style="font-size: 10px; padding-left: 4px;">/' + pageName + '</strong>';
+    }
+  })
+  .catch(error => {
+    document.getElementById('header-placeholder').textContent = "Header load error: " + error;
+  });
+</script>
+
 
 <main class="blog-container">
 <!-- Blog post grid -->
