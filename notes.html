@@ -208,6 +208,7 @@ body.addEventListener('click', () => showPost(index));
 
 grid.appendChild(card);
 });
+openPostFromHash();
 })
 .catch(err => console.error('posts.json load error', err));
 function wrapConsecutiveImages() {
@@ -341,7 +342,7 @@ function openPostFromHash() {
 }
 
 // Run on page load
-window.addEventListener('load', openPostFromHash);
+
 
 // Run on hash change
 window.addEventListener('hashchange', openPostFromHash);
