@@ -201,6 +201,7 @@ border: none;
   display: flex;
   height: 45px;
   flex-direction: column;
+  font-family: Montserrat;
   justify-content: space-around;
 }
 .post-card-desc{
