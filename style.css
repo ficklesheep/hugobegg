@@ -215,12 +215,12 @@ border: none;
   margin-bottom: 0.75rem;
 }
 .author{
-  font-size: 0.85em;
+  font-size: 12px;
   font-weight: bold;
 }
 .post-date{
   color: gray;
-  font-size: 0.8em;
+  font-size: 11px;
 }
 .post-card-excerpt {
   flex-grow: 1;
@@ -234,7 +234,7 @@ border: none;
   max-width: 800px;
   margin: 0 auto;
   padding: 2rem;
-  line-height: 1.6;
+  line-height: 1.75;
   font-family: Times New Roman;
   font-size: 14px;
 }
